@@ -29,12 +29,6 @@ const GamesPage = async () => {
       {items.length !== 0 ? (
         <ul>
           {items.map((game: CleanCollectionItem) => (
-            // <li key={game?.id}>
-            //   {game?.name}-{game?.yearpublished} id {game?.id}
-            //   <Link href={`https://boardgamegeek.com/boardgame/${game?.id}`}>
-            //   <ExternalLinkIcon/>  
-            //   </Link>
-            // </li>
             <GameCard key={game?.id} {...game} />
           ))}
         </ul>
