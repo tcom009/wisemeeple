@@ -1,27 +1,27 @@
 import { config } from "@config";
-import { xmlparser, collectionCleaner } from "@/core/utils/xmlparser";
+import { xmlparser } from "@/core/utils/xmlparser";
+import { collectionCleaner } from "@/core/utils/collectionFormatter";
 import { CleanCollectionItem } from "@/core/models/models";
-import { ExternalLinkIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import GameCard from "@/core/components/GameCard";
 
 async function getCollection(query: string) {
-  let response = await fetch(`${config.BGG_GET_COLLECTION}${query}`);
+  const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`).then((res)=>res);
   const XMLString = await response.text();
   const data = xmlparser(XMLString);
   if (response.status === 200 && data.errors) {
     return { message: "User not found" };
   } else if (response.status === 202) {
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-    await sleep(5000);
-    getCollection(query);
+    await sleep(7000);
+    return getCollection(query)
+    
   } else if (response.status === 200 && data.items) {
     return data;
   }
 }
 
-const GamesPage = async () => {
-  const data = await getCollection("tcom009");
+const GamesPage = async ({ params }: { params: { user: string}}) => {
+  const data = await getCollection(params.user);
   const items = data?.items?.item ? collectionCleaner(data) : [];
   return (
     <div>
@@ -40,5 +40,3 @@ const GamesPage = async () => {
 };
 
 export default GamesPage;
-
-
