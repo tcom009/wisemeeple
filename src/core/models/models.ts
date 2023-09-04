@@ -1,4 +1,4 @@
-export interface FoundGameI {
+export interface SearchGameI {
     attr: {
       id: string;
     };
@@ -12,7 +12,7 @@ export interface FoundGameI {
         value: string;
       };
     };
-  }
+  }  
 
 export interface CollectionItemI{
   attr:{
@@ -42,8 +42,8 @@ export interface CleanCollectionItem{
   id:string,
   name:string,
   yearpublished:string,
-  image:string,
-  thumbnail:string
+  image?:string,
+  thumbnail?:string
 }
 
 

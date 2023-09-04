@@ -11,16 +11,16 @@ import { useState } from "react";
 import Link from "next/link";
 
 export default function BGGUserForm() {
-  const [username, setUsername] = useState("");
+  const [query, setQuery] = useState("");
   const [error, setError] = useState(false);
 
   const handleForm = (event: any) => {
     event.preventDefault();
-    setUsername(event.target.value);
+    setQuery(event.target.value);
   };
 
   const onSubmit = () => {
-    if (!username) {
+    if (!query) {
       setError(true);
     }
   };
@@ -35,7 +35,13 @@ export default function BGGUserForm() {
           {" "}
           Find AI based recomendations of boardgames!
         </Heading>
-        <Text as={"p"} color={"gray"} align={"center"} weight={"bold"}size={{ lg: "5", md: "5", sm: "3", xs: "1" }}>
+        <Text
+          as={"p"}
+          color={"gray"}
+          align={"center"}
+          weight={"bold"}
+          size={{ lg: "5", md: "5", sm: "3", xs: "1" }}
+        >
           Just type in your BGG username or a boardgame name!
         </Text>
       </Flex>
@@ -43,7 +49,7 @@ export default function BGGUserForm() {
         size={"3"}
         placeholder="Wingspan... or bgguser"
         type={"text"}
-        value={username}
+        value={query}
         name="username"
         onChange={handleForm}
         required
@@ -53,13 +59,19 @@ export default function BGGUserForm() {
           Please enter a username or a boardgame name
         </Text>
       )}
-      <Link href={username && `/search/${username}`} className="no-underline">
-        <Grid>
+      <Flex direction={"row"} gap={"3"} align={"center"} justify={"center"}>
+        <Link href={query && `/search/${query}`} className="no-underline">
           <Button size={"3"} mt={"3"} mb={"5"} onClick={onSubmit}>
-            Submit
+            Search Game
           </Button>
-        </Grid>
-      </Link>
+        </Link>
+        <Text align={"center"}> OR </Text>
+        <Link href={query && `/collection/${query}`} className="no-underline">
+          <Button size={"3"} mt={"3"} mb={"5"} onClick={onSubmit}>
+            Import Collection
+          </Button>
+        </Link>
+      </Flex>
     </Flex>
   );
 }

@@ -6,6 +6,7 @@ import { CollectionItemI, CleanCollectionItem, FoundCollectionI } from "core/mod
  *
  */
 export const collectionCleaner = (data: FoundCollectionI): CleanCollectionItem[] => {
+  if (!data.items.item) return [];
   const collection = data.items.item;
   const formattedCollection: CleanCollectionItem[] = [];
   collection.forEach((item: CollectionItemI) => {

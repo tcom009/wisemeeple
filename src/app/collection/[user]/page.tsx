@@ -1,8 +1,9 @@
 import { config } from "@config";
 import { xmlparser } from "@/core/utils/xmlparser";
 import { collectionCleaner } from "@/core/utils/collectionFormatter";
-import { Container, Grid } from "@radix-ui/themes";
+import { Container } from "@radix-ui/themes";
 import GamesTable from "@/core/components/GamesTable";
+
 
 async function getCollection(query: string) {
   const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`).then(
@@ -22,8 +23,8 @@ async function getCollection(query: string) {
 }
 
 const GamesPage = async ({ params }: { params: { user: string } }) => {
-  const data = await getCollection(params.user);
-  const items = data?.items?.item ? collectionCleaner(data) : [];
+  const  data = await getCollection(params.user);
+  const items= collectionCleaner(data);
   return (
       <Container size={{ lg:"3", md:"3", sm:"1", xs:"1"}} >
         <GamesTable games={items} />
