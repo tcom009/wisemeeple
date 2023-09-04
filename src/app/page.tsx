@@ -1,12 +1,10 @@
-
 import BGGUserForm from "@/core/components/forms/BGGUserForm";
-export default function Home() {
+import { Container } from "@radix-ui/themes";
 
+export default function Home() {
   return (
-    <div className="div-bg div-full-center">
-      <form>
-        <BGGUserForm />
-      </form>
-    </div>
+    <Container size={{lg:"2", md:"2", sm:"1", xs:"1"}} mt={"9"}>
+      <BGGUserForm />
+    </Container>
   );
 }

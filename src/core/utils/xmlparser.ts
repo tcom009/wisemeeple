@@ -3,7 +3,7 @@
  * @param XMLString
  * @returns
  */
-export const xmlparser = (XMLString: string, ignoreAttributes?: boolean) => {
+export const xmlparser = (XMLString: string) => {
   const convert = require("xml-js");
   const data = convert.xml2js(XMLString, {
     compact: true,
@@ -11,7 +11,6 @@ export const xmlparser = (XMLString: string, ignoreAttributes?: boolean) => {
     indentAttributes: true,
     attributesKey: "attr",
     textKey: "text",
-    ignoreAttributes: ignoreAttributes,
   });
   return data;
 };

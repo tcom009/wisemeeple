@@ -1,4 +1,4 @@
-import { Card, Avatar, Flex } from "@radix-ui/themes";
+import { Box, Avatar, Flex, Separator, Text } from "@radix-ui/themes";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
@@ -7,19 +7,42 @@ interface GameCardI {
   name: string;
   yearpublished: string;
   image: string;
-  thumbnail: string;
+  isLast?: boolean;
 }
 
-const GameCard = ({ id, name, yearpublished, image, thumbnail }: GameCardI) => (
-  <Card variant="surface">
-    <Flex gap="3" direction={"column"}>
-      <Avatar src={image} fallback={name[0]} size={"9"} />
-      <h1> {name} </h1>
-      <h2> {yearpublished} </h2>
-      <Link href={`https://boardgamegeek.com/boardgame/${id}`} target="_blank">
-        <ExternalLinkIcon />
-      </Link>
+
+
+const GameCard = ({ id, name, yearpublished, image, isLast }: GameCardI) => {
+  
+  const trimText = (text: string) => {
+    if (text.length > 30) {
+      return text.substring(0, 30) + "...";
+    }
+    return text;
+  }
+
+  return(
+  <Flex direction={"column"} gap={"4"}>
+    <Flex align={"center"} gap={"3"}>
+      <Avatar src={image} fallback={name[0]} size={"5"} />
+      <Flex direction={"column"}>
+        <Flex direction={"row"} gap={"1"}>
+          <Text as={"span"} weight={"bold"}>
+            <div className="text-overflow-clip">
+            {trimText(name)}{" "}
+            </div>
+          </Text>
+          <Link
+            href={`https://boardgamegeek.com/boardgame/${id}`}
+            target="_blank"
+          >
+            <ExternalLinkIcon />
+          </Link>
+        </Flex>
+      <Text>{yearpublished}</Text>
+      </Flex>
     </Flex>
-  </Card>
-);
+    {!isLast && <Separator orientation="horizontal" size={"4"} mb={"4"} />}
+  </Flex>
+)};
 export default GameCard;
