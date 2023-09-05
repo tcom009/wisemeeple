@@ -1,11 +1,17 @@
 import { CollectionItemI, CleanCollectionItem } from "core/models/models";
 
+
+interface DataI {
+  items: {
+    item: CollectionItemI[] | CollectionItemI
+  }}
+
 /**
  *
  *
  *
  */
-export const collectionCleaner = (data: any): CleanCollectionItem[] => {
+export const collectionCleaner = (data: DataI): CleanCollectionItem[] => {
   if (!data.items.item) return [];
   const collection = data.items.item;
   const formattedCollection: CleanCollectionItem[] = [];

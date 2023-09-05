@@ -24,7 +24,7 @@ async function getCollection(query: string) {
 
 const GamesPage = async ({ params }: { params: { user: string } }) => {
   const  data = await getCollection(params.user);
-  const items= collectionCleaner(data);
+  const items= data?.items?.item ? collectionCleaner(data) : [];
   return (
       <Container size={{ lg:"3", md:"3", sm:"1", xs:"1"}} >
         <GamesTable games={items} />
