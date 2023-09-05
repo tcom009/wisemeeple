@@ -15,8 +15,8 @@ async function getCollection(query: string) {
     return { message: "User not found" };
   } else if (response.status === 202) {
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-    await sleep(7000);
-    return getCollection(query);
+    await sleep(10000);
+    getCollection(query);
   } else if (response.status === 200 && data.items) {
     return data;
   }
