@@ -14,15 +14,16 @@ async function getCollection(query: string) {
   } else if (response.status === 202) {
     let count = 0
     let data
-    const limit = 10
+    const limit = 5
     while (count < limit) {
       const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-      await sleep(2000);
+      await sleep(3000);
       const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`);
       const XMLString = await response.text();
       data = xmlparser(XMLString);
       count++
     }
+    console.log(data)
     return data
   } else if (response.status === 200 && data.items) {
     return data;
