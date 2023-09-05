@@ -6,26 +6,19 @@ import GamesTable from "@/core/components/GamesTable";
 
 
 async function getCollection(query: string) {
-  const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`)
+  const url = `${config.BGG_GET_COLLECTION}${query}`
+  const response = await fetch(url)
   const XMLString = await response.text();
   const data = xmlparser(XMLString);
   if (response.status === 200 && data.errors) {
-    return { message: "User not found" };
+    return { message: 'error'};
   } else if (response.status === 202) {
-    let count = 0
-    let data
-    const limit = 5
-    while (count < limit) {
+      console.log(response.status)
       const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-      await sleep(3000);
-      const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`);
-      const XMLString = await response.text();
-      data = xmlparser(XMLString);
-      count++
-    }
-    console.log(data)
-    return data
+      await sleep(7000);
+      return getCollection(query);
   } else if (response.status === 200 && data.items) {
+    console.log(data)
     return data;
   }
 }
@@ -33,11 +26,11 @@ async function getCollection(query: string) {
 const GamesPage = async ({ params }: { params: { user: string } }) => {
   const  data = await getCollection(params.user);
   const items= data?.items?.item ? collectionCleaner(data) : [];
-  return (
+    return (
       <Container size={{ lg:"3", md:"3", sm:"1", xs:"1"}} >
         <GamesTable games={items} />
       </Container>
-  );
+    );
 };
 
 export default GamesPage;

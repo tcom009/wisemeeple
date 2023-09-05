@@ -42,12 +42,12 @@ export default function BGGUserForm() {
           weight={"bold"}
           size={{ lg: "5", md: "5", sm: "3", xs: "1" }}
         >
-          Just type in your BGG username or a boardgame name!
+          Just type in a boardgame name!
         </Text>
       </Flex>
       <TextFieldInput
         size={"3"}
-        placeholder="Wingspan... or bgguser"
+        placeholder="Wingspan... "
         type={"text"}
         value={query}
         name="username"
@@ -65,12 +65,7 @@ export default function BGGUserForm() {
             Search Game
           </Button>
         </Link>
-        <Text align={"center"}> OR </Text>
-        <Link href={query && `/collection/${query}`} className="no-underline">
-          <Button size={"3"} mt={"3"} mb={"5"} onClick={onSubmit}>
-            Import Collection
-          </Button>
-        </Link>
+
       </Flex>
     </Flex>
   );
