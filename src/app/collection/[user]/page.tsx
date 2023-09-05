@@ -17,7 +17,7 @@ async function getCollection(query: string) {
     const limit = 10
     while (count < limit) {
       const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-      await sleep(1000);
+      await sleep(2000);
       const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`);
       const XMLString = await response.text();
       data = xmlparser(XMLString);
