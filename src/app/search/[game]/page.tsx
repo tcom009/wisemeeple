@@ -15,16 +15,6 @@ async function getSearch(query:string){
   return data
 }
 
-// const cleanSingleGame = (item: any) => {
-//   const cleanItem = {
-//     id:item?.attr.id,
-//     name:  Array.isArray(item.name) ? item?.name[0]?.attr.value : item?.name?.attr.value,
-//     yearpublished: item?.yearpublished?.attr?.value ?? "",
-//     image: item.image?.text ?? "",
-//     description: item.description?.text ?? "",
-//   };
-//   return cleanItem;
-// }
 
 const getGames = async (games: CleanCollectionItem[]|[]) => {
   const gamesId= games.map (game => game.id);
@@ -33,7 +23,7 @@ const getGames = async (games: CleanCollectionItem[]|[]) => {
   const XMLString = await response.text()
   const data = xmlparser(XMLString);
   const items = data?.items?.item ?? [];
-  return Array.isArray(items) ? items : items
+  return Array.isArray(items) ? items : [items]
 }
 
 
