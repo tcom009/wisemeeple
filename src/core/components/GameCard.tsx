@@ -1,23 +1,33 @@
 "use client";
 
-import { Box, Avatar, Flex, Separator, Text, Dialog, Button } from "@radix-ui/themes";
+import {
+  Avatar,
+  Flex,
+  Separator,
+  Text,
+  Dialog,
+  Button,
+} from "@radix-ui/themes";
 import { ExternalLinkIcon, Cross2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { config } from "@/config";
-import { xmlparser } from "@/core/utils/xmlparser";
 
 interface GameCardI {
   id: string;
   name: string;
   yearpublished: string;
   image?: string;
+  description?: string;
   isLast?: boolean;
 }
 
-const GameCard = ({ id, name, yearpublished, image, isLast }: GameCardI) => {
-  const [state, setState] = useState({ description: "", imageFetched: "" });
-  const { description, imageFetched } = state;
+const GameCard = ({
+  id,
+  name,
+  yearpublished,
+  image,
+  description,
+  isLast,
+}: GameCardI) => {
   const NAME_MAX_LENGTH = 30;
   const DESCRIPTION_MAX_LENGTH = 150;
   const trimText = (text: string, length: number) => {
@@ -33,33 +43,10 @@ const GameCard = ({ id, name, yearpublished, image, isLast }: GameCardI) => {
     return trimText(newText, DESCRIPTION_MAX_LENGTH);
   };
 
-  useEffect(() => {
-    const cleanData = (data: any) => {
-      if (!data.items.item) return [];
-      const item = data.items.item;
-      const cleanItem = {
-        imageFetched: item.image?.text ?? "",
-        description: item.description?.text ?? "",
-      };
-      return cleanItem;
-    };
-    const getGameData = async (id: string) => {
-      const url = `${config.BGG_GET_GAME}${id}`;
-      const response = await fetch(url);
-      const XMLString = await response.text();
-      const data = xmlparser(XMLString);
-      setState((prevState: any) => ({
-        ...prevState,
-        ...cleanData(data),
-      }));
-    };
-    getGameData(id);
-  }, [id]);
-
   return (
     <Flex direction={"column"} gap={"4"}>
       <Flex align={"center"} gap={"3"}>
-        <Avatar src={image ?? imageFetched} fallback={name[0]} size={"5"} />
+        <Avatar src={image} fallback={name[0]} size={"5"} />
         <Flex direction={"column"}>
           <Flex direction={"row"} gap={"1"}>
             <Text as={"span"} weight={"bold"}>
@@ -69,30 +56,30 @@ const GameCard = ({ id, name, yearpublished, image, isLast }: GameCardI) => {
                     <Text>{trimText(name, NAME_MAX_LENGTH)}</Text>
                   </Dialog.Trigger>
                   <Dialog.Content>
-
                     <Dialog.Title>
-                    <Flex align={"center"} gap={"3"} direction={"row"} justify={"between"} > 
-                    {name}
-                    <Dialog.Close>
-                        <Cross2Icon />
-                    </Dialog.Close>
-                    </Flex>  
+                      <Flex
+                        align={"center"}
+                        gap={"3"}
+                        direction={"row"}
+                        justify={"between"}
+                      >
+                        {name}
+                        <Dialog.Close>
+                          <Cross2Icon />
+                        </Dialog.Close>
+                      </Flex>
                     </Dialog.Title>
-                    
+
                     <Flex
                       direction={"column"}
                       align={"center"}
                       justify={"center"}
                       gap={"5"}
                     >
-                      <Avatar
-                        src={image ?? imageFetched}
-                        fallback={name[0]}
-                        size={"9"}
-                      />
+                      <Avatar src={image} fallback={name[0]} size={"9"} />
                     </Flex>
                     <Dialog.Description>
-                      {cleanDescription(description)}
+                      {cleanDescription(description ?? "")}
                       <Link
                         href={`https://boardgamegeek.com/boardgame/${id}`}
                         target="_blank"
@@ -100,10 +87,13 @@ const GameCard = ({ id, name, yearpublished, image, isLast }: GameCardI) => {
                         <ExternalLinkIcon />
                       </Link>
                     </Dialog.Description>
-                    <Flex direction={"row"} gap={"3"} align={"center"} justify={"center"}>
-                    <Button>
-                      Get Recommendations
-                    </Button>
+                    <Flex
+                      direction={"row"}
+                      gap={"3"}
+                      align={"center"}
+                      justify={"center"}
+                    >
+                      <Button>Get Recommendations</Button>
                     </Flex>
                   </Dialog.Content>
                 </Dialog.Root>

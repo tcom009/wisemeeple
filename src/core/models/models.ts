@@ -1,52 +1,94 @@
 export interface SearchGameI {
+  attr: {
+    id: string;
+  };
+  name: {
     attr: {
-      id: string;
+      value: string;
     };
-    name: {
-      attr: {
-        value: string;
-      };
+  };
+  yearpublished: {
+    attr: {
+      value: string;
     };
-    yearpublished: {
-      attr: {
-        value: string;
-      };
-    };
-  }  
+  };
+}
 
-export interface CollectionItemI{
-  attr:{
-    objectid:string
+
+export interface CollectionItemI {
+  attr: {
+    objectid: string;
+  };
+  name: {
+    text: string;
+  };
+  yearpublished: {
+    text: string;
+  };
+  image: {
+    text: string;
+  };
+  thumbnail: {
+    text: string;
+  };
+ 
+}
+
+type LinkTypes =
+  | "boardgamecategory"
+  | "boardgamemechanic"
+  | "boardgamefamily"
+  | "boardgameexpansion"
+  | "boardgameaccessory"
+  | "boardgameimplementation"
+  |"boardgameartist"
+  |"boardgamepublisher"
+  | "boardgamedesigner";
+
+export interface ThingItemI {
+  attr: {
+    id: string;
+  };
+  name: { attr: { value: string } } | [{ attr: { value: string } }];
+  yearpublished: {
+    attr: { value: string };
+  };
+  image: {
+    text: string;
+  };
+  description: {
+    text: string;
+  };
+  minplayers: {
+    attr:{ value: string };
+  };
+  maxplayers: {
+    attr: { value: string };
+  };
+  playingtime: {
+    attr: { value: string };
   }
-  name:{
-    text:string
-  },
-  yearpublished:{
-    text:string
-  },
-  image:{
-    text:string
-  },
-  thumbnail:{
-    text:string
+  minage: {
+    attr: { value: string };
   }
+  link: [{ attr: { type: LinkTypes; id: string; value: string } }];
 }
 
 export interface FoundCollectionI {
-  items:{
-    item:CollectionItemI[]
-  }
+  items: {
+    item: CollectionItemI[];
+  };
 }
 
-export interface CleanCollectionItem{
-  id:string,
-  name:string,
-  yearpublished:string,
-  image?:string,
-  thumbnail?:string
+export interface CleanCollectionItem {
+  id: string;
+  name: string;
+  yearpublished: string;
+  image?: string;
+  description?: string;
+  thumbnail?: string;
 }
-
 
 export interface CleanCollection {
-  items: CleanCollectionItem[]
+  items: CleanCollectionItem[];
 }
