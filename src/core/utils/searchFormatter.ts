@@ -1,19 +1,34 @@
-import { CollectionItemI, CleanCollectionItem, SearchGameI } from "core/models/models";
+import { CleanCollectionItem, SearchGameI } from "core/models/models";
+
+
+
+interface DataI {
+  items: {
+    item: SearchGameI[] | SearchGameI
+  }}
 
 /**
  *
  *
  *
  */
-export const searchCleaner = (data: any): CleanCollectionItem[] => {
+export const searchCleaner = (data: DataI): CleanCollectionItem[] => {
   if (!data.items.item) return [];
-  const collection = data.items.item;
+  const collection : SearchGameI | SearchGameI[] = data.items.item;
   const formattedCollection: CleanCollectionItem[] = [];
+  if (!Array.isArray(collection)){
+    formattedCollection.push({
+      id: collection.attr?.id,
+      name: collection.name?.attr.value,
+      yearpublished: collection.yearpublished?.attr.value ?? "",
+    })
+    return formattedCollection
+  }
   collection.forEach((item: SearchGameI) => {
     const cleanItem: CleanCollectionItem = {
       id: item.attr?.id,
-      name: item.name?.attr.value,
-      yearpublished: item.yearpublished?.attr.value ?? "",
+      name: item.name?.attr?.value,
+      yearpublished: item.yearpublished?.attr?.value ?? "",
     };
     formattedCollection.push(cleanItem);
   });

@@ -6,7 +6,7 @@ interface GameCardI {
   id: string;
   name: string;
   yearpublished: string;
-  image: string;
+  image?: string;
   isLast?: boolean;
 }
 

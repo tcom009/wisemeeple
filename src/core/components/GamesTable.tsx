@@ -17,6 +17,8 @@ interface StateI {
   elementsPerPage: number;
 }
 
+const scrollHeight = { height: "75vh" }
+
 const GamesTable = ({ games }: GamesTableProps) => {
   const initialState = {
     currentPage: 1,
@@ -68,7 +70,7 @@ const GamesTable = ({ games }: GamesTableProps) => {
       <ScrollArea
         type="always"
         scrollbars="vertical"
-        style={{ height: "100vh" }}
+        style={scrollHeight}
         size={{ initial: "1", lg: "2" }}
       >
         {showingGames.length !== 0 ? (
