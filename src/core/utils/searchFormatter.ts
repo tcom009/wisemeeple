@@ -1,12 +1,11 @@
 import { CleanCollectionItem, SearchGameI } from "core/models/models";
-import { removeListener } from "process";
-
-
+import { config } from "config";
 
 interface DataI {
   items: {
-    item: SearchGameI[] | SearchGameI
-  }}
+    item: SearchGameI[] | SearchGameI;
+  };
+}
 
 /**
  *
@@ -15,15 +14,15 @@ interface DataI {
  */
 export const searchCleaner = (data: DataI): CleanCollectionItem[] => {
   if (!data.items.item) return [];
-  const collection : SearchGameI | SearchGameI[] = data.items.item;
+  const collection: SearchGameI | SearchGameI[] = data.items.item;
   const formattedCollection: CleanCollectionItem[] = [];
-  if (!Array.isArray(collection)){
+  if (!Array.isArray(collection)) {
     formattedCollection.push({
       id: collection.attr?.id,
       name: collection.name?.attr.value,
       yearpublished: collection.yearpublished?.attr.value ?? "",
-    })
-    return formattedCollection
+    });
+    return formattedCollection;
   }
   collection.forEach((item: SearchGameI) => {
     const cleanItem: CleanCollectionItem = {
@@ -33,6 +32,8 @@ export const searchCleaner = (data: DataI): CleanCollectionItem[] => {
     };
     formattedCollection.push(cleanItem);
   });
-  const removeDuplicates = [...new Map(formattedCollection.map((item) => [item.id, item])).values()];
-  return removeDuplicates.slice(0, 10);
+  const removeDuplicates = [
+    ...new Map(formattedCollection.map((item) => [item.id, item])).values(),
+  ];
+  return removeDuplicates.slice(0, config.MAX_SEARCH_RESULTS);
 };

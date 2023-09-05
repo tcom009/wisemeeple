@@ -2,7 +2,7 @@
 
 import { CleanCollectionItem } from "@/core/models/models";
 import GameCard from "@/core/components/GameCard";
-import { Card, Flex, ScrollArea, Button, Text } from "@radix-ui/themes";
+import { Card, Flex, ScrollArea, Button, Text, Grid } from "@radix-ui/themes";
 import { useState, useEffect } from "react";
 import { TriangleLeftIcon, TriangleRightIcon } from "@radix-ui/react-icons";
 
@@ -17,7 +17,7 @@ interface StateI {
   elementsPerPage: number;
 }
 
-const scrollHeight = { height: "75vh" }
+const scrollHeight = { height: "75vh" };
 
 const GamesTable = ({ games }: GamesTableProps) => {
   const initialState = {
@@ -47,26 +47,34 @@ const GamesTable = ({ games }: GamesTableProps) => {
 
   return (
     <Card>
-      <Flex
-        gap="3"
-        direction={"row"}
-        align={"center"}
-        justify={{ initial: "end", lg: "start" }}
-        mb={"4"}
-        mr={{ initial: "0", md: "4" }}
-      >
-        <Text weight={"bold"} align={"center"}>
-          Page {currentPage} of {totalPages}
-        </Text>
+      <Grid columns={"2"} align={"center"}>
+        <Flex align={"center"} mb={"3"} height={"9"}>
+          <Text weight={"bold"} size={"7"} align={"center"}>
+            Results
+          </Text>
+        </Flex>
+      { totalPages > 1 &&
+        <Flex
+          gap="3"
+          direction={"row"}
+          align={"center"}
+          justify={"end"}
+          mb={"2"}
+          mr={{ initial: "0", md: "4" }}
+        >
+          <Text weight={"bold"} >
+            Page {currentPage} of {totalPages}
+          </Text>
 
-        <Button onClick={previousPage} disabled={currentPage === 1}>
-          <TriangleLeftIcon />
-        </Button>
+          <Button onClick={previousPage} disabled={currentPage === 1}>
+            <TriangleLeftIcon />
+          </Button>
 
-        <Button onClick={nextPage} disabled={currentPage === totalPages}>
-          <TriangleRightIcon />
-        </Button>
-      </Flex>
+          <Button onClick={nextPage} disabled={currentPage === totalPages}>
+            <TriangleRightIcon />
+          </Button>
+        </Flex>}
+      </Grid>
       <ScrollArea
         type="always"
         scrollbars="vertical"
