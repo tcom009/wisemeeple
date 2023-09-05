@@ -67,11 +67,35 @@ export interface ThingItemI {
   };
   playingtime: {
     attr: { value: string };
+  };
+  minplaytime: {
+    attr: { value: string };
+  }
+  maxplaytime: {
+    attr: { value: string };
   }
   minage: {
     attr: { value: string };
   }
   link: [{ attr: { type: LinkTypes; id: string; value: string } }];
+}
+
+export interface ParsedThing{
+  id: string;
+  name: string;
+  yearpublished?: string;
+  image?: string;
+  description: string;
+  minplayers: string;
+  maxplayers: string;
+  playingtime: string;
+  minage: string;
+  minplaytime: string;
+  maxplaytime: string;
+  boardgamedesigner: string[];
+  boardgamecategory: string[];
+  boardgamemechanic: string[];
+  boardgamefamily: string[];
 }
 
 export interface FoundCollectionI {

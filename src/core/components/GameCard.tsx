@@ -1,32 +1,18 @@
 "use client";
 
-import {
-  Avatar,
-  Flex,
-  Separator,
-  Text,
-} from "@radix-ui/themes";
+import { Avatar, Flex, Separator, Text } from "@radix-ui/themes";
 import { ExternalLinkIcon, Cross2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import GameDialog from "./GameDialog";
+import { ParsedThing } from "../models/models";
+
 interface GameCardI {
-  id: string;
-  name: string;
-  yearpublished: string;
-  image?: string;
-  description?: string;
+  game: ParsedThing;
   isLast?: boolean;
 }
 
-const GameCard = ({
-  id,
-  name,
-  yearpublished,
-  image,
-  description,
-  isLast,
-}: GameCardI) => {
-
+const GameCard = ({ game, isLast }: GameCardI) => {
+  const { id, name, yearpublished, image } = game;
   return (
     <Flex direction={"column"} gap={"4"}>
       <Flex align={"center"} gap={"3"}>
@@ -36,11 +22,7 @@ const GameCard = ({
             <Text as={"span"} weight={"bold"}>
               <div className="text-overflow-clip">
                 <GameDialog
-                  id={id}
-                  name={name}
-                  yearpublished={yearpublished}
-                  image={image}
-                  description={description}
+                  game={game}
                 />
               </div>
             </Text>

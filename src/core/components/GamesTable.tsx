@@ -1,19 +1,19 @@
 "use client";
 
-import { CleanCollectionItem } from "@/core/models/models";
+import { ParsedThing } from "@/core/models/models";
 import GameCard from "@/core/components/GameCard";
 import { Card, Flex, ScrollArea, Button, Text, Grid } from "@radix-ui/themes";
 import { useState, useEffect } from "react";
 import { TriangleLeftIcon, TriangleRightIcon } from "@radix-ui/react-icons";
 
 interface GamesTableProps {
-  games: CleanCollectionItem[] | [];
+  games: ParsedThing[] | [];
 }
 
 interface StateI {
   currentPage: number;
   totalPages: number;
-  showingGames: CleanCollectionItem[] | [];
+  showingGames: ParsedThing[] | [];
   elementsPerPage: number;
 }
 
@@ -83,11 +83,11 @@ const GamesTable = ({ games }: GamesTableProps) => {
       >
         {showingGames.length !== 0 ? (
           <Flex direction={"column"}>
-            {showingGames.map((game: CleanCollectionItem, index: number) => (
+            {showingGames.map((game: ParsedThing, index: number) => (
               <GameCard
                 key={game?.id}
                 isLast={index === showingGames.length - 1}
-                {...game}
+                game={game}
               />
             ))}
           </Flex>
