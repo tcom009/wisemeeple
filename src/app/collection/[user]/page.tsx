@@ -16,7 +16,7 @@ async function getCollection(query: string) {
   } else if (response.status === 202) {
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
     await sleep(1000);
-    return await getCollection(query);
+    await getCollection(query);
   } else if (response.status === 200 && data.items) {
     return data;
   }
