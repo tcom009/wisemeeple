@@ -6,9 +6,7 @@ import GamesTable from "@/core/components/GamesTable";
 
 
 async function getCollection(query: string) {
-  const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`).then(
-    (res) => res
-  );
+  const response = await fetch(`${config.BGG_GET_COLLECTION}${query}`)
   const XMLString = await response.text();
   const data = xmlparser(XMLString);
   if (response.status === 200 && data.errors) {
