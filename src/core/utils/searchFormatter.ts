@@ -1,4 +1,5 @@
 import { CleanCollectionItem, SearchGameI } from "core/models/models";
+import { removeListener } from "process";
 
 
 
@@ -33,5 +34,5 @@ export const searchCleaner = (data: DataI): CleanCollectionItem[] => {
     formattedCollection.push(cleanItem);
   });
   const removeDuplicates = [...new Map(formattedCollection.map((item) => [item.id, item])).values()];
-  return removeDuplicates;
+  return removeDuplicates.slice(0, 10);
 };

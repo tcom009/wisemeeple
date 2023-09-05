@@ -3,7 +3,7 @@ const BGG_API_ROOT = "https://www.boardgamegeek.com/xmlapi2/";
 const BGG_SEARCH_BOARDGAMES = `${BGG_API_ROOT}/search?type=boardgame&query=`;
 const BGG_GET_COLLECTION = `${BGG_API_ROOT}/collection?own=1&username=`;
 const BGG_GET_USER = `${BGG_API_ROOT}/user?name=`;
-const BGG_GET_GAME= `${BGG_GAME_URL}/thing?id=`;
+const BGG_GET_GAME= `${BGG_API_ROOT}/thing?id=`;
 const PROJECT_NAME = "bg_companion";
 
 export const config = {
@@ -13,4 +13,5 @@ export const config = {
   BGG_GET_USER,
   PROJECT_NAME,
   BGG_GAME_URL,
+  BGG_GET_GAME,
 };
