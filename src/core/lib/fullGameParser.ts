@@ -1,6 +1,7 @@
 import { ThingItemI, ParsedThing } from "../models/models";
 
 
+
 export const fullGameParser = (game: ThingItemI) : ParsedThing => {
     
     const gameLinks = game.link.map((link: { attr: { type: string; id: string; value: string } }) => {
@@ -32,3 +33,5 @@ export const fullGameParser = (game: ThingItemI) : ParsedThing => {
         }   
     return parsedGame
 }
+
+

@@ -26,12 +26,7 @@ const GameCard = ({ game, isLast }: GameCardI) => {
                 />
               </div>
             </Text>
-            <Link
-              href={`https://boardgamegeek.com/boardgame/${id}`}
-              target="_blank"
-            >
-              <ExternalLinkIcon />
-            </Link>
+            
           </Flex>
           <Text>{yearpublished}</Text>
         </Flex>

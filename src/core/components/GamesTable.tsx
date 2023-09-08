@@ -49,8 +49,8 @@ const GamesTable = ({ games }: GamesTableProps) => {
     <Card>
       <Grid columns={"2"} align={"center"}>
         <Flex align={"center"} mb={"3"} height={"9"}>
-          <Text weight={"bold"} size={"7"} align={"center"}>
-            Results
+          <Text weight={"bold"} size={"4"} align={"left"}>
+            Now, choose a game from the results:
           </Text>
         </Flex>
       { totalPages > 1 &&

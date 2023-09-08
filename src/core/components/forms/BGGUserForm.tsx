@@ -33,7 +33,7 @@ export default function BGGUserForm() {
           as={"h1"}
         >
           {" "}
-          Find AI based recomendations of boardgames!
+          Generate AI based recomendations of boardgames!
         </Heading>
         <Text
           as={"p"}
@@ -42,7 +42,7 @@ export default function BGGUserForm() {
           weight={"bold"}
           size={{ lg: "5", md: "5", sm: "3", xs: "1" }}
         >
-          Just type in a boardgame name!
+          First, let&apos;s search a boardgame:
         </Text>
       </Flex>
       <TextFieldInput

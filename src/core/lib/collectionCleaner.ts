@@ -8,8 +8,8 @@ interface DataI {
 
 /**
  *
- *
- *
+ *Cleans results from importing an user's collection from BGG
+ *Removes duplicates
  */
 export const collectionCleaner = (data: DataI): CleanCollectionItem[] => {
   if (!data.items.item) return [];

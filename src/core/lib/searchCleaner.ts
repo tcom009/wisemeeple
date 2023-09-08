@@ -9,8 +9,8 @@ interface DataI {
 
 /**
  *
- *
- *
+ *Cleans the search results, removes duplicates, and returns an array
+ *TODO: Add a sorting algorithm
  */
 export const searchCleaner = (data: DataI): CleanCollectionItem[] => {
   if (!data.items.item) return [];

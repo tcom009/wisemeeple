@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Text, Avatar, Link, Dialog, Button } from "@radix-ui/themes";
+import { Flex, Text, Avatar, Dialog, Button } from "@radix-ui/themes";
 import {
   Cross2Icon,
   ExternalLinkIcon,
@@ -7,8 +7,10 @@ import {
   PersonIcon,
   CalendarIcon
 } from "@radix-ui/react-icons";
-import { trimText, trimAndClean } from "@/core/utils/textUtils";
+import { trimText, trimAndClean } from "@/core/lib/textUtils";
 import { ParsedThing } from "@/core/models/models";
+import { createPrompt } from "core/lib/createPrompt";
+import Link from "next/link";
 
 interface Props {
   game: ParsedThing;
@@ -30,7 +32,7 @@ export default function GameDialog({ game }: Props) {
     maxplaytime,
     minage,
   } = game;
-
+  const getPrompt = () => console.log(createPrompt(game));
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -89,7 +91,9 @@ export default function GameDialog({ game }: Props) {
           </Link>
         </Dialog.Description>
         <Flex direction={"row"} gap={"3"} align={"center"} justify={"center"}>
+          <Link href={`/generate/${id}`}>
           <Button>Get Recommendations</Button>
+          </Link>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
