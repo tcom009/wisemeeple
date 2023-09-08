@@ -42,13 +42,13 @@ export default async function Page({ params }: { params: { id: string } }) {
       </Text>
       <Flex align={"center"} justify={"center"} my={"5"}>
 
-      <Text align={"center"} size={"5"} weight={"bold"}> Wise Meeple Recommends:</Text>
+      <Text align={"center"} size={{lg:"5", initial:"5"}} weight={"bold"}> Wise Meeple Recommends:</Text>
       </Flex>
       <Grid gap={"4"} columns={"3"} mt={"3"}>
         {recommendations.map((game: any) => (
           <Card  key={game.id}>
             <Flex align={"center"} justify={"center"} mb={"3"}>
-              <Text>
+              <Text size={{initial:"1", xl:"4", lg:"4", md:"4", sm:"4"}} align={"center"}>
                 {" "}
                 {game.metadata.name} - {game.metadata.year_published}{" "}
                 <Link
@@ -63,7 +63,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               <Avatar
                 src={game.metadata.image}
                 fallback={game.metadata.name[0]}
-                size={"9"}
+                size={{lg:"9", xl:"9", md:"7",initial:"6" }}
               />
             </Flex>
           </Card>
