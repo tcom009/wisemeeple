@@ -7,8 +7,8 @@ import Navbar from "@/core/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BG Companion",
-  description: "Ai based BG recommender",
+  title: "Wise Meeple",
+  description: "Your boardgame recommender",
 };
 
 export default function RootLayout({
