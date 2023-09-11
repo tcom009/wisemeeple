@@ -25,10 +25,14 @@ background-position: center center;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 1;
   overflow: hidden;
   background-color: #000000 !important;
 } 
+
+.black-background {
+  background-color: #000000 !important;
+}
 
 .content {
   margin-top: 7em;
@@ -36,4 +40,8 @@ background-position: center center;
 
 .no-underline {
   text-decoration: none;
+}
+
+.z-index-1 {
+  z-index: 1;
 }
