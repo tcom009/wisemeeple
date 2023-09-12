@@ -70,7 +70,7 @@ export default function GameDialog({ game }: Props) {
         >
           <Flex gap={"2"} align={"center"}>
 
-          <TimerIcon/>{maxplaytime === minplaytime ? maxplaytime : `${minplaytime} - ${maxplaytime}`}
+          <TimerIcon/>{maxplaytime === minplaytime ? "--" : `${minplaytime} - ${maxplaytime}`}
           </Flex>
           <Flex gap={"2"} align={"center"}>
 
