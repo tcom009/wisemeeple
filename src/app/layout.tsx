@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./styles.css";
 import { Container, Theme, ThemePanel, Grid } from "@radix-ui/themes";
 import Navbar from "@/core/components/Navbar";
+import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Navbar />
             <Grid height={"9"} position={"relative"}/>
             <Grid >{children}</Grid>
+            <Analytics />
           </Grid>
         </Theme>
       </body>
