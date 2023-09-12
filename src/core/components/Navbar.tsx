@@ -11,7 +11,7 @@ export default function Navbar() {
       left={'0'}
       className="black-background z-index-1"
       width={'100%'}
-      columns={'5'}
+      columns={{lg:'5', xl:'5', md:'5', sm:'3', initial:'2'}}
       height={'9'}
     >
       <Link href={'/'} as={'/'} className="no-underline">
@@ -34,7 +34,14 @@ export default function Navbar() {
       </Link>
       <Flex align={'center'} >
       <Box>
-        <Badge color={'yellow'}>Last Update: September 10th</Badge>
+        <Badge color={'yellow'}>
+        <Text
+            weight={'bold'}
+            size={{ lg: '3', md: '3', sm: '1', xs: '1' }}
+          > 
+          Last Update: September 10th
+          </Text>
+          </Badge>
       </Box>
 
       </Flex>
