@@ -4,26 +4,43 @@ import {
   Grid,
   Button,
   TextFieldInput,
+  TextField,
   Text,
   Heading,
+  Card,
+  Separator,
 } from "@radix-ui/themes";
 import { useState } from "react";
 import Link from "next/link";
+import { useSearch } from "react-use-search";
+import games from "@/core/data/games.json";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
+const predicate = (
+  game: {
+    name: string;
+    id: string;
+  },
+  query: string
+) => game.name.includes(query.toLowerCase());
 export default function BGGUserForm() {
-  const [query, setQuery] = useState("");
+  const data = games.map((game: { id: string; name: string }) => {
+    return {
+      id: game.id,
+      name: game.name.toLowerCase(),
+    };
+  });
+  const [suggestions, setSuggestions] = useState<string>("");
   const [error, setError] = useState(false);
+  const [filteredGames, query, handleChange, setQuery] = useSearch(
+    data,
+    predicate,
+    { debounce: 200 }
+  );
 
-  const handleForm = (event: any) => {
-    event.preventDefault();
-    setQuery(event.target.value);
-  };
+  const capitalize = (str: string) =>
+    `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
 
-  const onSubmit = () => {
-    if (!query) {
-      setError(true);
-    }
-  };
   return (
     <Flex gap="3" direction={"column"}>
       <Flex justify={"center"} direction={"column"} gap={"3"}>
@@ -45,27 +62,53 @@ export default function BGGUserForm() {
           First, let&apos;s search a boardgame:
         </Text>
       </Flex>
-      <TextFieldInput
-        size={"3"}
-        placeholder="Wingspan... "
-        type={"text"}
-        value={query}
-        name="username"
-        onChange={handleForm}
-        required
-      />
+      <TextField.Root size={"3"}>
+        <TextField.Slot>
+          <MagnifyingGlassIcon />
+        </TextField.Slot>
+        <TextField.Input
+          placeholder="Wingspan... "
+          type={"text"}
+          name="query"
+          value={query}
+          onChange={handleChange}
+          required
+        />
+      </TextField.Root>
+
+      {filteredGames.length !== 0 && (
+        <Card>
+          <Flex direction={"column"}>
+            {filteredGames
+              .slice(0, 9)
+              .map((game: { id: string; name: string }, index: number) => (
+                <Link
+                href={`/generate/${game.id}`}
+                key={game.id}
+                className="no-underline white-link"
+                >
+                  {index !== 0 && (
+                    <Separator orientation="horizontal" size={"4"} mb={"4"} />
+                  )}
+                  <Text key={game.id} weight={"bold"} mb={"2"} as={"div"}> {capitalize(game.name)}</Text>
+                </Link>
+              ))}
+          </Flex>
+        </Card>
+      )}
+
       {error && (
         <Text as={"span"} color={"crimson"} size={"2"}>
           Please enter a username or a boardgame name
         </Text>
       )}
       <Flex direction={"row"} gap={"3"} align={"center"} justify={"center"}>
+        { filteredGames.length === 0 &&
         <Link href={query && `/search/${query}`} className="no-underline">
-          <Button size={"3"} mt={"3"} mb={"5"} onClick={onSubmit}>
+          <Button size={"3"} mt={"3"} mb={"5"}>
             Search Game
           </Button>
-        </Link>
-
+        </Link>}
       </Flex>
     </Flex>
   );

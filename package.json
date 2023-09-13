@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^13.2.0",
+    "react-use-search": "^0.3.2",
     "typescript": "5.2.2",
     "xml-js": "^1.6.11"
   }

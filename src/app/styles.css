@@ -23,7 +23,8 @@ background-position: center center
 }
 
 
-
+.react-search.box {
+  color: #000000 !important;}
 
 .navbar {
   position: fixed;
@@ -45,6 +46,10 @@ background-position: center center
 
 .no-underline {
   text-decoration: none;
+}
+
+.white-link{
+  color:#ffffff;
 }
 
 .z-index-1 {
