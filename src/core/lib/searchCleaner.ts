@@ -38,18 +38,15 @@ export const searchCleaner = (
   const cleanQuery = query.replace("%20", " ").trim().toLocaleLowerCase();
   const exactMatch = formattedCollection.filter(
     (game: CleanCollectionItem) => game.name.toLocaleLowerCase() === cleanQuery
-  )
-  console.log(exactMatch)
+  );
   const coincidences = formattedCollection.filter((game: CleanCollectionItem) =>
     game.name.toLowerCase().includes(cleanQuery)
   );
-
   coincidences.sort((a, b) => a.name.length - b.name.length);
   const noCoincidences = formattedCollection.filter(
     (objeto) => !objeto.name.includes(cleanQuery)
   );
-  
-  const sortedResults = [...exactMatch,...coincidences, ...noCoincidences];
+  const sortedResults = [...exactMatch, ...coincidences, ...noCoincidences];
   const removeDuplicates = [
     ...new Map(sortedResults.map((item) => [item.id, item])).values(),
   ];
