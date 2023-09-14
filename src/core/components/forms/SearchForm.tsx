@@ -16,6 +16,7 @@ import games from "@/core/data/games.json";
 import { MagnifyingGlassIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { useClickOutside } from "@/core/hooks/useClickOutside";
 import { capitalize } from "@/core/lib/textUtils";
+import { useRouter } from "next/navigation";
 const predicate = (
   game: {
     name: string;
@@ -30,21 +31,35 @@ export default function BGGUserForm() {
       name: game.name.toLowerCase(),
     };
   });
+  const router = useRouter();
   const [error, setError] = useState(false);
+  const [isOpen, setIsOpen] = useState (true); 
   const [filteredGames, query, handleChange, setQuery] = useSearch(
     data,
     predicate,
     { debounce: 200 }
   );
-  const ref = useClickOutside(() => setQuery(""));
+  const ref = useClickOutside(() => setIsOpen(false));
   const onSubmit = () => {
     if (!query) {
       setError(true);
     }
   };
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter') {
+      router.push(`/search/${query}`);
+    }
+  }
   useEffect(() => {
     if (query.length !== 0) {
       setError(false);
+    }
+  },[query])
+
+  useEffect(() => {
+    if (query.length !== 0) {
+      setIsOpen(true)
     }
   },[query])
 
@@ -79,6 +94,7 @@ export default function BGGUserForm() {
           name="query"
           value={query}
           onChange={handleChange}
+          onKeyDown={handleKeyPress}
           required
         />
         {query.length !== 0 && (
@@ -89,7 +105,7 @@ export default function BGGUserForm() {
           </TextField.Slot>
         )}
       </TextField.Root>
-      {filteredGames.length !== 0 && (
+      {filteredGames.length !== 0 && isOpen && (
         <Card ref={ref}>
           <Flex direction={"column"}>
             {filteredGames
@@ -110,6 +126,14 @@ export default function BGGUserForm() {
                 </Link>
               ))}
           </Flex>
+          <Flex align={"center"} justify={"center"}>
+
+          <Link href={query && `/search/${query}`} className="no-underline">
+            <Button size={"3"} variant="soft" onClick={onSubmit}>
+              Search Game
+            </Button>
+          </Link>
+          </Flex>
         </Card>
       )}
 
@@ -119,7 +143,7 @@ export default function BGGUserForm() {
         </Text>
       )}
       <Flex direction={"row"} gap={"3"} align={"center"} justify={"center"}>
-        {filteredGames.length === 0 && (
+        {filteredGames.length === 0 || !isOpen && (
           <Link href={query && `/search/${query}`} className="no-underline">
             <Button size={"3"} mt={"5"} onClick={onSubmit}>
               Search Game
