@@ -8,12 +8,17 @@ import {
   Card,
   Separator,
   IconButton,
+  Badge,
 } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearch } from "react-use-search";
 import games from "@/core/data/games.json";
-import { MagnifyingGlassIcon, Cross2Icon } from "@radix-ui/react-icons";
+import {
+  MagnifyingGlassIcon,
+  Cross2Icon,
+  GitHubLogoIcon,
+} from "@radix-ui/react-icons";
 import { useClickOutside } from "@/core/hooks/useClickOutside";
 import { capitalize } from "@/core/lib/textUtils";
 import { useRouter } from "next/navigation";
@@ -33,35 +38,35 @@ export default function BGGUserForm() {
   });
   const router = useRouter();
   const [error, setError] = useState(false);
-  const [isOpen, setIsOpen] = useState (true); 
+  const [isOpen, setIsOpen] = useState(true);
   const [filteredGames, query, handleChange, setQuery] = useSearch(
     data,
     predicate,
     { debounce: 200 }
   );
   const ref = useClickOutside(() => setIsOpen(false));
-  const onSubmit = () => {
-    if (!query) {
-      setError(true);
-    }
-  };
+  const onSubmit = () =>
+    !query ? setError(true) : router.push(`/search/${query}`);
 
   const handleKeyPress = (event: any) => {
-    if (event.key === 'Enter') {
-      router.push(`/search/${query}`);
+    if (event.key === "Enter") {
+      onSubmit();
     }
-  }
+    if (event.key === "Escape") {
+      setIsOpen(false);
+    }
+  };
   useEffect(() => {
     if (query.length !== 0) {
       setError(false);
     }
-  },[query])
+  }, [query]);
 
   useEffect(() => {
     if (query.length !== 0) {
-      setIsOpen(true)
+      setIsOpen(true);
     }
-  },[query])
+  }, [query]);
 
   return (
     <Flex direction={"column"}>
@@ -86,7 +91,13 @@ export default function BGGUserForm() {
       </Flex>
       <TextField.Root size={"3"} mt={"5"}>
         <TextField.Slot>
-          <MagnifyingGlassIcon />
+          <Link href={query && `/search/${query}`}>
+            <Flex align="center">
+              <IconButton size="3" variant={"ghost"}>
+                <MagnifyingGlassIcon width={"20"} height={"20"} />
+              </IconButton>
+            </Flex>
+          </Link>
         </TextField.Slot>
         <TextField.Input
           placeholder="Wingspan... "
@@ -106,7 +117,7 @@ export default function BGGUserForm() {
         )}
       </TextField.Root>
       {filteredGames.length !== 0 && isOpen && (
-        <Card ref={ref}>
+        <Card ref={ref} onKeyDown={handleKeyPress}>
           <Flex direction={"column"}>
             {filteredGames
               .slice(0, 9)
@@ -127,12 +138,11 @@ export default function BGGUserForm() {
               ))}
           </Flex>
           <Flex align={"center"} justify={"center"}>
-
-          <Link href={query && `/search/${query}`} className="no-underline">
-            <Button size={"3"} variant="soft" onClick={onSubmit}>
-              Search Game
-            </Button>
-          </Link>
+            <Link href={query && `/search/${query}`} className="no-underline">
+              <Button size={"3"} variant="soft" onClick={onSubmit}>
+                Search Game
+              </Button>
+            </Link>
           </Flex>
         </Card>
       )}
@@ -142,14 +152,13 @@ export default function BGGUserForm() {
           Please enter a boardgame name
         </Text>
       )}
-      <Flex direction={"row"} gap={"3"} align={"center"} justify={"center"}>
-        {filteredGames.length === 0 || !isOpen && (
-          <Link href={query && `/search/${query}`} className="no-underline">
-            <Button size={"3"} mt={"5"} onClick={onSubmit}>
-              Search Game
-            </Button>
-          </Link>
-        )}
+      <Flex>
+        <Link href={"https://github.com/tcom009"} target="_blank">
+          <Badge color="green">
+            Made with ❤️ by tcom009
+            <GitHubLogoIcon />
+          </Badge>
+        </Link>
       </Flex>
     </Flex>
   );
