@@ -45,6 +45,17 @@ const GamesTable = ({ games }: GamesTableProps) => {
     setState({ ...state, currentPage: currentPage - 1 });
   };
 
+  if (games.length === 0) {
+    return (
+      <Flex direction={"column"} height={"9"} align={"center"} justify={"center"}>
+        <Text weight={"bold"} align={"center"}>
+          {" "}
+          No games found!{" "}
+        </Text>
+      </Flex>
+    );
+  }
+
   return (
     <Card>
       <Grid columns={"2"} align={"center"}>
@@ -53,27 +64,28 @@ const GamesTable = ({ games }: GamesTableProps) => {
             Now, choose a game from the results:
           </Text>
         </Flex>
-      { totalPages > 1 &&
-        <Flex
-          gap="3"
-          direction={"row"}
-          align={"center"}
-          justify={"end"}
-          mb={"2"}
-          mr={{ initial: "0", md: "4" }}
-        >
-          <Text weight={"bold"} >
-            Page {currentPage} of {totalPages}
-          </Text>
+        {totalPages > 1 && (
+          <Flex
+            gap="3"
+            direction={"row"}
+            align={"center"}
+            justify={"end"}
+            mb={"2"}
+            mr={{ initial: "0", md: "4" }}
+          >
+            <Text weight={"bold"}>
+              Page {currentPage} of {totalPages}
+            </Text>
 
-          <Button onClick={previousPage} disabled={currentPage === 1}>
-            <TriangleLeftIcon />
-          </Button>
+            <Button onClick={previousPage} disabled={currentPage === 1}>
+              <TriangleLeftIcon />
+            </Button>
 
-          <Button onClick={nextPage} disabled={currentPage === totalPages}>
-            <TriangleRightIcon />
-          </Button>
-        </Flex>}
+            <Button onClick={nextPage} disabled={currentPage === totalPages}>
+              <TriangleRightIcon />
+            </Button>
+          </Flex>
+        )}
       </Grid>
       <ScrollArea
         type="always"
@@ -81,19 +93,15 @@ const GamesTable = ({ games }: GamesTableProps) => {
         style={scrollHeight}
         size={{ initial: "1", lg: "2" }}
       >
-        {showingGames.length !== 0 ? (
-          <Flex direction={"column"}>
-            {showingGames.map((game: ParsedThing, index: number) => (
-              <GameCard
-                key={game?.id}
-                isLast={index === showingGames.length - 1}
-                game={game}
-              />
-            ))}
-          </Flex>
-        ) : (
-          <div> Colection has no games or user doesn&apos;t exist</div>
-        )}
+        <Flex direction={"column"}>
+          {showingGames.map((game: ParsedThing, index: number) => (
+            <GameCard
+              key={game?.id}
+              isLast={index === showingGames.length - 1}
+              game={game}
+            />
+          ))}
+        </Flex>
       </ScrollArea>
     </Card>
   );

@@ -27,3 +27,6 @@ export const cleanText = (text: string) => {
 export const trimAndClean = (text: string, length: number) => {
   return trimText(cleanText(text), length);
 }
+
+export const capitalize = (str: string) =>
+    `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
