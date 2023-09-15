@@ -25,6 +25,7 @@ export default function RootLayout({
           accentColor="violet"
           grayColor="mauve"
           radius="large"
+          hasBackground={false}
         >
           <Grid>
             <Navbar />
