@@ -116,7 +116,7 @@ export default function BGGUserForm() {
           Please enter a boardgame name
         </Text>
       )}
-      {filteredGames.length === 0 && (
+      {(filteredGames.length === 0 || !isOpen && query.length !== 0)&& (
         <Flex align={"center"} justify={"center"} mt={"3"}>
 
           <Button size={"2"} onClick={onSubmit}>Search Game</Button>
