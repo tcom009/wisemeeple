@@ -1,3 +1,4 @@
+@import '@radix-ui/colors/violet.css';
 body{
    /* background by SVGBackgrounds.com */
 
@@ -11,6 +12,7 @@ background-color: #02021A !important;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%234d076a' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%231c0334' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%23480770' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%231c0331' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%23490679' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%231f022d' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%2352068d' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%231d022a' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%23580595' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%232d0141' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%235f05a0' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%232f0039' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
 background-attachment: fixed;
 background-size: cover;
+background-position: center center
 }
 
 .div-full-center {
@@ -22,7 +24,8 @@ background-size: cover;
 }
 
 
-
+.react-search.box {
+  color: #000000 !important;}
 
 .navbar {
   position: fixed;
@@ -46,6 +49,26 @@ background-size: cover;
   text-decoration: none;
 }
 
+.white-link{
+  color:#ffffff;
+}
+
 .z-index-1 {
   z-index: 1;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.isSelected {
+  background-color: var(--violet-10);
+}
+
+.search-list{
+  border-radius: 0.5em;
+  padding : 0.5em;
+}
+.search-list:hover{
+  background-color: var(--violet-10);
 }

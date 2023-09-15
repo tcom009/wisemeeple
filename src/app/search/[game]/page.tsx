@@ -29,7 +29,7 @@ const getGames = async (games: CleanCollectionItem[]|[]) => {
 
 const GamesPage = async ({ params }: { params: { game: string } }) => {
   const searchData = await getSearch(params.game);
-  const items= searchCleaner(searchData);
+  const items= searchCleaner(searchData, params.game);
   const games= await getGames(items);
   const cleanGames = games.map(fullGameParser);
 
