@@ -14,10 +14,10 @@ interface GameCardI {
 const GameCard = ({ game, isLast }: GameCardI) => {
   const { id, name, yearpublished, image } = game;
   return (
-    <Flex direction={"column"} gap={"4"}>
+    <Flex direction={"column"} gap={"4"} >
       <Flex align={"center"} gap={"3"}>
         <Avatar src={image} fallback={name[0]} size={"5"} />
-        <Flex direction={"column"}>
+        <Flex direction={"column"} className="clickable">
           <Flex direction={"row"} gap={"1"}>
             <Text as={"span"} weight={"bold"}>
               <div className="text-overflow-clip">
