@@ -5,14 +5,13 @@ import getSingleGame from "core/lib/getGame";
 import { trimAndClean } from "@/core/lib/textUtils";
 import embeddingGenerator from "core/lib/getVectors";
 import getRecommendations from "@/core/lib/getRecommendations";
+import RecommendationList from "./RecommendationList";
 import {
   Container,
   Avatar,
   Flex,
   Text,
   Heading,
-  Grid,
-  Card,
 } from "@radix-ui/themes";
 import Link from "next/link";
 import {
@@ -20,7 +19,7 @@ import {
   PersonIcon,
   CalendarIcon,
   Pencil1Icon,
-  StopwatchIcon
+  StopwatchIcon,
 } from "@radix-ui/react-icons";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -29,7 +28,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   const parsedGame = fullGameParser(game);
   const prompt = createPrompt(parsedGame);
   const embedding = await embeddingGenerator(prompt);
-  const recommendations = await getRecommendations(embedding);
+
+ 
 
   const {
     name,
@@ -89,46 +89,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <ExternalLinkIcon />
           </Link>
         </Text>
-        <Flex align={"center"} justify={"center"} my={"5"}>
-          <Text
-            align={"center"}
-            size={{ lg: "5", initial: "5" }}
-            weight={"bold"}
-          >
-            {" "}
-            Wise Meeple Recommends:
-          </Text>
-        </Flex>
       </Flex>
-
-      <Grid gap={"4"} columns={"3"} mt={"3"}>
-        {recommendations.map((game: any) => (
-          <Card key={game.id}>
-            <Flex align={"center"} justify={"center"} mb={"3"}>
-              <Text
-                size={{ initial: "1", xl: "4", lg: "4", md: "4", sm: "4" }}
-                align={"center"}
-              >
-                {" "}
-                {game.metadata.name} - {game.metadata.year_published}{" "}
-                <Link
-                  href={`${config.BGG_GAME_URL}${game.metadata.bgg_id}`}
-                  target="_blank"
-                >
-                  <ExternalLinkIcon />
-                </Link>
-              </Text>
-            </Flex>
-            <Flex align={"center"} justify={"center"}>
-              <Avatar
-                src={game.metadata.image}
-                fallback={game.metadata.name[0]}
-                size={{ lg: "9", xl: "9", md: "7", initial: "6" }}
-              />
-            </Flex>
-          </Card>
-        ))}
-      </Grid>
+        <RecommendationList embedding={embedding} />
     </Container>
   );
 }
