@@ -32,6 +32,7 @@ export default async function Page({ params }: { params: { id: string } }) {
  
 
   const {
+    id,
     name,
     description,
     image,
@@ -90,7 +91,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </Link>
         </Text>
       </Flex>
-        <RecommendationList embedding={embedding} />
+        <RecommendationList embedding={embedding} gameId={id}/>
     </Container>
   );
 }

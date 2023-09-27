@@ -2,7 +2,7 @@ import * as React from "react";
 import lodashDebounce from "lodash.debounce";
 import lodashIsEqual from "lodash.isequal";
 import usePrevious from "core/hooks/usePrevious";
-
+import { useCallback, useEffect, useState, useRef } from "react";
 export type Predicate<T> = (item: T, query: string) => boolean;
 
 export interface Options {
@@ -34,24 +34,24 @@ export function useSearch<T>(
   (event: React.ChangeEvent<HTMLInputElement> | string) => void,
   (querty: string) => void
 ] {
-  const isMounted = React.useRef<boolean>(false);
-  const [query, setQuery] = React.useState<string>(initialQuery);
+  const isMounted = useRef<boolean>(false);
+  const [query, setQuery] = useState<string>(initialQuery);
   const prevCollection = usePrevious(collection);
   const prevPredicate = usePrevious(predicate);
   const prevQuery = usePrevious(query);
   const prevFilter = usePrevious(filter);
-  const [filteredCollection, setFilteredCollection] = React.useState<T[]>(() =>
+  const [filteredCollection, setFilteredCollection] = useState<T[]>(() =>
     filterCollection<T>(collection, predicate, query, filter)
   );
 
-  const handleChange = React.useCallback(
+  const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement> | string) => {
       setQuery(typeof event === "string" ? event : event.target.value);
     },
     [setQuery]
   );
 
-  const debouncedFilterCollection = React.useCallback(
+  const debouncedFilterCollection = useCallback(
     lodashDebounce(
       (
         collection: T[],
@@ -70,7 +70,7 @@ export function useSearch<T>(
     [debounce]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       !lodashIsEqual(collection, prevCollection) ||
       !lodashIsEqual(predicate, prevPredicate) ||
@@ -80,7 +80,7 @@ export function useSearch<T>(
       debouncedFilterCollection(collection, predicate, query, filter);
   }, [collection, predicate, query, filter]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     isMounted.current = true;
 
     return () => {

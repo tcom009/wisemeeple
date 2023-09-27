@@ -6,9 +6,9 @@ import { config } from "config";
 import YearSlider from "./YearSlider";
 import { useState } from "react";
 
-
 interface PropsI {
   embedding: any;
+  gameId: string;
 }
 
 interface StateI {
@@ -16,7 +16,7 @@ interface StateI {
   recommendations: any[];
 }
 
-export default function RecommendationList({ embedding }: PropsI) {
+export default function RecommendationList({ embedding, gameId }: PropsI) {
   const [state, setState] = useState<StateI>({
     minyear: 2015,
     recommendations: [],
@@ -35,7 +35,14 @@ export default function RecommendationList({ embedding }: PropsI) {
       body: JSON.stringify({ embedding, minyear: minyear }),
     });
     const data = await response.json();
-    setState((prevState) => ({ ...prevState, recommendations: data }));
+    const removeDuplicates = data.filter(
+      (item: { metadata: { bgg_id: string } }) => item?.metadata.bgg_id !== gameId
+    );
+    console.log(removeDuplicates);
+    setState((prevState) => ({
+      ...prevState,
+      recommendations: removeDuplicates,
+    }));
   };
   return (
     <>
@@ -44,8 +51,7 @@ export default function RecommendationList({ embedding }: PropsI) {
           Filter by year:
         </Text>
 
-        
-          <YearSlider handleYearChange={handleSliderChange} />
+        <YearSlider handleYearChange={handleSliderChange} />
         <Text weight={"bold"} size={"2"}>
           {minyear} - 2023
         </Text>
