@@ -38,7 +38,7 @@ export default function RecommendationList({ embedding, gameId }: PropsI) {
     const removeDuplicates = data.filter(
       (item: { metadata: { bgg_id: string } }) => item?.metadata.bgg_id !== gameId
     );
-    console.log(removeDuplicates);
+    
     setState((prevState) => ({
       ...prevState,
       recommendations: removeDuplicates,
