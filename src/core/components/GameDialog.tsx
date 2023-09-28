@@ -32,7 +32,6 @@ export default function GameDialog({ game }: Props) {
     maxplaytime,
     minage,
   } = game;
-  const getPrompt = () => console.log(createPrompt(game));
   return (
     <Dialog.Root>
       <Dialog.Trigger>

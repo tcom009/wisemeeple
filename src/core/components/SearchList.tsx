@@ -6,7 +6,6 @@ import { capitalize } from "core/lib/textUtils";
 import { useKeyPress } from "@/core/hooks/useKeyPress";
 import { useReducer, useEffect } from "react";
 import { reducer, initialState } from "@/core/reducers/searchListReducer";
-import { useRouter } from "next/navigation";
 
 type GameI = {
   id: string;
@@ -16,11 +15,13 @@ type GameI = {
 interface PropsI {
   filteredGames: GameI[];
   closeOnClickOutside: () => void;
+  handleSubmit: (data?: any) => void;
 }
 
 export default function SearchList({
   filteredGames,
   closeOnClickOutside,
+  handleSubmit,
 }: PropsI) {
   const arrowUpPressed = useKeyPress("ArrowUp");
   const arrowDownPressed = useKeyPress("ArrowDown");
@@ -29,11 +30,6 @@ export default function SearchList({
   const [state, dispatch] = useReducer(reducer, initialState);
   const { selectedIndex } = state;
   const shortList = filteredGames.slice(0, 9);
-  const router = useRouter();
-
-  const submitSelected = (id: string) => {
-    router.push(`/generate/${id}`);
-  };
 
   useEffect(() => {
     if (arrowUpPressed) {
@@ -43,7 +39,7 @@ export default function SearchList({
       dispatch({ type: "arrowDown", payload: shortList });
     }
     if (enterPressed) {
-      router.push(`/generate/${filteredGames[selectedIndex].id}`);
+      handleSubmit(filteredGames[selectedIndex].id);
     }
   }, [enterPressed, arrowUpPressed, arrowDownPressed]);
 
@@ -51,30 +47,50 @@ export default function SearchList({
     <Card ref={ref}>
       <Flex direction={"column"}>
         {shortList.map((game: { id: string; name: string }, index: number) => (
-          <Flex
-            justify={"between"}
+          <LinkItem
             key={game.id}
-            className={`clickable search-list ${
-              selectedIndex === index ? "isSelected" : ""
-            }`}
-            onClick={() => submitSelected(game.id)}
-          >
-            <Text key={game.id} weight={"bold"} as={"div"}>
-              {" "}
-              {capitalize(game.name)}
-            </Text>
-            {selectedIndex === index && (
-              <Badge variant={"surface"}>
-                <PaperPlaneIcon />
-                <Text weight={"bold"}>
-                  {" "}
-                  Enter to Generate
-                </Text>
-              </Badge>
-            )}
-          </Flex>
+            game={game}
+            index={index}
+            selectedIndex={selectedIndex}
+            handleSubmit={handleSubmit}
+          />
         ))}
       </Flex>
     </Card>
   );
 }
+
+interface ListItemProps {
+  game: GameI;
+  selectedIndex: number;
+  handleSubmit: (id?: string) => void;
+  index: number;
+}
+const LinkItem = ({
+  game,
+  selectedIndex,
+  handleSubmit,
+  index,
+}: ListItemProps) => {
+  return (
+    <Flex
+      justify={"between"}
+      key={game.id}
+      className={`clickable search-list ${
+        selectedIndex === index ? "isSelected" : ""
+      }`}
+      onClick={() => handleSubmit(game.id)}
+    >
+      <Text key={game.id} weight={"bold"} as={"div"}>
+        {" "}
+        {capitalize(game.name)}
+      </Text>
+      {selectedIndex === index && (
+        <Badge variant={"surface"}>
+          <PaperPlaneIcon />
+          <Text weight={"bold"}> Enter to Generate</Text>
+        </Badge>
+      )}
+    </Flex>
+  );
+};

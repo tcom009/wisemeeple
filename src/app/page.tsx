@@ -1,4 +1,4 @@
-import SearchBox from "@/core/components/SearchBox";
+import SearchForm from "@/app/SearchForm";
 import { Container, Flex, Heading, Text, Badge } from "@radix-ui/themes";
 
 
@@ -25,7 +25,7 @@ export default function Home() {
           First, let&apos;s search a boardgame:
         </Text>
       </Flex>
-      <SearchBox />
+      <SearchForm/>
       </Flex>
     </Container>
   );
