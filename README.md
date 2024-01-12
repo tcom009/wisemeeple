@@ -5,10 +5,10 @@ An AI based Boardgame recommender
 
 ## Contents
 
-- [What is it?](#what-is-it?)
-- [How does it work?](#how-does-it-work?)
+- [What is it?](#what-is-it)
+- [How does it work?](#how-does-it-work)
 - [Tech Stack](#tech-stack)
-- [What I learned?](#what-i-learned?)
+- [What I learned?](#what-i-learned)
 - [Acknowledgements](#acknowledgements)
 ## What is it?
 
