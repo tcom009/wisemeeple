@@ -1,8 +1,8 @@
 import { config } from "@config";
 import { xmlparser } from "@/core/lib/xmlparser";
+import { searchCleaner } from "@/core/lib/searchCleaner";
 import { Container } from "@radix-ui/themes";
 import GamesTable from "@/core/components/GamesTable";
-import { searchCleaner } from "@/core/lib/searchCleaner";
 import { CleanCollectionItem } from "@/core/models/models";
 import { fullGameParser  } from "@/core/lib/fullGameParser";
 

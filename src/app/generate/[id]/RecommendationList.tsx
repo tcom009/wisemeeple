@@ -14,19 +14,22 @@ interface PropsI {
 interface StateI {
   minyear: number;
   recommendations: any[];
+  status: 'error' | 'loading' | 'success' | 'idle'
 }
 
 export default function RecommendationList({ embedding, gameId }: PropsI) {
   const [state, setState] = useState<StateI>({
     minyear: 2015,
     recommendations: [],
+    status: 'idle'
   });
-  const { minyear, recommendations } = state;
+  const { minyear, recommendations, status } = state;
 
   const handleSliderChange = (value: number[]) => {
     setState((prevState) => ({ ...prevState, minyear: value[0] }));
   };
   const generate = async () => {
+    setState((prevState) => ({ ...prevState, status: 'loading' }));
     const response = await fetch(`/api/generate`, {
       method: "POST",
       headers: {
@@ -35,14 +38,23 @@ export default function RecommendationList({ embedding, gameId }: PropsI) {
       body: JSON.stringify({ embedding, minyear: minyear }),
     });
     const data = await response.json();
-    const removeDuplicates = data.filter(
-      (item: { metadata: { bgg_id: string } }) => item?.metadata.bgg_id !== gameId
-    );
+    if (data){
+      const removeDuplicates = data.filter(
+        (item: { metadata: { bgg_id: string } }) => item?.metadata.bgg_id !== gameId
+        );
+        setState((prevState) => ({
+          ...prevState,
+          recommendations: removeDuplicates,
+          status: 'success'
+        }));
+      }
+    else{
+      setState((prevState) => ({
+        ...prevState,
+        status: 'error'
+      }));
+    }
     
-    setState((prevState) => ({
-      ...prevState,
-      recommendations: removeDuplicates,
-    }));
   };
   return (
     <>
@@ -56,10 +68,40 @@ export default function RecommendationList({ embedding, gameId }: PropsI) {
           {minyear} - 2023
         </Text>
 
-        <Button onClick={generate}>Get Recommendations</Button>
+        <Button onClick={generate} className="clickable">
+          <div className='clickable'>
+            Get Recommendations
+          </div>
+        </Button>
       </Flex>
 
-      {recommendations.length !== 0 && (
+      {status === 'error' && (
+        <Flex align={"center"} justify={"center"} my={"5"}>
+          <Text
+            align={"center"}
+            size={{ lg: "5", initial: "5" }}
+            weight={"bold"}
+          >
+            {" "}
+            We&apos;re Sorry, generation service is currently unavailable. 
+          </Text>
+        </Flex>
+      )}
+
+      {status === 'loading' && (
+        <Flex align={"center"} justify={"center"} my={"5"}>
+          <Text
+            align={"center"}
+            size={{ lg: "5", initial: "5" }}
+            weight={"bold"}
+          >
+            {" "}
+            Loading...
+          </Text>
+        </Flex>
+      )}
+
+      {status === 'success' && (
         <Flex align={"center"} justify={"center"} my={"5"}>
           <Text
             align={"center"}

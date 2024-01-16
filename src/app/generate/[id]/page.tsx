@@ -4,7 +4,6 @@ import { fullGameParser } from "@/core/lib/fullGameParser";
 import getSingleGame from "core/lib/getGame";
 import { trimAndClean } from "@/core/lib/textUtils";
 import embeddingGenerator from "core/lib/getVectors";
-import getRecommendations from "@/core/lib/getRecommendations";
 import RecommendationList from "./RecommendationList";
 import {
   Container,
