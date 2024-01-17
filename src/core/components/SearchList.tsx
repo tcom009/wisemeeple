@@ -39,6 +39,7 @@ export default function SearchList({
       dispatch({ type: "arrowDown", payload: shortList });
     }
     if (enterPressed) {
+      console.log("press");
       handleSubmit(filteredGames[selectedIndex].id);
     }
   }, [enterPressed, arrowUpPressed, arrowDownPressed]);

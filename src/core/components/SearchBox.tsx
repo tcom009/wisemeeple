@@ -1,8 +1,6 @@
 import React from "react";
 import { TextField, Flex, IconButton } from "@radix-ui/themes";
 import { MagnifyingGlassIcon, Cross2Icon } from "@radix-ui/react-icons";
-
-
 interface PropsI {
   query: string;
   setQuery: (query: string) => void;
@@ -17,6 +15,8 @@ export default function SearchBox({
   handleKeyPress,
   onSubmit,
 }: PropsI) {
+
+
   return (
     <>
       <TextField.Root size={"3"} mt={"5"}>
