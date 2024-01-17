@@ -45,7 +45,8 @@ export default function SearchForm() {
     router.push(`/generate/${id}`);
   };
   const handleKeyPress = (event: any) => {
-    if (event.key === "Enter" && filteredGames.length === 0) {
+    if (event.key === "Enter" && 
+        (filteredGames.length === 0 || !isOpen)) {
       console.log('hola');
       onSubmit();
     }
