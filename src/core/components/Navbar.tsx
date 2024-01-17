@@ -39,7 +39,7 @@ export default function Navbar() {
         <Box>
           <Badge color={"yellow"}>
             <Text weight={"bold"} size={{ lg: "3", md: "3", sm: "1", xs: "1" }}>
-              Last Update: September 15th
+              Last Update: Jan, 17th, 2024
             </Text>
           </Badge>
         </Box>
