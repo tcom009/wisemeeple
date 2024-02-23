@@ -7,46 +7,43 @@ import {
   TextField,
   IconButton,
 } from "@radix-ui/themes";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+
 import PasswordInput from "./PasswordInput";
 import EmailInput from "./EmailInput";
 import { login, signup } from "./actions";
-type StateI = {
-  email: string;
-  password: string;
-  error: string;
-  isVisible: boolean;
-};
-
-const initialState = {
-  email: "",
-  password: "",
-  error: "",
-  isVisible: false,
-};
-
-export default function LoginForm() {
+import Link from "next/link";
+interface LoginFormI {
+  isSignup?: boolean;
+}
+export default function LoginForm({ isSignup }: LoginFormI) {
   return (
-    <form>
-      <Container size={{ lg: "1", md: "1", sm: "1", xs: "1" }} mt={"9"}>
-        <Card>
+    <Container size={{ lg: "1", md: "1", sm: "1", xs: "1" }} mt={"9"}>
+      <Card>
+        <Flex gap={"3"} direction={"column"}>
+          <Text align={"center"}>{isSignup ? "Registrarme" : "Iniciar sesión"}</Text>
+          <form>
           <Flex gap={"3"} direction={"column"}>
-            <Text align={"center"}>Inicia sesión o registrate</Text>
             <EmailInput />
             <PasswordInput />
-            <Button variant={"solid"} formAction={login}>
-              Iniciar Sesión
+            {isSignup && <PasswordInput isSignup/>}
+            <Button variant={"solid"} formAction={isSignup ? signup : login}>
+              {isSignup ? "Registrarme" : "Iniciar sesión"}
             </Button>
-            <Button variant={"surface"} formAction={signup}>
-              Registrarme
+            </Flex>
+          </form>
+          <Flex gap={"3"} direction={"column"}>
+
+            <Button variant={"surface"}>
+          <Link href={isSignup ? "/login" : "/signup"} className="no-underline">
+            {isSignup ? "Iniciar sesión" : "Registrarme"}
+            </Link>
             </Button>
-            <Text as={"p"} size={"1"} align={"center"}>
+            {/* <Text as={"p"} size={"1"} align={"center"}>
               Recuperar contraseña
-            </Text>
-          </Flex>
-        </Card>
-      </Container>
-    </form>
+            </Text> */}
+            </Flex>
+        </Flex>
+      </Card>
+    </Container>
   );
 }

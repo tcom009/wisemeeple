@@ -1,24 +1,19 @@
 "use client";
-import {
-  Button,
-  Card,
-  Flex,
-  Text,
-  Container,
-  TextField,
-  IconButton,
-} from "@radix-ui/themes";
+import { TextField, IconButton } from "@radix-ui/themes";
 import { createClient } from "@/utils/supabase/client";
 import { redirect, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
-  EnvelopeClosedIcon,
   EyeClosedIcon,
   EyeOpenIcon,
   LockClosedIcon,
 } from "@radix-ui/react-icons";
 
-export default function PasswordInput() {
+interface LoginFormI {
+  isSignup?: boolean;
+}
+
+export default function PasswordInput({ isSignup }: LoginFormI) {
   const [isVisible, setState] = useState<boolean>(false);
   const passwordToggle = () => {
     setState((prevState) => !prevState);
@@ -31,17 +26,20 @@ export default function PasswordInput() {
       </TextField.Slot>
       <TextField.Input
         size={"3"}
-        name="password"
-        id="password"
+        name={isSignup ? "repeatPassword" : "password"}
+        id={isSignup ? "repeatPassword" : "password"}
         type={isVisible ? "text" : "password"}
-        placeholder="Contraseña"
+        placeholder={isSignup ? "Repetir contraseña" : "Contraseña"}
         required
       />
-      <TextField.Slot>
-        <IconButton variant={"ghost"} onClick={passwordToggle}>
+      {/* <TextField.Slot>
+        <IconButton
+          variant={"ghost"}
+          onClick={() => passwordToggle}
+        >
           {isVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
         </IconButton>
-      </TextField.Slot>
+      </TextField.Slot> */}
     </TextField.Root>
   );
 }
