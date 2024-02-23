@@ -2,8 +2,11 @@ import { Flex, Grid, Text, Badge, Box } from "@radix-ui/themes";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
-import GitHubBadge from "./GitHubBadge";
-export default function Navbar() {
+import { logout } from "@/app/login/actions";
+import { createClient } from "@/utils/supabase/server";
+export default async function Navbar() {
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.getUser();
   return (
     <Grid
       position={"fixed"}
@@ -48,7 +51,14 @@ export default function Navbar() {
       <Box></Box>
 
       <Flex align={"center"} ml={{ sm: "5", xs: "5", initial: "5" }}>
-        <GitHubBadge />
+        {data?.user && !error && (
+          <div>
+            <div>Hola {data.user.email}</div>
+            <form>
+              <button formAction={logout}> Logout </button>
+            </form>
+          </div>
+        )}
       </Flex>
     </Grid>
   );
