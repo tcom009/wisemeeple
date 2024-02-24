@@ -37,7 +37,7 @@ const initialState = {
 };
 
 interface AuthFormI {
-  isSignup: boolean;
+  isSignup?: boolean;
 }
 
 export default function AuthForm({ isSignup }: AuthFormI) {
