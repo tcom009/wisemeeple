@@ -1,5 +1,4 @@
-
-
+"use client";
 import {
   Button,
   Card,
@@ -14,11 +13,14 @@ import PasswordInput from "./PasswordInput";
 import EmailInput from "./EmailInput";
 import { login, signup } from "./actions";
 import Link from "next/link";
+import { useState } from "react";
 interface LoginFormI {
   isSignup?: boolean;
 }
 export default function LoginForm({ isSignup }: LoginFormI) {
-  
+  const [state, setState] = useState({
+    isLoading: false,
+  })
   return (
     <Container size={{ lg: "1", md: "1", sm: "1", xs: "1" }} mt={"9"}>
       <Card>
