@@ -1,3 +1,5 @@
+
+
 import {
   Button,
   Card,
@@ -16,17 +18,18 @@ interface LoginFormI {
   isSignup?: boolean;
 }
 export default function LoginForm({ isSignup }: LoginFormI) {
+  
   return (
     <Container size={{ lg: "1", md: "1", sm: "1", xs: "1" }} mt={"9"}>
       <Card>
         <Flex gap={"3"} direction={"column"}>
           <Text align={"center"}>{isSignup ? "Registrarme" : "Iniciar sesión"}</Text>
-          <form>
+          <form action={isSignup ? signup : login}>
           <Flex gap={"3"} direction={"column"}>
             <EmailInput />
             <PasswordInput />
             {isSignup && <PasswordInput isSignup/>}
-            <Button variant={"solid"} formAction={isSignup ? signup : login}>
+            <Button variant={"solid"} type={"submit"}>
               {isSignup ? "Registrarme" : "Iniciar sesión"}
             </Button>
             </Flex>

@@ -32,14 +32,14 @@ export default function PasswordInput({ isSignup }: LoginFormI) {
         placeholder={isSignup ? "Repetir contraseña" : "Contraseña"}
         required
       />
-      {/* <TextField.Slot>
+      <TextField.Slot>
         <IconButton
           variant={"ghost"}
           onClick={() => passwordToggle}
         >
           {isVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
         </IconButton>
-      </TextField.Slot> */}
+      </TextField.Slot>
     </TextField.Root>
   );
 }
