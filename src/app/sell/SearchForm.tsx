@@ -28,9 +28,11 @@ const initalState: StateI = {
     name: "",
   },
 };
-
+interface SearchFormI {
+  setGames: (games: any) => void
+}
 // TODO:  refactor onKeyPress for searchbox
-export default function SearchForm() {
+export default function SearchForm({setGames}: SearchFormI) {
   const [state, setState] = useState<StateI>(initalState);
   const { error, isOpen } = state;
   const [filteredGames, query, handleChange, setQuery] = useSearch(
@@ -46,6 +48,7 @@ export default function SearchForm() {
       const games = await getMultipleGames(cleanData);
       const cleanGames = games.map(fullGameParser);
       console.log(cleanGames); 
+      setGames(cleanGames);
     }else {
       setState({ ...state, error: true })
 
@@ -55,7 +58,8 @@ export default function SearchForm() {
   const onListSubmit = async (id: string) => {
     const game = await getSingleGame(id);
     const parsedGame = await fullGameParser(game);
-    console.log(parsedGame)
+    console.log([parsedGame])
+    setGames([parsedGame])
   }
 
   const handleKeyPress = (event: any) => {

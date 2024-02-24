@@ -18,14 +18,12 @@ const initialState: StateI = {
 export default function SellForm() {
   const [state, setState] = useState<StateI>(initialState);
   const { games } = state;
-
-  // const setGames = (games) => {
-  //   setState({ ...state, games });
-  // }
-
+  const setGames =  (games:any) => {
+    setState((prevState) => ({ ...prevState, games }));
+  }
   return (
     <>
-      <SearchForm />
+      <SearchForm setGames={setGames}/>
       {games.length !== 0 && <GamesTable games={games} />}
     </>
   );
