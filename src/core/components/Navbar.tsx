@@ -1,4 +1,4 @@
-import { Flex, Grid, Text, Badge, Box } from "@radix-ui/themes";
+import { Flex, Grid, Text, Button, Box } from "@radix-ui/themes";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
@@ -14,7 +14,7 @@ export default async function Navbar() {
       left={"0"}
       className="black-background z-index-1"
       width={"100%"}
-      columns={{ lg: "5", xl: "5", md: "5", sm: "3", initial: "3" }}
+      columns={{ lg: "2", xl: "2", md: "2", sm: "2", initial: "2" }}
       height={"9"}
     >
       <Link href={"/"} as={"/"} className="no-underline">
@@ -22,10 +22,10 @@ export default async function Navbar() {
           width={"100%"}
           height={"100%"}
           justify={"center"}
-          mt={{ sm: "1", xs: "1", lg:"0", md:"0", xl: "0" }}
-          mr={{ sm: "2", xs: "2", initial: "2" }}
+          mt={{ sm: "1", xs: "1", lg: "0", md: "0", xl: "0" }}
+          // mr={{ sm: "2", xs: "2", initial: "2" }}
           align={"center"}
-          ml={{ xl: "9", lg: "7", md: "5", sm: "5", xs: "5", initial: "3" }}
+          ml={{ xl: "9", lg: "7", md: "5", sm: "5", xs: "5", initial: "0" }}
           gap={"2"}
         >
           <Image src={logo} width={30} height={30} alt="WiseMeeple" />
@@ -38,27 +38,43 @@ export default async function Navbar() {
           </Text>
         </Flex>
       </Link>
-      {/* <Flex align={"center"} ml={{ sm: "5", xs: "5", initial: "5" }}>
-        <Box>
-          <Badge color={"yellow"}>
-            <Text weight={"bold"} size={{ lg: "3", md: "3", sm: "1", xs: "1" }}>
-              Last Update: Jan, 17th, 2024
-            </Text>
-          </Badge>
-        </Box>
-      </Flex> */}
-      <Box></Box>
-      <Box></Box>
-      
-      <Flex align={"center"} ml={{ sm: "5", xs: "5", initial: "5" }}>
+
+      <Flex
+        align={"center"}
+        justify={{
+          lg: "center",
+          md: "center",
+          sm: "center",
+          xs: "center",
+          initial: "center",
+        }}
+        direction={{
+          lg: "row",
+          md: "row",
+          sm: "row",
+          xs: "row",
+          initial: "column",
+        }}
+      >
         {data?.user && !error && (
-          <div>
-            <div>Hola {data.user.email}</div>
-            <form>
-              <button formAction={logout}> Logout </button>
-            </form>
-          </div>
+          <>
+          <Flex align={"center"}>
+            <Text size={"1"}>¡Hola! {data.user.email}</Text>
+          </Flex>
+        <form>
+        <Button
+          ml="1"
+          formAction={logout}
+          color={"red"}
+          variant="outline"
+          size={"1"}
+        >
+          Cerrar sesion
+        </Button>
+      </form>
+          </>
         )}
+        
       </Flex>
     </Grid>
   );

@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import LoginFrom from "@/app/login/LoginForm";
+import AuthForm from "@/app/login/AuthForm";
 export default async function LoginPage() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
@@ -9,7 +9,7 @@ export default async function LoginPage() {
   }
   return (
     <>
-    <LoginFrom isSignup/>
+    <AuthForm isSignup/>
     </>
   )
 }
