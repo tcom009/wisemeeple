@@ -8,8 +8,6 @@ import {
   TextField,
   IconButton,
 } from "@radix-ui/themes";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -19,7 +17,6 @@ import {
   LockClosedIcon,
 } from "@radix-ui/react-icons";
 import { login, signup } from "./actions";
-import Spinner from "@/core/components/Spinner";
 import SmallSpinner from "@/core/components/SmallSpinner";
 type StateI = {
   email: string;
@@ -44,8 +41,6 @@ interface AuthFormI {
 }
 
 export default function AuthForm({ isSignup }: AuthFormI) {
-  const router = useRouter();
-  const supabase = createClientComponentClient();
   const [state, setState] = useState<StateI>(initialState);
   const { email, password, error, isVisible, isLoading, repeatPassword } = state;
   const setIsLoading = (state: boolean) =>
@@ -132,7 +127,7 @@ export default function AuthForm({ isSignup }: AuthFormI) {
     <Container size={{ lg: "1", md: "1", sm: "1", xs: "1" }} mt={"9"}>
       <Card>
         <Flex gap={"3"} direction={"column"}>
-          <Text align={"center"}>Inicia sesión o registrate</Text>
+          <Text align={"center"}>{isSignup ? "Regístrate" : "Iniciar Sesión"}</Text>
           <TextField.Root>
             <TextField.Slot>
               <EnvelopeClosedIcon />

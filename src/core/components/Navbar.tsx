@@ -59,7 +59,7 @@ export default async function Navbar() {
         {data?.user && !error && (
           <>
           <Flex align={"center"}>
-            <Text size={"1"}>¡Hola! {data.user.email}</Text>
+            <Text size={"1"}>¡Hola, {data.user.email}!</Text>
           </Flex>
         <form>
         <Button
