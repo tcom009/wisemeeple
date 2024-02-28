@@ -17,7 +17,7 @@ interface StateI {
   elementsPerPage: number;
 }
 
-const scrollHeight = { height: "75vh" };
+const scrollHeight = { height: "50vh" };
 
 const GamesTable = ({ games }: GamesTableProps) => {
   const initialState = {
@@ -59,9 +59,9 @@ const GamesTable = ({ games }: GamesTableProps) => {
   return (
     <Card>
       <Grid columns={"2"} align={"center"}>
-        <Flex align={"center"} mb={"3"} height={"9"}>
+        <Flex align={"center"} mb={"3"} height={"2"} >
           <Text weight={"bold"} size={"4"} align={"left"}>
-            Now, choose a game from the results:
+              Selecciona un juego
           </Text>
         </Flex>
         {totalPages > 1 && (

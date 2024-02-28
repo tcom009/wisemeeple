@@ -1,5 +1,5 @@
 "use client";
-import { Text } from "@radix-ui/themes";
+import { Text, Flex } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { useSearch } from "@/core/hooks/useSearch";
 import SearchList from "@/core/components/SearchList";
@@ -29,10 +29,10 @@ const initalState: StateI = {
   },
 };
 interface SearchFormI {
-  setGames: (games: any) => void
+  setGames: (games: any) => void;
 }
 // TODO:  refactor onKeyPress for searchbox
-export default function SearchForm({setGames}: SearchFormI) {
+export default function SearchForm({ setGames }: SearchFormI) {
   const [state, setState] = useState<StateI>(initalState);
   const { error, isOpen } = state;
   const [filteredGames, query, handleChange, setQuery] = useSearch(
@@ -41,29 +41,29 @@ export default function SearchForm({setGames}: SearchFormI) {
     { debounce: 200 }
   );
 
-  const onSubmit = async () =>{
-    if (query){
+  const onSubmit = async () => {
+    if (query) {
       const data = await searchGames(query);
       const cleanData = searchCleaner(data, query);
       const games = await getMultipleGames(cleanData);
       const cleanGames = games.map(fullGameParser);
-      console.log(cleanGames); 
+      console.log(cleanGames);
       setGames(cleanGames);
-    }else {
-      setState({ ...state, error: true })
-
+    } else {
+      setState({ ...state, error: true });
     }
-  }
+  };
 
   const onListSubmit = async (id: string) => {
+    setState({ ...state, isOpen: false });
     const game = await getSingleGame(id);
     const parsedGame = await fullGameParser(game);
-    console.log([parsedGame])
-    setGames([parsedGame])
-  }
+    console.log([parsedGame]);
+    setGames([parsedGame]);
+  };
 
   const handleKeyPress = (event: any) => {
-    if (event.key === "Enter" && ! isOpen) {
+    if (event.key === "Enter" && !isOpen) {
       onSubmit();
     }
     if (event.key === "Escape") {
@@ -82,32 +82,44 @@ export default function SearchForm({setGames}: SearchFormI) {
     }
   }, [query, filteredGames]);
 
-
-
   return (
-    <>
-  
-    
+    <Flex
+      position={"relative"}
+      display={"flex"}
+      grow={"1"}
+      align={"center"}
+      justify={"center"}
+      width={"100%"}
+    >
       <SearchBox
         onSubmit={onSubmit}
         handleChange={handleChange}
         handleKeyPress={handleKeyPress}
         setQuery={setQuery}
         query={query}
-        />
+      />
+
       {filteredGames.length !== 0 && isOpen && (
-        <SearchList
-        filteredGames={filteredGames}
-        closeOnClickOutside={closeOnClickOutside}
-        handleSubmit={onListSubmit}
-        />
-        )}
- 
+        <Flex
+          position={"absolute"}
+          align={"center"}
+          justify={"center"}
+          className="z-index-full"
+          top={"100%"}
+        >
+          <SearchList
+            filteredGames={filteredGames}
+            closeOnClickOutside={closeOnClickOutside}
+            handleSubmit={onListSubmit}
+          />
+        </Flex>
+      )}
+
       {error && (
         <Text as={"span"} color={"crimson"} size={"2"} mt={"2"}>
           Please enter a boardgame name
         </Text>
       )}
-    </>
+    </Flex>
   );
 }
