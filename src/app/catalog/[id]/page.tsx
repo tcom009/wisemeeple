@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import { Container } from "@radix-ui/themes";
 export default async function CatalogPage({
   params,
 }: {
@@ -7,12 +7,15 @@ export default async function CatalogPage({
 }) {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
-  const response = await supabase.from("user_games").select("*").eq("owner_id", params.id);
+  const response = await supabase
+    .from("user_games")
+    .select("*")
+    .eq("owner_id", params.id);
   console.log(response.data);
   return (
-    <div>
+    <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
       <h1>Catalog Page</h1>
-      <pre>{JSON.stringify(response.data, null, 2)}</pre>
-    </div>
+      <div>{JSON.stringify(response.data, null, 2)}</div>
+    </Container>
   );
 }

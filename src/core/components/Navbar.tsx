@@ -50,23 +50,30 @@ export default async function Navbar() {
       >
         {data?.user && !error && (
           <>
-          <Flex align={"center"}>
-            <Text size={"1"}>¡Hola, {data.user.email}!</Text>
-          </Flex>
-        <form>
-        <Button
-          ml="1"
-          formAction={logout}
-          color={"red"}
-          variant="outline"
-          size={"1"}
-        >
-          Cerrar sesion
-        </Button>
-      </form>
+            {/* <Flex align={"center"}>
+              <Text size={"1"}>¡Hola, {data.user.email}!</Text>
+            </Flex> */}
+            <Grid cols="2" gap="2" align={"center"}>
+              <form>
+                <Button
+                  ml="1"
+                  formAction={logout}
+                  color={"red"}
+                  variant="outline"
+                  size={"1"}
+                >
+                  Cerrar sesion
+                </Button>
+              </form>
+              <Link href={`/catalog/${data.user.id}`}>
+                <Button variant="outline" size="1">
+                  {" "}
+                  Mi catálogo
+                </Button>
+              </Link>
+            </Grid>
           </>
         )}
-        
       </Flex>
     </Grid>
   );
