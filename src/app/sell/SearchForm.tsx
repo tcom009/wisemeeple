@@ -10,7 +10,7 @@ import { searchGames } from "@/core/lib/searchGames";
 import { searchCleaner } from "@/core/lib/searchCleaner";
 import { fullGameParser } from "@/core/lib/fullGameParser";
 import { getMultipleGames } from "@/core/lib/getMultipleGames";
-import { PageStatus } from "./SellForm";
+import { PageStatus } from "@/core/models/models";
 
 interface StateI {
   isOpen: boolean;

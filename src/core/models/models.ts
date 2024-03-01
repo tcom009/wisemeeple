@@ -135,3 +135,20 @@ export interface UserGame{
   language_dependency: string
 
 }
+
+export interface ProfileI {
+  id: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  city: string;
+  country: string;
+}
+
+export enum PageStatus {
+  IDLE = "IDLE",
+  LOADING = "LOADING",
+  SUCCESS = "SUCCESS",
+  ERROR = "ERROR",
+  NOT_FOUND = "NOT_FOUND",
+}

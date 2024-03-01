@@ -36,7 +36,7 @@ import {
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
-import { PageStatus } from "./SellForm";
+import { PageStatus } from "@/core/models/models";
 import SmallSpinner from "@/core/components/SmallSpinner";
 import { useRouter } from "next/navigation";
 interface GameDetailsFormProps {

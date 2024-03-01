@@ -7,14 +7,8 @@ import { ParsedThing } from "@/core/models/models";
 import { Container, Box, Flex, Grid } from "@radix-ui/themes";
 import Spinner from "@/core/components/Spinner";
 import { useWizard } from "react-use-wizard";
+import { PageStatus } from "@/core/models/models";
 
-export enum PageStatus {
-  IDLE = "IDLE",
-  LOADING = "LOADING",
-  SUCCESS = "SUCCESS",
-  ERROR = "ERROR",
-  NOT_FOUND = "NOT_FOUND",
-}
 
 interface SellFormProps {
   setSelectedGame: (game: ParsedThing) => void;
