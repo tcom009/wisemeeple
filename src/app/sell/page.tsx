@@ -1,4 +1,4 @@
-import SellForm from "app/sell/SellForm";
+import SellFormWizard from "./SellFormWizard";
 import { createClient } from "@/utils/supabase/server"; 
 import { redirect } from "next/navigation";
 import { Container } from "@radix-ui/themes";
@@ -12,9 +12,9 @@ export default async function SellPage() {
     redirect("/login");
   }
   return (
-    <Container size={{ lg: "3", md: "3", sm: "1", xs: "1" }}>
+    <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
       {" "}
-      <SellForm />
+      <SellFormWizard />
     </Container>
   );
 }

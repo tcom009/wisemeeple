@@ -22,8 +22,6 @@ export default async function Navbar() {
           width={"100%"}
           height={"100%"}
           justify={"center"}
-          mt={{ sm: "1", xs: "1", lg: "0", md: "0", xl: "0" }}
-          // mr={{ sm: "2", xs: "2", initial: "2" }}
           align={"center"}
           ml={{ xl: "9", lg: "7", md: "5", sm: "5", xs: "5", initial: "0" }}
           gap={"2"}
@@ -41,13 +39,7 @@ export default async function Navbar() {
 
       <Flex
         align={"center"}
-        justify={{
-          lg: "center",
-          md: "center",
-          sm: "center",
-          xs: "center",
-          initial: "center",
-        }}
+        justify={"center"}
         direction={{
           lg: "row",
           md: "row",

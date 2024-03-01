@@ -29,7 +29,9 @@
     "openai": "^4.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.50.1",
     "react-i18next": "^13.2.0",
+    "react-use-wizard": "^2.3.0",
     "typescript": "5.2.2",
     "xml-js": "^1.6.11"
   },

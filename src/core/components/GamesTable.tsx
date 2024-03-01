@@ -8,6 +8,7 @@ import { TriangleLeftIcon, TriangleRightIcon } from "@radix-ui/react-icons";
 
 interface GamesTableProps {
   games: ParsedThing[] | [];
+  handleSelectGame: (game:ParsedThing) => void;
 }
 
 interface StateI {
@@ -17,9 +18,9 @@ interface StateI {
   elementsPerPage: number;
 }
 
-const scrollHeight = { height: "50vh" };
+const scrollHeight = { height: "60vh" };
 
-const GamesTable = ({ games }: GamesTableProps) => {
+const GamesTable = ({ games, handleSelectGame }: GamesTableProps) => {
   const initialState = {
     currentPage: 1,
     totalPages: games.length <= 10 ? 1 : Math.ceil(games.length / 10),
@@ -47,21 +48,28 @@ const GamesTable = ({ games }: GamesTableProps) => {
 
   if (games.length === 0) {
     return (
-      <Flex direction={"column"} height={"9"} align={"center"} justify={"center"}>
-        <Text weight={"bold"} align={"center"}>
-          {" "}
-          No games found!{" "}
-        </Text>
-      </Flex>
+      <Card>
+        <Flex
+          direction={"column"}
+          height={"9"}
+          align={"center"}
+          justify={"center"}
+        >
+          <Text weight={"bold"} align={"center"}>
+            {" "}
+            ¡No se han encontrado juegos!{" "}
+          </Text>
+        </Flex>
+      </Card>
     );
   }
 
   return (
     <Card>
       <Grid columns={"2"} align={"center"}>
-        <Flex align={"center"} mb={"3"} height={"2"} >
+        <Flex align={"center"} mb={"3"} height={"8"}>
           <Text weight={"bold"} size={"4"} align={"left"}>
-              Selecciona un juego
+            Selecciona un juego
           </Text>
         </Flex>
         {totalPages > 1 && (
@@ -99,6 +107,7 @@ const GamesTable = ({ games }: GamesTableProps) => {
               key={game?.id}
               isLast={index === showingGames.length - 1}
               game={game}
+              handleSelectGame={handleSelectGame}
             />
           ))}
         </Flex>
