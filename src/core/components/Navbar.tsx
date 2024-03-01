@@ -53,7 +53,7 @@ export default async function Navbar() {
             {/* <Flex align={"center"}>
               <Text size={"1"}>¡Hola, {data.user.email}!</Text>
             </Flex> */}
-            <Grid cols="2" gap="2" align={"center"}>
+            <Grid gap="2" align={"center"}>
               <form>
                 <Button
                   ml="1"

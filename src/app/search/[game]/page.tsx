@@ -35,7 +35,7 @@ const GamesPage = async ({ params }: { params: { game: string } }) => {
 
   return (
       <Container size={{ lg:"3", md:"3", sm:"1", xs:"1"}} >
-        <GamesTable games={cleanGames} />
+        
       </Container>
   );
 };

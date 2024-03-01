@@ -107,6 +107,7 @@ export default function GameDetailsForm({
       bgg_id: id,
       owner_id: userData?.user?.id,
       game_name: name,
+      image,
     };
     const result = await supabase.from("user_games").insert(data);
     if (result.error) {
@@ -134,7 +135,11 @@ export default function GameDetailsForm({
           </Text>
         </Flex>
         <Flex justify="center" direction={"row"} gap="2">
-          <Avatar src={image} fallback={name[0]} size={"9"} />
+          <Avatar
+            src={image}
+            fallback={name[0]}
+            size={{ lg: "9", xl: "9", md: "7", sm:"7", initial: "6" }}
+          />
           <Flex
             direction={"column"}
             align={"start"}
@@ -328,9 +333,8 @@ export default function GameDetailsForm({
             />
           </Box>
         </Grid>
-        <Grid my="3" gap="2" columns={{ xl: "2", lg: "2", md: "2", sm: "2" }}>
           {pageState === PageStatus.ERROR && (
-            <Callout.Root color="red" variant="soft" size="1">
+            <Callout.Root color="red" variant="soft" size="1" mt="4">
               <Callout.Icon>
                 <InfoCircledIcon />
               </Callout.Icon>
@@ -338,13 +342,14 @@ export default function GameDetailsForm({
             </Callout.Root>
           )}
           {pageState === PageStatus.SUCCESS && (
-            <Callout.Root color="green" variant="soft" size="1">
+            <Callout.Root color="green" variant="soft" size="1" mt="4">
               <Callout.Icon>
                 <InfoCircledIcon />
               </Callout.Icon>
               <Callout.Text>¡Agregado con exito a tu catálogo!</Callout.Text>
             </Callout.Root>
           )}
+        <Grid my="3" gap="2" columns={{ xl: "2", lg: "2", md: "2", sm: "2" }}>
           <Button
             radius={"large"}
             variant={"classic"}

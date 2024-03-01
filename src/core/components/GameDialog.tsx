@@ -10,7 +10,6 @@ import {
 } from "@radix-ui/react-icons";
 import { trimText, trimAndClean } from "@/core/lib/textUtils";
 import { ParsedThing } from "@/core/models/models";
-import { createPrompt } from "core/lib/createPrompt";
 import Link from "next/link";
 
 interface Props {

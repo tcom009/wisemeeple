@@ -116,3 +116,22 @@ export interface CleanCollectionItem {
 export interface CleanCollection {
   items: CleanCollectionItem[];
 }
+
+// MODELS FROM BACKEND
+
+export interface UserGame{
+  id:string
+  created_at: any
+  owner_id: string
+  bgg_id: any
+  condition:any 
+  is_sold: boolean
+  observations: string
+  price: number
+  updated_at: any
+  game_name: string
+  image: string
+  language: string
+  language_dependency: string
+
+}
