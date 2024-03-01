@@ -27,16 +27,27 @@ export default async function CatalogPage({
   const supabase = createClient();
 
   const user = await supabase.auth.getUser();
+  const getUserProfile = async (id: string) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", id)
+      .single();
+    return { data, error };
+  }
+
+  const userProfile = await getUserProfile(params.id);
   const { data } = await supabase
     .from("user_games")
     .select("*")
     .eq("owner_id", params.id);
-  if (data?.length !== 0 && data !== undefined && data !== null) {
+
+    if (data?.length !== 0 && data !== undefined && data !== null) {
     return (
       <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
-        <Flex width={"100%"} justify={"between"} mb="2">
+        <Flex width={"100%"} justify={"between"} my="4">
           <Text size={"6"} weight={"bold"}>
-            Catalogo de {user.data?.user?.email}
+            Catalogo de {user.data?.user?.email ?? `${userProfile.data?.first_name} ${userProfile.data?.last_name}`}
           </Text>
           {user.data?.user?.id === params.id && (
             <Link className="no-underline" href={"/sell"}>

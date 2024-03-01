@@ -5,10 +5,11 @@ import GameCard from "@/core/components/GameCard";
 import { Card, Flex, ScrollArea, Button, Text, Grid } from "@radix-ui/themes";
 import { useState, useEffect } from "react";
 import { TriangleLeftIcon, TriangleRightIcon } from "@radix-ui/react-icons";
-
+import Link from "next/link";
+import GameDialog from "./GameDialog";
 interface GamesTableProps {
   games: ParsedThing[] | [];
-  handleSelectGame: (game:ParsedThing) => void;
+  handleSelectGame: (game: ParsedThing) => void;
 }
 
 interface StateI {
@@ -103,9 +104,9 @@ const GamesTable = ({ games, handleSelectGame }: GamesTableProps) => {
       >
         <Flex direction={"column"}>
           {showingGames.map((game: ParsedThing, index: number) => (
-            <GameCard
-              key={game?.id}
-              isLast={index === showingGames.length - 1}
+            <GameDialog
+            key={game.id}  
+            isLast={index === showingGames.length - 1}
               game={game}
               handleSelectGame={handleSelectGame}
             />

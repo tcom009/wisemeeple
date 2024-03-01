@@ -68,7 +68,7 @@ export default function SellForm({ setSelectedGame }: SellFormProps) {
         )}
         {pageStatus === PageStatus.LOADING && (
           <Flex width={"100%"} align={"center"} justify={"center"}>
-            <Spinner />
+            <Spinner notCentered />
           </Flex>
         )}
         {pageStatus === PageStatus.NOT_FOUND && (

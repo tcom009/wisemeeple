@@ -38,6 +38,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { PageStatus } from "./SellForm";
 import SmallSpinner from "@/core/components/SmallSpinner";
+import { useRouter } from "next/navigation";
 interface GameDetailsFormProps {
   selectedGame: ParsedThing;
   isEditing?: boolean;
@@ -60,6 +61,7 @@ export default function GameDetailsForm({
   isEditing = false,
 }: GameDetailsFormProps) {
   const supabase = createClient();
+  const router = useRouter()
   const getUserData = async () => {
     const { data } = await supabase.auth.getUser();
     return data;
@@ -113,7 +115,7 @@ export default function GameDetailsForm({
     if (result.error) {
       setPageStatus(PageStatus.ERROR);
     } else {
-      setPageStatus(PageStatus.SUCCESS);
+      router.push(`/catalog/${userData?.user?.id}`);
     }
   };
   const onChangeSwitch = (value: boolean) => {
@@ -130,7 +132,7 @@ export default function GameDetailsForm({
           <Heading>Agregar a mi catálogo</Heading>
         </Flex>
         <Flex justify="center">
-          <Text weight={"bold"}>
+          <Text weight={"bold"} size="4">
             {name} - {yearpublished}
           </Text>
         </Flex>
@@ -138,7 +140,7 @@ export default function GameDetailsForm({
           <Avatar
             src={image}
             fallback={name[0]}
-            size={{ lg: "9", xl: "9", md: "7", sm:"7", initial: "6" }}
+            size={{ lg: "9", xl: "9", md: "9", sm:"9", initial: "8" }}
           />
           <Flex
             direction={"column"}
@@ -234,7 +236,7 @@ export default function GameDetailsForm({
                 </TextField.Root>
               )}
             />
-            <Text color="crimson">
+            <Text color="crimson" size={"1"} mt="1">
               {errors.price?.message && errors.price.message}
             </Text>
           </Box>
@@ -261,7 +263,7 @@ export default function GameDetailsForm({
                 </Select.Root>
               )}
             />
-            <Text color="crimson">
+            <Text color="crimson" size={"1"} mt="1">
               {errors.condition && "Este campo es requerido"}
             </Text>
           </Flex>
@@ -288,7 +290,7 @@ export default function GameDetailsForm({
                 </Select.Root>
               )}
             />
-            <Text color="crimson">
+            <Text color="crimson" size={"1"} mt="1">
               {errors.language_dependency && "Este campo es requerido"}
             </Text>
           </Flex>
@@ -314,7 +316,7 @@ export default function GameDetailsForm({
                 </Select.Root>
               )}
             />
-            <Text color="crimson">
+            <Text color="crimson" size={"1"} mt="1">
               {errors.language && "Este campo es requerido"}
             </Text>
           </Flex>
@@ -380,6 +382,7 @@ export default function GameDetailsForm({
           </Button>
         </Grid>
       </Card>
+      <Box height={"9"}></Box>
     </>
   );
 }

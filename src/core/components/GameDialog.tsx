@@ -1,5 +1,12 @@
 import React from "react";
-import { Flex, Text, Avatar, Dialog, Button } from "@radix-ui/themes";
+import {
+  Flex,
+  Text,
+  Avatar,
+  Dialog,
+  Button,
+  Separator,
+} from "@radix-ui/themes";
 import {
   Cross2Icon,
   ExternalLinkIcon,
@@ -14,10 +21,11 @@ import Link from "next/link";
 
 interface Props {
   game: ParsedThing;
-  handleSelectGame?: (game:ParsedThing) => void;
+  handleSelectGame?: (game: ParsedThing) => void;
+  isLast?: boolean;
 }
 
-export default function GameDialog({ game, handleSelectGame }: Props) {
+export default function GameDialog({ game, handleSelectGame, isLast }: Props) {
   const NAME_MAX_LENGTH = 30;
   const DESCRIPTION_MAX_LENGTH = 300;
   const {
@@ -36,9 +44,21 @@ export default function GameDialog({ game, handleSelectGame }: Props) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Text>{trimText(name, NAME_MAX_LENGTH)}</Text>
+        <Flex direction={"column"} gap={"4"} className="clickable">
+          <Flex align={"center"} gap={"3"}>
+            <Avatar src={image} fallback={name[0]} size={"5"} />
+            <Flex direction={"column"} className="clickable">
+              <Text weight={"bold"}>{trimText(name, NAME_MAX_LENGTH)}</Text>
+              <Text>{yearpublished}</Text>
+            </Flex>
+          </Flex>
+          {!isLast && (
+            <Separator orientation="horizontal" size={"4"} mb={"4"} />
+          )}
+        </Flex>
       </Dialog.Trigger>
       <Dialog.Content>
+        
         <Dialog.Title>
           <Flex
             align={"center"}
@@ -47,9 +67,9 @@ export default function GameDialog({ game, handleSelectGame }: Props) {
             justify={"between"}
           >
             {name} - {yearpublished}
-            <Dialog.Close>
-              <Cross2Icon />
-            </Dialog.Close>
+          <Dialog.Close>
+          <Cross2Icon />
+        </Dialog.Close>
           </Flex>
         </Dialog.Title>
 

@@ -5,7 +5,7 @@ import { ExternalLinkIcon, Cross2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import GameDialog from "./GameDialog";
 import { ParsedThing } from "../models/models";
-
+import { useState } from "react";
 interface GameCardI {
   game: ParsedThing;
   isLast?: boolean;
@@ -13,9 +13,19 @@ interface GameCardI {
 }
 
 const GameCard = ({ game, isLast, handleSelectGame }: GameCardI) => {
+  const [open, setOpen] = useState(false);
   const { id, name, yearpublished, image } = game;
+  const onOpenChange = (status: boolean) => {
+    console.log(status);
+    setOpen(status);
+  };
   return (
-    <Flex direction={"column"} gap={"4"} className="clickable">
+    <Flex
+      direction={"column"}
+      gap={"4"}
+      onClick={() => onOpenChange(true)}
+      className="clickable"
+    >
       <Flex align={"center"} gap={"3"}>
         <Avatar src={image} fallback={name[0]} size={"5"} />
         <Flex direction={"column"} className="clickable">
@@ -28,7 +38,6 @@ const GameCard = ({ game, isLast, handleSelectGame }: GameCardI) => {
                 />
               </div>
             </Text>
-            
           </Flex>
           <Text>{yearpublished}</Text>
         </Flex>
