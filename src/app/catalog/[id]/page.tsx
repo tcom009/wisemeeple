@@ -52,11 +52,18 @@ export default async function CatalogPage({
               : `Catalogo de ${userProfile.data?.first_name} ${userProfile.data?.last_name}`}
           </Text>
           {user.data?.user?.id === params.id && (
+            <>
             <Link className="no-underline" href={"/sell"}>
               <Button size={"1"}>
                 <PlusIcon /> Agregar
               </Button>
             </Link>
+            <Link className="no-underline" href={`/profile/${user.data?.user?.id}`}>
+            <Button size={"1"}>
+              <PlusIcon /> Perfil
+            </Button>
+          </Link>
+            </>
           )}
         </Flex>
         <CatalogList
