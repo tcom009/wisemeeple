@@ -45,18 +45,18 @@ export default async function CatalogPage({
       .eq("user", user.data.user?.id).single()  
       return data
   }
-  const currentUserCatalog = await getCurrentUserCatalog();
+  //const currentUserCatalog = await getCurrentUserCatalog();
   const catalogOwner= await getCatalogOwner()
-  const getUserProfile = async (id: string) => {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("profile_id", id)
-      .single();
-    return { data, error };
-  };
+  //const getUserProfile = async (id: string) => {
+  //   const { data, error } = await supabase
+  //     .from("profiles")
+  //     .select("*")
+  //     .eq("profile_id", id)
+  //     .single();
+  //   return { data, error };
+  // };
   
-  const userProfile = await getUserProfile(params.id);
+  //const userProfile = await getUserProfile(params.id);
   const getMatchUserCatalog = async () => {
     const { data } = await supabase
       .from("catalog")

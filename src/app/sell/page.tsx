@@ -2,6 +2,8 @@ import SellFormWizard from "./SellFormWizard";
 import { createClient } from "@/utils/supabase/server"; 
 import { redirect } from "next/navigation";
 import { Container } from "@radix-ui/themes";
+import Link from "next/link";
+import { Button } from "@radix-ui/themes";
 export const dynamic = 'force-dynamic'
 
 
@@ -29,7 +31,10 @@ export default async function SellPage() {
   }
   return (
     <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
+      <Link href={`/profile/${data.user?.id}}`}>
+      
       Crea tu perfil primero
+      </Link>
     </Container>
   );
 }
