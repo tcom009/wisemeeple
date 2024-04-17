@@ -79,8 +79,12 @@ export default function ProfileForm({
           .from("profiles")
           .update(data)
           .eq("profile_id", userData?.user?.id)
-
-      : await supabase.from("profiles").insert({...data, profile_id: userData?.user?.id,});
+      : await supabase.rpc("create_profile", {
+          ...data,
+          profile_id: userData?.user?.id,
+        });
+    // : await supabase.from("profiles").insert({...data, profile_id: userData?.user?.id,});
+    // add here database function
     if (result.error) {
       console.log(result.error);
       setPageStatus(PageStatus.ERROR);

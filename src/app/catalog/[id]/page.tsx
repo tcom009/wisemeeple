@@ -10,15 +10,10 @@ import {
   Button,
 } from "@radix-ui/themes";
 import { UserGame } from "@/core/models/models";
-import {
-  languageMap,
-  conditionMap,
-  languageDependencyMap,
-} from "@/core/data/gameDetails";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { trimText } from "@/core/lib/textUtils";
 import CatalogList from "./CatalogList";
+import ActionButton from "./ActionButton";
 export default async function CatalogPage({
   params,
 }: {
@@ -27,6 +22,31 @@ export default async function CatalogPage({
   const supabase = createClient();
 
   const user = await supabase.auth.getUser();
+  
+  const getCatalogOwner = async () =>  {
+    const getCatalogUser = await supabase 
+      .from('catalog')
+      .select('user')
+      .eq('id', params.id)
+      .single()
+    const catalogUser = getCatalogUser.data?.user
+    const { data } = await supabase
+      .from("profiles")
+      .select("first_name, last_name, phone, city, country")
+      .eq("profile_id", catalogUser)
+      .single()
+    return data
+  }
+
+  const getCurrentUserCatalog = async () => {
+    const { data } = await supabase
+      .from("catalog")
+      .select()
+      .eq("user", user.data.user?.id).single()  
+      return data
+  }
+  const currentUserCatalog = await getCurrentUserCatalog();
+  const catalogOwner= await getCatalogOwner()
   const getUserProfile = async (id: string) => {
     const { data, error } = await supabase
       .from("profiles")
@@ -35,24 +55,35 @@ export default async function CatalogPage({
       .single();
     return { data, error };
   };
-
+  
   const userProfile = await getUserProfile(params.id);
+  const getMatchUserCatalog = async () => {
+    const { data } = await supabase
+      .from("catalog")
+      .select()
+      .eq("user", user.data.user?.id).single()
+    if (data?.id === params.id){
+      return true
+    }
+    return false
+  }
+  const matchUserCatalog = await getMatchUserCatalog()
   const { data } = await supabase
     .from("user_games")
     .select("*")
-    .eq("owner_id", params.id);
+    .eq("catalog_id", params.id);
 
   if (data?.length !== 0 && data !== undefined && data !== null) {
     return (
       <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
         <Flex width={"100%"} justify={"between"} my="4">
           <Text size={"6"} weight={"bold"}>
-            {user.data.user?.id
+            {matchUserCatalog
               ? "Mi Catalogo"
-              : `Catalogo de ${userProfile.data?.first_name} ${userProfile.data?.last_name}`}
+              : `Catalogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`}
           </Text>
-          {user.data?.user?.id === params.id && (
-            <>
+          {matchUserCatalog && (
+            <Flex gap="2">
             <Link className="no-underline" href={"/sell"}>
               <Button size={"1"}>
                 <PlusIcon /> Agregar
@@ -60,20 +91,20 @@ export default async function CatalogPage({
             </Link>
             <Link className="no-underline" href={`/profile/${user.data?.user?.id}`}>
             <Button size={"1"}>
-              <PlusIcon /> Perfil
+              Mis Datos
             </Button>
           </Link>
-            </>
+            </Flex>
           )}
         </Flex>
         <CatalogList
           games={data}
-          user_id={user.data?.user?.id}
-          param_id={params.id}
+          userMatchsCatalog={matchUserCatalog}
         />
       </Container>
     );
   }
+  // No games found
   return (
     <Container>
       <Flex
@@ -87,20 +118,11 @@ export default async function CatalogPage({
           No se han encontrado juegos
         </Text>
         <Flex align={"center"} justify={"center"} width={"100%"}>
-          {user.data?.user?.id === params.id ? (
-            <Link className="no-underline" href={"/sell"}>
-              <Button>
-                <PlusIcon /> Agregar nuevo
-              </Button>
-            </Link>
-          ) : (
-            <Link
-              className="no-underline"
-              href={`/catalog/${user.data?.user?.id}`}
-            >
-              <Button>Ir a mi catalogo</Button>
-            </Link>
-          )}
+        <ActionButton 
+          matchsCatalog={matchUserCatalog}
+          user={user}
+          />
+
         </Flex>
       </Flex>
     </Container>

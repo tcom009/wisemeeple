@@ -11,10 +11,25 @@ export default async function SellPage() {
   if (!data?.user) {
     redirect("/login");
   }
+  
+  const profile = await supabase
+  .from("profiles")
+  .select("*")
+  .eq("profile_id", data.user.id)
+  .single();
+
+
+  if (profile.data?.profile_id) {
+    return (
+      <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
+        {" "}
+        <SellFormWizard />
+      </Container>
+    );
+  }
   return (
     <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
-      {" "}
-      <SellFormWizard />
+      Crea tu perfil primero
     </Container>
   );
 }

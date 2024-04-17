@@ -66,6 +66,15 @@ export default function GameDetailsForm({
     const { data } = await supabase.auth.getUser();
     return data;
   };
+  const getCatalogId = async () =>{
+    const user = await getUserData();
+    const { data }  = await supabase
+      .from("catalog")
+      .select()
+      .eq("user", user?.user?.id)
+      .single();
+    return data?.id;
+  }
   const [state, setState] = useState<StateT>({ pageState: PageStatus.IDLE });
   const { pageState } = state;
   const setPageStatus = (value: PageStatus) => {
@@ -103,6 +112,7 @@ export default function GameDetailsForm({
   const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
     setPageStatus(PageStatus.LOADING);
     const userData = await getUserData();
+    const catalogId = await getCatalogId();
     const data = {
       ...formData,
       price: +formData.price,
@@ -110,12 +120,13 @@ export default function GameDetailsForm({
       owner_id: userData?.user?.id,
       game_name: name,
       image,
+      catalog_id: catalogId ,
     };
     const result = await supabase.from("user_games").insert(data);
     if (result.error) {
       setPageStatus(PageStatus.ERROR);
     } else {
-      router.push(`/catalog/${userData?.user?.id}`);
+      router.push(`/catalog/${catalogId}`);
     }
   };
   const onChangeSwitch = (value: boolean) => {

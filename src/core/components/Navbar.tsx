@@ -7,6 +7,7 @@ import { createClient } from "@/utils/supabase/server";
 export default async function Navbar() {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
+  const catalogId = await supabase.from("catalog").select().eq("user", data?.user?.id).single();
   return (
     <Grid
       position={"fixed"}
@@ -65,7 +66,7 @@ export default async function Navbar() {
                   Cerrar sesion
                 </Button>
               </form>
-              <Link href={`/catalog/${data.user.id}`}>
+              <Link href={`/catalog/${catalogId.data?.id}`}>
                 <Button variant="outline" size="1">
                   {" "}
                   Mi catálogo
