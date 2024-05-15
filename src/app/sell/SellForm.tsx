@@ -4,7 +4,7 @@ import GamesTable from "@/core/components/GamesTable";
 import SearchForm from "./SearchForm";
 import { useState } from "react";
 import { ParsedThing } from "@/core/models/models";
-import { Container, Box, Flex, Grid } from "@radix-ui/themes";
+import { Box, Flex, Text } from "@radix-ui/themes";
 import Spinner from "@/core/components/Spinner";
 import { useWizard } from "react-use-wizard";
 import { PageStatus } from "@/core/models/models";
@@ -41,6 +41,9 @@ export default function SellForm({ setSelectedGame }: SellFormProps) {
   };
   return (
     <>
+      <Text weight={"bold"}>
+        1. Busca el juego que quieres vender.
+      </Text>
       <Box mt="4">
         <SearchForm setGames={setGames} setPageStatus={setPageStatus} />
       </Box>

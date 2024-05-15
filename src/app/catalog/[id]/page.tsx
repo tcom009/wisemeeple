@@ -20,54 +20,34 @@ export default async function CatalogPage({
   params: { id: string };
 }) {
   const supabase = createClient();
-
   const user = await supabase.auth.getUser();
-  
-  const getCatalogOwner = async () =>  {
-    const getCatalogUser = await supabase 
-      .from('catalog')
-      .select('user')
-      .eq('id', params.id)
-      .single()
-    const catalogUser = getCatalogUser.data?.user
+  const getCatalogOwner = async () => {
+    const getCatalogUser = await supabase
+      .from("catalog")
+      .select("user")
+      .eq("id", params.id)
+      .single();
+    const catalogUser = getCatalogUser.data?.user;
     const { data } = await supabase
       .from("profiles")
       .select("first_name, last_name, phone, city, country")
       .eq("profile_id", catalogUser)
-      .single()
-    return data
-  }
-
-  const getCurrentUserCatalog = async () => {
-    const { data } = await supabase
-      .from("catalog")
-      .select()
-      .eq("user", user.data.user?.id).single()  
-      return data
-  }
-  //const currentUserCatalog = await getCurrentUserCatalog();
-  const catalogOwner= await getCatalogOwner()
-  //const getUserProfile = async (id: string) => {
-  //   const { data, error } = await supabase
-  //     .from("profiles")
-  //     .select("*")
-  //     .eq("profile_id", id)
-  //     .single();
-  //   return { data, error };
-  // };
-  
-  //const userProfile = await getUserProfile(params.id);
+      .single();
+    return data;
+  };
+  const catalogOwner = await getCatalogOwner();
   const getMatchUserCatalog = async () => {
     const { data } = await supabase
       .from("catalog")
       .select()
-      .eq("user", user.data.user?.id).single()
-    if (data?.id === params.id){
-      return true
+      .eq("user", user.data.user?.id)
+      .single();
+    if (data?.id === params.id) {
+      return true;
     }
-    return false
-  }
-  const matchUserCatalog = await getMatchUserCatalog()
+    return false;
+  };
+  const matchUserCatalog = await getMatchUserCatalog();
   const { data } = await supabase
     .from("user_games")
     .select("*")
@@ -84,23 +64,15 @@ export default async function CatalogPage({
           </Text>
           {matchUserCatalog && (
             <Flex gap="2">
-            <Link className="no-underline" href={"/sell"}>
-              <Button size={"1"}>
-                <PlusIcon /> Agregar
-              </Button>
-            </Link>
-            <Link className="no-underline" href={`/profile/${user.data?.user?.id}`}>
-            <Button size={"1"}>
-              Mis Datos
-            </Button>
-          </Link>
+              <Link className="no-underline" href={"/sell"}>
+                <Button size={"1"}>
+                  <PlusIcon /> Agregar
+                </Button>
+              </Link>
             </Flex>
           )}
         </Flex>
-        <CatalogList
-          games={data}
-          userMatchsCatalog={matchUserCatalog}
-        />
+        <CatalogList games={data} userMatchsCatalog={matchUserCatalog} />
       </Container>
     );
   }
@@ -115,14 +87,12 @@ export default async function CatalogPage({
         gap={"3"}
       >
         <Text weight={"bold"} align={"center"}>
-          No se han encontrado juegos
+          {matchUserCatalog
+            ? `Tu catalogo se encuentra vacio 😔`
+            : `Este catalogo se encuentra vacio 😔`}
         </Text>
         <Flex align={"center"} justify={"center"} width={"100%"}>
-        <ActionButton 
-          matchsCatalog={matchUserCatalog}
-          user={user}
-          />
-
+          <ActionButton matchsCatalog={matchUserCatalog} user={user} />
         </Flex>
       </Flex>
     </Container>

@@ -4,7 +4,7 @@ import ProfileForm from "./ProfileForm";
 export default async function ProfilePage({
   params,
 }: {
-  params: { id: string };
+  params: { id: string};
 }) {
   const supabase = createClient();
   const user = await supabase.auth.getUser();

@@ -83,7 +83,7 @@ const GamesTable = ({ games, handleSelectGame }: GamesTableProps) => {
             mr={{ initial: "0", md: "4" }}
           >
             <Text weight={"bold"}>
-              Page {currentPage} of {totalPages}
+              Página {currentPage} de {totalPages}
             </Text>
 
             <Button onClick={previousPage} disabled={currentPage === 1}>

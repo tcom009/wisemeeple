@@ -136,11 +136,11 @@ export default function GameDetailsForm({
     <>
       <Grid columns={"1"} justify={"center"} align={"center"} gap={"2"} mt="5">
         {/* Title */}
-        <Flex justify="center" gap={"2"}>
+        <Flex justify="start" align={"center"} gap={"2"}>
           <Button variant={"outline"} onClick={() => previousStep()}>
             <ArrowLeftIcon />
           </Button>
-          <Heading>Agregar a mi catálogo</Heading>
+          <Text weight={"bold"}>2. Agrega detalles como precio, idioma, etc.</Text>
         </Flex>
         <Flex justify="center">
           <Text weight={"bold"} size="4">

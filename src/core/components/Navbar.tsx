@@ -1,13 +1,39 @@
-import { Flex, Grid, Text, Button, Box } from "@radix-ui/themes";
+import { Flex, Grid, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
-import { logout } from "@/app/login/actions";
 import { createClient } from "@/utils/supabase/server";
+import Menu from "./menu/Menu";
 export default async function Navbar() {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
-  const catalogId = await supabase.from("catalog").select().eq("user", data?.user?.id).single();
+  const getCatalogId = async () => {
+    const result = await supabase
+      .from("catalog")
+      .select()
+      .eq("user", data?.user?.id)
+      .single();
+    if (result.data) {
+      return result.data.id;
+    }
+    if (result.error) {
+      return null;
+    }
+  };
+
+  const getProfile = async () => {
+    const profile = await supabase
+      .from("profiles")
+      .select()
+      .eq("profile_id", data?.user?.id)
+      .single();
+    if (profile.data) {
+      return profile.data;
+    }
+    return null;
+  };
+  const catalogId = await getCatalogId();
+  const profile = await getProfile();
   return (
     <Grid
       position={"fixed"}
@@ -51,28 +77,11 @@ export default async function Navbar() {
       >
         {data?.user && !error && (
           <>
-            {/* <Flex align={"center"}>
-              <Text size={"1"}>¡Hola, {data.user.email}!</Text>
-            </Flex> */}
-            <Grid gap="2" align={"center"}>
-              <form>
-                <Button
-                  ml="1"
-                  formAction={logout}
-                  color={"red"}
-                  variant="outline"
-                  size={"1"}
-                >
-                  Cerrar sesion
-                </Button>
-              </form>
-              <Link href={`/catalog/${catalogId.data?.id}`}>
-                <Button variant="outline" size="1">
-                  {" "}
-                  Mi catálogo
-                </Button>
-              </Link>
-            </Grid>
+            {profile ? `Hola, ${profile.first_name}` : '¡Hola!'}
+            <Flex ml="2">
+              <Menu profileId={data.user.id} catalogId={catalogId} />
+            </Flex>
+            
           </>
         )}
       </Flex>

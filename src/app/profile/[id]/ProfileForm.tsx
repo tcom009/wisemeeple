@@ -10,8 +10,7 @@ import {
   Container,
 } from "@radix-ui/themes";
 
-import { PlusIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
@@ -19,6 +18,7 @@ import { PageStatus } from "@/core/models/models";
 import SmallSpinner from "@/core/components/SmallSpinner";
 import { useRouter } from "next/navigation";
 import { ProfileI } from "@/core/models/models";
+import { createProfileAndCatalog } from "./actions";
 interface ProfileFormProps {
   profile?: ProfileI;
   isEditing?: boolean;
@@ -64,33 +64,41 @@ export default function ProfileForm({
       country: profile?.country ?? "",
     },
   });
-
+  const getCatalogId = async () => {
+    const userData = await getUserData();
+    const { data } = await supabase
+      .from("catalog")
+      .select("id")
+      .eq("user", userData?.user?.id)
+      .single();
+    return data?.id;
+  };
   const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
-    console.log(formData);
     setPageStatus(PageStatus.LOADING);
     const userData = await getUserData();
+
     const data = {
       ...formData,
       country: formData.country.toLocaleUpperCase(),
       city: formData.city.toLocaleUpperCase(),
     };
-    const result = isEditing
-      ? await supabase
-          .from("profiles")
-          .update(data)
-          .eq("profile_id", userData?.user?.id)
-      : await supabase.rpc("create_profile", {
-          ...data,
-          profile_id: userData?.user?.id,
-        });
-    // : await supabase.from("profiles").insert({...data, profile_id: userData?.user?.id,});
-    // add here database function
-    if (result.error) {
-      console.log(result.error);
-      setPageStatus(PageStatus.ERROR);
-    } else {
-      console.log(result);
-      setPageStatus(PageStatus.SUCCESS);
+
+    if (isEditing) {
+      const result = await supabase
+        .from("profiles")
+        .update(data)
+        .eq("profile_id", userData?.user?.id);
+      if (result.error) {
+        setPageStatus(PageStatus.ERROR);
+      } else {
+        setPageStatus(PageStatus.SUCCESS);
+      }
+    }
+    if (!isEditing && userData?.user?.id !== undefined) {
+      await createProfileAndCatalog({
+        ...data,
+        profile_id: userData?.user?.id,
+      });
     }
   };
 
