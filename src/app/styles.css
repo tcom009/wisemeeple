@@ -56,7 +56,9 @@ background-position: center center
 .z-index-1 {
   z-index: 1;
 }
-
+.z-index-full {
+z-index: 9999;
+}
 .clickable {
   cursor: pointer;
 }
@@ -72,3 +74,4 @@ background-position: center center
 .search-list:hover{
   background-color: var(--violet-10);
 }
+

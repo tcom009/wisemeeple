@@ -1,6 +1,6 @@
 "use client";
 import { useClickOutside } from "core/hooks/useClickOutside";
-import { PaperPlaneIcon } from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { Card, Flex, Text, Badge } from "@radix-ui/themes";
 import { capitalize } from "core/lib/textUtils";
 import { useKeyPress } from "@/core/hooks/useKeyPress";
@@ -84,12 +84,13 @@ const LinkItem = ({
     >
       <Text key={game.id} weight={"bold"} as={"div"}>
         {" "}
+        <MagnifyingGlassIcon/>
+        
         {capitalize(game.name)}
       </Text>
       {selectedIndex === index && (
         <Badge variant={"surface"}>
           <PaperPlaneIcon />
-          <Text weight={"bold"}> Enter to Generate</Text>
         </Badge>
       )}
     </Flex>

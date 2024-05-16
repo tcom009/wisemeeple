@@ -5,9 +5,11 @@ import GameCard from "@/core/components/GameCard";
 import { Card, Flex, ScrollArea, Button, Text, Grid } from "@radix-ui/themes";
 import { useState, useEffect } from "react";
 import { TriangleLeftIcon, TriangleRightIcon } from "@radix-ui/react-icons";
-
+import Link from "next/link";
+import GameDialog from "./GameDialog";
 interface GamesTableProps {
   games: ParsedThing[] | [];
+  handleSelectGame: (game: ParsedThing) => void;
 }
 
 interface StateI {
@@ -17,9 +19,9 @@ interface StateI {
   elementsPerPage: number;
 }
 
-const scrollHeight = { height: "75vh" };
+const scrollHeight = { height: "60vh" };
 
-const GamesTable = ({ games }: GamesTableProps) => {
+const GamesTable = ({ games, handleSelectGame }: GamesTableProps) => {
   const initialState = {
     currentPage: 1,
     totalPages: games.length <= 10 ? 1 : Math.ceil(games.length / 10),
@@ -47,21 +49,28 @@ const GamesTable = ({ games }: GamesTableProps) => {
 
   if (games.length === 0) {
     return (
-      <Flex direction={"column"} height={"9"} align={"center"} justify={"center"}>
-        <Text weight={"bold"} align={"center"}>
-          {" "}
-          No games found!{" "}
-        </Text>
-      </Flex>
+      <Card>
+        <Flex
+          direction={"column"}
+          height={"9"}
+          align={"center"}
+          justify={"center"}
+        >
+          <Text weight={"bold"} align={"center"}>
+            {" "}
+            ¡No se han encontrado juegos!{" "}
+          </Text>
+        </Flex>
+      </Card>
     );
   }
 
   return (
     <Card>
       <Grid columns={"2"} align={"center"}>
-        <Flex align={"center"} mb={"3"} height={"9"}>
+        <Flex align={"center"} mb={"3"} height={"8"}>
           <Text weight={"bold"} size={"4"} align={"left"}>
-            Now, choose a game from the results:
+            Selecciona un juego
           </Text>
         </Flex>
         {totalPages > 1 && (
@@ -74,7 +83,7 @@ const GamesTable = ({ games }: GamesTableProps) => {
             mr={{ initial: "0", md: "4" }}
           >
             <Text weight={"bold"}>
-              Page {currentPage} of {totalPages}
+              Página {currentPage} de {totalPages}
             </Text>
 
             <Button onClick={previousPage} disabled={currentPage === 1}>
@@ -95,10 +104,11 @@ const GamesTable = ({ games }: GamesTableProps) => {
       >
         <Flex direction={"column"}>
           {showingGames.map((game: ParsedThing, index: number) => (
-            <GameCard
-              key={game?.id}
-              isLast={index === showingGames.length - 1}
+            <GameDialog
+            key={game.id}  
+            isLast={index === showingGames.length - 1}
               game={game}
+              handleSelectGame={handleSelectGame}
             />
           ))}
         </Flex>

@@ -18,14 +18,11 @@ export default function SearchBox({
 
 
   return (
-    <>
-      <TextField.Root size={"3"} mt={"5"}>
+      <TextField.Root size={"3"}>
         <TextField.Slot>
-          <Flex align="center">
-            <IconButton size="3" variant={"ghost"} onClick={onSubmit}>
-              <MagnifyingGlassIcon width={"20"} height={"20"} />
-            </IconButton>
-          </Flex>
+          <IconButton size="3" variant={"ghost"} onClick={onSubmit}>
+            <MagnifyingGlassIcon width={"20"} height={"20"} />
+          </IconButton>
         </TextField.Slot>
         <TextField.Input
           placeholder="Wingspan... "
@@ -39,13 +36,13 @@ export default function SearchBox({
           required
         />
         {query.length !== 0 && (
-          <TextField.Slot pr="3">
+          <TextField.Slot>
             <IconButton size="2" variant="ghost" onClick={() => setQuery("")}>
               <Cross2Icon height="16" width="16" />
             </IconButton>
           </TextField.Slot>
         )}
       </TextField.Root>
-    </>
+
   );
 }

@@ -1,22 +1,31 @@
 import React from "react";
-import { Flex, Text, Avatar, Dialog, Button } from "@radix-ui/themes";
+import {
+  Flex,
+  Text,
+  Avatar,
+  Dialog,
+  Button,
+  Separator,
+} from "@radix-ui/themes";
 import {
   Cross2Icon,
   ExternalLinkIcon,
   TimerIcon,
   PersonIcon,
-  CalendarIcon
+  CalendarIcon,
+  Pencil1Icon,
 } from "@radix-ui/react-icons";
 import { trimText, trimAndClean } from "@/core/lib/textUtils";
 import { ParsedThing } from "@/core/models/models";
-import { createPrompt } from "core/lib/createPrompt";
 import Link from "next/link";
 
 interface Props {
   game: ParsedThing;
+  handleSelectGame?: (game: ParsedThing) => void;
+  isLast?: boolean;
 }
 
-export default function GameDialog({ game }: Props) {
+export default function GameDialog({ game, handleSelectGame, isLast }: Props) {
   const NAME_MAX_LENGTH = 30;
   const DESCRIPTION_MAX_LENGTH = 300;
   const {
@@ -27,7 +36,7 @@ export default function GameDialog({ game }: Props) {
     description,
     minplayers,
     maxplayers,
-    playingtime,
+    boardgamedesigner,
     minplaytime,
     maxplaytime,
     minage,
@@ -35,9 +44,21 @@ export default function GameDialog({ game }: Props) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Text>{trimText(name, NAME_MAX_LENGTH)}</Text>
+        <Flex direction={"column"} gap={"4"} className="clickable">
+          <Flex align={"center"} gap={"3"}>
+            <Avatar src={image} fallback={name[0]} size={"5"} />
+            <Flex direction={"column"} className="clickable">
+              <Text weight={"bold"}>{trimText(name, NAME_MAX_LENGTH)}</Text>
+              <Text>{yearpublished}</Text>
+            </Flex>
+          </Flex>
+          {!isLast && (
+            <Separator orientation="horizontal" size={"4"} mb={"4"} />
+          )}
+        </Flex>
       </Dialog.Trigger>
       <Dialog.Content>
+        
         <Dialog.Title>
           <Flex
             align={"center"}
@@ -46,9 +67,9 @@ export default function GameDialog({ game }: Props) {
             justify={"between"}
           >
             {name} - {yearpublished}
-            <Dialog.Close>
-              <Cross2Icon />
-            </Dialog.Close>
+          <Dialog.Close>
+          <Cross2Icon />
+        </Dialog.Close>
           </Flex>
         </Dialog.Title>
 
@@ -56,31 +77,40 @@ export default function GameDialog({ game }: Props) {
           direction={"column"}
           align={"center"}
           justify={"center"}
-          gap={"5"}
+          gap={"2"}
         >
           <Avatar src={image} fallback={name[0]} size={"9"} />
+          <Flex gap={"2"} align={"center"} justify={"center"}>
+            <Pencil1Icon />
+            <Text weight={"bold"}>{boardgamedesigner.join(", ")}</Text>
+          </Flex>
         </Flex>
         <Flex
           direction={"row"}
           align={"center"}
           justify={"center"}
           gap={"4"}
-          p={"4"}
+          my="2"
         >
           <Flex gap={"2"} align={"center"}>
-
-          <TimerIcon/>{maxplaytime === minplaytime ? "--" : `${minplaytime} - ${maxplaytime}`}
+            <TimerIcon />
+            {maxplaytime === minplaytime
+              ? "--"
+              : `${minplaytime} - ${maxplaytime}`}
           </Flex>
           <Flex gap={"2"} align={"center"}>
-
-          <PersonIcon/>{minplayers ?? ""}-{maxplayers ?? ""}
+            <PersonIcon />
+            {minplayers ?? ""}-{maxplayers ?? ""}
           </Flex>
           <Flex gap={"2"} align={"center"}>
-
-          <CalendarIcon/>{`+${minage}` ?? ""}
+            <CalendarIcon />
+            {`+${minage}` ?? ""}
           </Flex>
         </Flex>
         <Dialog.Description>
+          <Flex>
+            <Text weight={"bold"}>Descripcion desde boardgamegeek.com:</Text>
+          </Flex>
           {trimAndClean(description ?? "", DESCRIPTION_MAX_LENGTH)}
           <Link
             href={`https://boardgamegeek.com/boardgame/${id}`}
@@ -90,9 +120,11 @@ export default function GameDialog({ game }: Props) {
           </Link>
         </Dialog.Description>
         <Flex direction={"row"} gap={"3"} align={"center"} justify={"center"}>
-          <Link href={`/generate/${id}`}>
-          <Button>Get Recommendations</Button>
-          </Link>
+          <Dialog.Close>
+            <Button onClick={() => handleSelectGame && handleSelectGame(game)}>
+              Seleccionar Juego
+            </Button>
+          </Dialog.Close>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

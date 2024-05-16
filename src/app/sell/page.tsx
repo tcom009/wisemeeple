@@ -1,24 +1,56 @@
-import { Flex, Grid, Text, Container } from "@radix-ui/themes";
-import SellForm from "app/sell/SellForm";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import SellFormWizard from "./SellFormWizard";
+import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-
-export const dynamic = 'force-dynamic'
+import { Container, Flex, Text, Button } from "@radix-ui/themes";
+import Link from "next/link";
+export const dynamic = "force-dynamic";
 
 export default async function SellPage() {
-  const supabase = createServerComponentClient({ cookies });
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data?.user) {
+    redirect("/login");
+  }
 
-  if (!session) {
-    redirect("/unauthenticated");
+  const profile = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("profile_id", data.user.id)
+    .single();
+
+  if (profile.data?.profile_id) {
+    return (
+      <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
+        {" "}
+        <SellFormWizard />
+      </Container>
+    );
   }
   return (
-    <Container size={{ lg: "3", md: "3", sm: "1", xs: "1" }}>
-      {" "}
-      <SellForm />
+    <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
+      <Flex
+        width={"100%"}
+        justify={"center"}
+        mt={"9"}
+        direction={"column"}
+        gap={"3"}
+      >
+        <Text weight={"bold"} align={"center"}>
+          Antes de comenzar a publicar juegos, crea tu perfil.
+        </Text>
+        <Text align={"center"}>
+          Es la clave para que los compradores interesados se pongan en contacto
+          contigo.
+        </Text>
+        <Text align={"center"}>¡Hazlo ahora y comienza a vender!</Text>
+        <Flex align={"center"} justify={"center"} width={"100%"}>
+            <Link href={`/profile/${data.user?.id}`} className="no-underline">
+          <Button>
+              Crear perfil
+          </Button>
+            </Link>
+        </Flex>
+      </Flex>
     </Container>
   );
 }
