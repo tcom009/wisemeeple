@@ -21,7 +21,7 @@ import SmallSpinner from "@/core/components/SmallSpinner";
 import { useRouter } from "next/navigation";
 import { ProfileI } from "@/core/models/models";
 import { createProfileAndCatalog } from "./actions";
-import { countries } from "@/core/data/countries";
+import { countries } from "core/data/countries";
 
 interface ProfileFormProps {
   profile?: ProfileI;
