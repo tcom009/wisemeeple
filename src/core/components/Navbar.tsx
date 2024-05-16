@@ -1,12 +1,39 @@
-import { Flex, Grid, Text, Button, Box } from "@radix-ui/themes";
+import { Flex, Grid, Text } from "@radix-ui/themes";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
-import { logout } from "@/app/login/actions";
 import { createClient } from "@/utils/supabase/server";
+import Menu from "./menu/Menu";
 export default async function Navbar() {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
+  const getCatalogId = async () => {
+    const result = await supabase
+      .from("catalog")
+      .select()
+      .eq("user", data?.user?.id)
+      .single();
+    if (result.data) {
+      return result.data.id;
+    }
+    if (result.error) {
+      return null;
+    }
+  };
+
+  const getProfile = async () => {
+    const profile = await supabase
+      .from("profiles")
+      .select()
+      .eq("profile_id", data?.user?.id)
+      .single();
+    if (profile.data) {
+      return profile.data;
+    }
+    return null;
+  };
+  const catalogId = await getCatalogId();
+  const profile = await getProfile();
   return (
     <Grid
       position={"fixed"}
@@ -22,8 +49,6 @@ export default async function Navbar() {
           width={"100%"}
           height={"100%"}
           justify={"center"}
-          mt={{ sm: "1", xs: "1", lg: "0", md: "0", xl: "0" }}
-          // mr={{ sm: "2", xs: "2", initial: "2" }}
           align={"center"}
           ml={{ xl: "9", lg: "7", md: "5", sm: "5", xs: "5", initial: "0" }}
           gap={"2"}
@@ -39,42 +64,17 @@ export default async function Navbar() {
         </Flex>
       </Link>
 
-      <Flex
-        align={"center"}
-        justify={{
-          lg: "center",
-          md: "center",
-          sm: "center",
-          xs: "center",
-          initial: "center",
-        }}
-        direction={{
-          lg: "row",
-          md: "row",
-          sm: "row",
-          xs: "row",
-          initial: "column",
-        }}
-      >
+      <Flex align={"center"} justify={"center"} direction={"row"}>
         {data?.user && !error && (
           <>
-          <Flex align={"center"}>
-            <Text size={"1"}>¡Hola, {data.user.email}!</Text>
-          </Flex>
-        <form>
-        <Button
-          ml="1"
-          formAction={logout}
-          color={"red"}
-          variant="outline"
-          size={"1"}
-        >
-          Cerrar sesion
-        </Button>
-      </form>
+            <Text size={{ xl: "5", lg: "5", md: "1", sm: "1", xs: "1", initial:"1"}}>
+              {profile ? `Hola, ${profile.first_name}` : "¡Hola!"}
+            </Text>
+            <Flex ml="2">
+              <Menu profileId={data.user.id} catalogId={catalogId} />
+            </Flex>
           </>
         )}
-        
       </Flex>
     </Grid>
   );

@@ -15,7 +15,7 @@ export default async function Home() {
             as={"h1"}
           >
             {" "}
-            ¡Vende tus boardgames gratis!
+            ¡Vende tus juegos de mesa más facil!
           </Heading>
           <Text
             as={"p"}
@@ -24,7 +24,7 @@ export default async function Home() {
             weight={"bold"}
             size={{ lg: "5", md: "5", sm: "3", xs: "1" }}
           >
-            Crea tu catalogo de boardgames y gana dinero
+            Crea tu catálogo y compartelo con tus amigos y grupos de juegos de mesa 🎲
           </Text>
           <Flex align={"center"} justify={"center"} width={"100%"}> 
           <Link href={data?.user ? "/sell" : "/login"}>

@@ -10,7 +10,6 @@ import { searchGames } from "@/core/lib/searchGames";
 import { searchCleaner } from "@/core/lib/searchCleaner";
 import { fullGameParser } from "@/core/lib/fullGameParser";
 import { getMultipleGames } from "@/core/lib/getMultipleGames";
-import { PageStatus } from "@/core/models/models";
 
 interface StateI {
   isOpen: boolean;
@@ -19,77 +18,107 @@ interface StateI {
     id: string;
     name: string;
   };
-  query: string;
 }
 
 const initalState: StateI = {
   isOpen: false,
   error: false,
-  query: "",
   suggestedQuery: {
     id: "",
     name: "",
   },
 };
 interface SearchFormI {
-  setPageStatus: (status: PageStatus) => void;
   setGames: (games: any) => void;
 }
 // TODO:  refactor onKeyPress for searchbox
-export default function SearchForm({ setGames, setPageStatus }: SearchFormI) {
+export default function SearchForm({ setGames }: SearchFormI) {
   const [state, setState] = useState<StateI>(initalState);
-  const { error, isOpen, query } = state;
-  
+  const { error, isOpen } = state;
+  const [filteredGames, query, handleChange, setQuery] = useSearch(
+    gamesList,
+    predicate,
+    { debounce: 200 }
+  );
+
   const onSubmit = async () => {
     if (query) {
-      setPageStatus(PageStatus.LOADING);
       const data = await searchGames(query);
       const cleanData = searchCleaner(data, query);
       const games = await getMultipleGames(cleanData);
       const cleanGames = games.map(fullGameParser);
+      console.log(cleanGames);
       setGames(cleanGames);
-      setPageStatus(PageStatus.SUCCESS);
-      if (data?.items === undefined) {
-        setPageStatus(PageStatus.ERROR);
-      }
     } else {
       setState({ ...state, error: true });
     }
   };
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState((prevState) => ({
-      ...prevState,
-      query: event.target.value,
-    }));
-  };
 
-  const setQuery = (value: string) => {
-    setState((prevState) => ({
-      ...prevState,
-      query: value,
-    }));
+  const onListSubmit = async (id: string) => {
+    setState({ ...state, isOpen: false });
+    const game = await getSingleGame(id);
+    const parsedGame = await fullGameParser(game);
+    console.log([parsedGame]);
+    setGames([parsedGame]);
   };
 
   const handleKeyPress = (event: any) => {
     if (event.key === "Enter" && !isOpen) {
       onSubmit();
     }
+    if (event.key === "Escape") {
+      setState({ ...state, isOpen: false });
+    }
   };
+
+  const closeOnClickOutside = () => setState({ ...state, isOpen: false });
+
+  useEffect(() => {
+    if (query.length !== 0) {
+      setState((prevState) => ({ ...prevState, isOpen: true, error: false }));
+    }
+    if (filteredGames.length === 0) {
+      setState((prevState) => ({ ...prevState, isOpen: false }));
+    }
+  }, [query, filteredGames]);
 
   return (
     <>
       <SearchBox
         onSubmit={onSubmit}
-        handleChange={handleOnChange}
+        handleChange={handleChange}
         handleKeyPress={handleKeyPress}
         setQuery={setQuery}
         query={query}
       />
+      <Flex position={"relative"}>
+        {filteredGames.length !== 0 && isOpen && (
+          <Flex
+            position={"absolute"}
+            align={"center"}
+            justify={"center"}
+            className="z-index-full"
+            width={"100%"}
+            top={"100%"}
+          >
+            <Box width={"100%"}>
+              <SearchList
+                filteredGames={filteredGames}
+                closeOnClickOutside={closeOnClickOutside}
+                handleSubmit={onListSubmit}
+              />
+            </Box>
+          </Flex>
+        )}
+      </Flex>
+
       {error && (
         <Text as={"span"} color={"crimson"} size={"2"} mt={"2"}>
-          Por favor, ingresa el nombre de un juego
+          Please enter a boardgame name
         </Text>
       )}
     </>
+    //</Flex>
+    // </Flex>
   );
 }
