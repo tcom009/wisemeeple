@@ -44,10 +44,10 @@ export default function SellForm({ setSelectedGame }: SellFormProps) {
       <Text weight={"bold"}>
         1. Busca el juego que quieres vender.
       </Text>
-      <Box mt="4">
+      <Box mt="4" px={{lg:"9", md:"9", sm:"9"}}>
         <SearchForm setGames={setGames} setPageStatus={setPageStatus} />
       </Box>
-      <Box mt="4">
+      <Box mt="4" px={{lg:"9", md:"9", sm:"9"}}>
         {pageStatus === PageStatus.SUCCESS && (
           <GamesTable handleSelectGame={handleSelectGame} games={games} />
         )}{" "}

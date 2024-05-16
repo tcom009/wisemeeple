@@ -64,24 +64,15 @@ export default async function Navbar() {
         </Flex>
       </Link>
 
-      <Flex
-        align={"center"}
-        justify={"center"}
-        direction={{
-          lg: "row",
-          md: "row",
-          sm: "row",
-          xs: "row",
-          initial: "column",
-        }}
-      >
+      <Flex align={"center"} justify={"center"} direction={"row"}>
         {data?.user && !error && (
           <>
-            {profile ? `Hola, ${profile.first_name}` : '¡Hola!'}
+            <Text size={{ xl: "5", lg: "5", md: "1", sm: "1", xs: "1", initial:"1"}}>
+              {profile ? `Hola, ${profile.first_name}` : "¡Hola!"}
+            </Text>
             <Flex ml="2">
               <Menu profileId={data.user.id} catalogId={catalogId} />
             </Flex>
-            
           </>
         )}
       </Flex>

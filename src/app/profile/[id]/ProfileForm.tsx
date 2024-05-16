@@ -8,6 +8,8 @@ import {
   Grid,
   Callout,
   Container,
+  Select,
+  Flex,
 } from "@radix-ui/themes";
 
 import { InfoCircledIcon } from "@radix-ui/react-icons";
@@ -19,6 +21,8 @@ import SmallSpinner from "@/core/components/SmallSpinner";
 import { useRouter } from "next/navigation";
 import { ProfileI } from "@/core/models/models";
 import { createProfileAndCatalog } from "./actions";
+import { countries } from "@/core/data/countries";
+
 interface ProfileFormProps {
   profile?: ProfileI;
   isEditing?: boolean;
@@ -47,13 +51,16 @@ export default function ProfileForm({
   };
   const [state, setState] = useState<StateT>({ pageState: PageStatus.IDLE });
   const { pageState } = state;
+  const getCountry = (countryCode: string): string => {
+    const country = countries.find((country) => country.value === countryCode);
+    return `${country?.flag} ${country?.label}`;
+  };
   const setPageStatus = (value: PageStatus) => {
     setState((prevState) => ({ ...prevState, pageState: value }));
   };
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -91,6 +98,7 @@ export default function ProfileForm({
       if (result.error) {
         setPageStatus(PageStatus.ERROR);
       } else {
+
         setPageStatus(PageStatus.SUCCESS);
       }
     }
@@ -226,25 +234,35 @@ export default function ProfileForm({
               </Text>
             </Box>
             <Box>
-              <Text weight={"bold"}>Pais</Text>
-              <Controller
-                name="country"
-                control={control}
-                rules={{
-                  required: { value: true, message: "Este campo es requerido" },
-                }}
-                render={({ field }) => (
-                  <TextField.Root>
-                    <TextField.Input
-                      type="text"
-                      height={"16"}
-                      placeholder="Pais"
-                      {...field}
-                      required
-                    />
-                  </TextField.Root>
-                )}
-              />
+              <Text weight={"bold"}>Pais* </Text>
+              <Text size={'2'}>
+              {profile?.country && `Actual: ${getCountry(profile?.country)}`}
+              </Text>
+              <Flex direction={"column"} width={"100%"}>
+                <Controller
+                  name="country"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select.Root
+                      defaultValue={profile?.country && getCountry(profile?.country)}
+                      onValueChange={field.onChange}
+                    >
+                      <Select.Trigger />
+                      <Select.Content position="popper">
+                        {countries.map((country) => (
+                          <Select.Item
+                            key={country.value}
+                            value={country.value}
+                          >
+                            {`${country.flag} ${country.label}`}
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select.Root>
+                  )}
+                />
+              </Flex>
               <Text color="crimson" size={"1"} mt="1">
                 {errors.country?.message && errors.country.message}
               </Text>

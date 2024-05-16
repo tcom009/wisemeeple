@@ -9,7 +9,6 @@ import {
   Avatar,
   Button,
 } from "@radix-ui/themes";
-import { UserGame } from "@/core/models/models";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import CatalogList from "./CatalogList";

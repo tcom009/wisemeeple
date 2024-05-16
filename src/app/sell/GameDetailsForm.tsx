@@ -39,6 +39,7 @@ import { useState } from "react";
 import { PageStatus } from "@/core/models/models";
 import SmallSpinner from "@/core/components/SmallSpinner";
 import { useRouter } from "next/navigation";
+
 interface GameDetailsFormProps {
   selectedGame: ParsedThing;
   isEditing?: boolean;
@@ -127,6 +128,7 @@ export default function GameDetailsForm({
       setPageStatus(PageStatus.ERROR);
     } else {
       router.push(`/catalog/${catalogId}`);
+      router.refresh();
     }
   };
   const onChangeSwitch = (value: boolean) => {
@@ -140,7 +142,7 @@ export default function GameDetailsForm({
           <Button variant={"outline"} onClick={() => previousStep()}>
             <ArrowLeftIcon />
           </Button>
-          <Text weight={"bold"}>2. Agrega detalles como precio, idioma, etc.</Text>
+          <Text weight={"bold"}>2. Agrega el precio y otros detalles de tu juego.</Text>
         </Flex>
         <Flex justify="center">
           <Text weight={"bold"} size="4">

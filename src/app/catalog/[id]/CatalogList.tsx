@@ -20,6 +20,8 @@ import {
 import { TrashIcon } from "@radix-ui/react-icons";
 import { trimText } from "@/core/lib/textUtils";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import SmallSpinner from "@/core/components/SmallSpinner";
 interface CatalogListProps {
   games: UserGame[];
   userMatchsCatalog: boolean;
@@ -29,13 +31,16 @@ export default function CatalogList({
   games,
   userMatchsCatalog,
 }: CatalogListProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const MAX_TITLE_LENGTH = 30;
   const supabase = createClient();
   const deleteGame = async (id: string) => {
+    setIsLoading(true);
     const { error } = await supabase.from("user_games").delete().eq("id", id);
     if (error) {
       console.error(error);
+      setIsLoading(false);
     }
     router.refresh();
   };
@@ -97,23 +102,21 @@ export default function CatalogList({
                 {userMatchsCatalog && (
                   <>
                     {" "}
-                    
                     <AlertDialog.Root>
                       <AlertDialog.Trigger>
-                      <Button
-                      size="1"
-                      color="red"
-                      
-                    >
-                      {" "}
-                      <TrashIcon />
-                      Eliminar de mi catalogo
-                    </Button>
+                        <Button size="1" color="red">
+                          {" "}
+                          <TrashIcon />
+                          Eliminar
+                        </Button>
                       </AlertDialog.Trigger>
-                      <AlertDialog.Content >
-                        <AlertDialog.Title>Eliminar {game.game_name}</AlertDialog.Title>
+                      <AlertDialog.Content>
+                        <AlertDialog.Title>
+                          Eliminar {game.game_name}
+                        </AlertDialog.Title>
                         <AlertDialog.Description size="2">
-                          ¿Estás seguro de eliminar {game.game_name} de tu catálogo?
+                          ¿Estás seguro de eliminar {game.game_name} de tu
+                          catálogo?
                         </AlertDialog.Description>
 
                         <Flex gap="3" mt="4" justify="end">
@@ -122,11 +125,15 @@ export default function CatalogList({
                               Cancelar
                             </Button>
                           </AlertDialog.Cancel>
-                          <AlertDialog.Action>
-                            <Button variant="solid" color="red" onClick={() => deleteGame(game.id)}>
-                            <TrashIcon /> Eliminar
-                            </Button>
-                          </AlertDialog.Action>
+
+                          <Button
+                            variant="solid"
+                            color="red"
+                            onClick={() => deleteGame(game.id)}
+                          >
+                            <TrashIcon />{" "}
+                            {isLoading ? <SmallSpinner /> : "Eliminar"}
+                          </Button>
                         </Flex>
                       </AlertDialog.Content>
                     </AlertDialog.Root>
