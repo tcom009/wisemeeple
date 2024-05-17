@@ -41,7 +41,7 @@ export default async function CatalogPage({
       .select()
       .eq("user", user.data.user?.id)
       .single();
-    if (data?.id === params.id) {
+    if (data?.id.toString() === params.id) {
       return true;
     }
     return false;
