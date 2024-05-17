@@ -20,8 +20,9 @@ import {
 import { TrashIcon } from "@radix-ui/react-icons";
 import { trimText } from "@/core/lib/textUtils";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SmallSpinner from "@/core/components/SmallSpinner";
+
 interface CatalogListProps {
   games: UserGame[];
   userMatchsCatalog: boolean;
@@ -39,10 +40,10 @@ export default function CatalogList({
     setIsLoading(true);
     const { error } = await supabase.from("user_games").delete().eq("id", id);
     if (error) {
-      console.error(error);
       setIsLoading(false);
     }
     router.refresh();
+    setInterval(() => setIsLoading(false), 3000);
   };
   const formatNumber = (number: number) =>
     (Math.round(number * 100) / 100).toFixed(2);
@@ -56,7 +57,7 @@ export default function CatalogList({
           initial: "1",
         }}
         gap={"6"}
-        px="9"
+        px={{xl:"9", md:"9", sm:"4",lg:"9", xs:"4"}}
         py="3"
       >
         {games?.map((game: UserGame) => {
@@ -70,32 +71,46 @@ export default function CatalogList({
                     size={"9"}
                   />
                 </Flex>
-                <Grid columns={"2"}>
-                  <Flex justify={"start"} align={"center"} grow={"1"}>
-                    <Text weight={"bold"} size={"5"}>
-                      {trimText(game.game_name, MAX_TITLE_LENGTH)}
-                    </Text>
-                  </Flex>
-                  <Flex
-                    width={"100%"}
-                    justify={"center"}
-                    align={"center"}
-                    grow={"0"}
-                  >
-                    <Text weight={"bold"} size={"7"}>
-                      ${formatNumber(game.price)}
-                    </Text>
-                  </Flex>
-                </Grid>
-                <Flex direction={"column"} justify={"center"}>
-                  <Text weight={"bold"} size={"2"}>
-                    {languageMap.get(game.language)?.toLocaleUpperCase()}
-                  </Text>
 
+                <Flex justify={"start"} align={"center"} grow={"1"}>
+                  <Text weight={"bold"} size={"5"}>
+                    {trimText(game.game_name, MAX_TITLE_LENGTH)}
+                  </Text>
+                </Flex>
+
+                <Flex direction={"column"} justify={"center"}>
+                  <Grid columns={"2"}>
+                  <Flex
+                      width={"100%"}
+                      align={"center"}
+                      grow={"0"}
+                    >
+
+                    <Text weight={"bold"} size={"2"}>
+                      🔤 {languageMap.get(game.language)?.toLocaleUpperCase()}
+                    </Text>
+                    </Flex>
+                    <Flex
+                      width={"100%"}
+                      justify={"end"}
+                     
+                      grow={"0"}
+                    >
+                      <Text weight={"bold"} size={"6"}>
+                        ${formatNumber(game.price)}
+                      </Text>
+                    </Flex>
+                  </Grid>
                   <Text>{conditionMap.get(game.condition)}</Text>
                   <Text>
                     {languageDependencyMap.get(game.language_dependency)}
                   </Text>
+                  {game.observations && (
+                    <>
+                      <Text weight={"bold"}>Observaciones: </Text>
+                      <Text size={"2"}>{game.observations}</Text>
+                    </>
+                  )}
                 </Flex>
               </Flex>
               <Flex width={"100%"} justify={"center"}>
@@ -125,11 +140,11 @@ export default function CatalogList({
                               Cancelar
                             </Button>
                           </AlertDialog.Cancel>
-
                           <Button
                             variant="solid"
                             color="red"
                             onClick={() => deleteGame(game.id)}
+                            disabled={isLoading}
                           >
                             <TrashIcon />{" "}
                             {isLoading ? <SmallSpinner /> : "Eliminar"}

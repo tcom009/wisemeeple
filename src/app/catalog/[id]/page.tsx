@@ -13,6 +13,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import CatalogList from "./CatalogList";
 import ActionButton from "./ActionButton";
+import ContactSection from "./ContactSection";
 export default async function CatalogPage({
   params,
 }: {
@@ -41,7 +42,7 @@ export default async function CatalogPage({
       .select()
       .eq("user", user.data.user?.id)
       .single();
-    if (data?.id === params.id) {
+    if (data?.id.toString() === params.id) {
       return true;
     }
     return false;
@@ -61,6 +62,13 @@ export default async function CatalogPage({
               ? "Mi Catalogo"
               : `Catalogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`}
           </Text>
+          {!matchUserCatalog && (
+            <ContactSection
+              phone={catalogOwner?.phone}
+              city={catalogOwner?.city}
+              country={catalogOwner?.country}
+            />
+          )}
           {matchUserCatalog && (
             <Flex gap="2">
               <Link className="no-underline" href={"/sell"}>
@@ -71,6 +79,7 @@ export default async function CatalogPage({
             </Flex>
           )}
         </Flex>
+        
         <CatalogList games={data} userMatchsCatalog={matchUserCatalog} />
       </Container>
     );

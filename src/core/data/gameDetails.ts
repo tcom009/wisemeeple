@@ -1,10 +1,13 @@
+import { values } from "lodash";
+
 interface DataI {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }
 
 export const gameCondition = [
-  { label: "Nuevo", value: "1" },
+  { label: "Nuevo(Sellado)", value: "1" },
+  { label: "Nuevo(abierto)", value: "5" },
   { label: "Poco uso", value: "2" },
   { label: "Uso medio", value: "3" },
   { label: "Bastante usado", value: "4" },
@@ -25,7 +28,7 @@ export const languages = [
   { label: "Italiano", value: "5" },
   { label: "Chino", value: "6" },
   { label: "Japonés", value: "7" },
-  { label: "Otro", value: "8" },
+  { label: "Otro Idioma", value: "8" },
 ];
 
 export const languageMap: Map<string, string> = new Map();
@@ -40,4 +43,4 @@ gameCondition.forEach((condition: DataI) => {
 export const languageDependencyMap: Map<string, string> = new Map();
 languageDependency.forEach((language: DataI) => {
   languageDependencyMap.set(language.value, language.label);
-})
+});

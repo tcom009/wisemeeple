@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Wise Meeple",
-  description: "Your boardgame recommender",
+  description: "¡Vende tus juegos de mesa más facil!",
 };
 
 export default function RootLayout({
