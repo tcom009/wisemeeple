@@ -89,13 +89,19 @@ export default function CatalogList({
                 </Grid>
                 <Flex direction={"column"} justify={"center"}>
                   <Text weight={"bold"} size={"2"}>
-                    {languageMap.get(game.language)?.toLocaleUpperCase()}
+                    🔤 {languageMap.get(game.language)?.toLocaleUpperCase()}
                   </Text>
 
                   <Text>{conditionMap.get(game.condition)}</Text>
                   <Text>
                     {languageDependencyMap.get(game.language_dependency)}
                   </Text>
+                  {game.observations && (
+                    <>
+                      <Text weight={"bold"}>Observaciones: </Text>
+                      <Text size={"2"}>{game.observations}</Text>
+                    </>
+                  )}
                 </Flex>
               </Flex>
               <Flex width={"100%"} justify={"center"}>

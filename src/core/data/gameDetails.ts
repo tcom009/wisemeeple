@@ -25,7 +25,7 @@ export const languages = [
   { label: "Italiano", value: "5" },
   { label: "Chino", value: "6" },
   { label: "Japonés", value: "7" },
-  { label: "Otro", value: "8" },
+  { label: "Otro Idioma", value: "8" },
 ];
 
 export const languageMap: Map<string, string> = new Map();
