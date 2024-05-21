@@ -4,6 +4,7 @@ import Image from "next/image";
 import logo from "../../../public/logo.svg";
 import { createClient } from "@/utils/supabase/server";
 import Menu from "./menu/Menu";
+import NavSearchBar from "./NavSearchBar";
 export default async function Navbar() {
   const supabase = createClient();
   const { data, error } = await supabase.auth.getUser();
@@ -41,7 +42,8 @@ export default async function Navbar() {
       left={"0"}
       className="black-background z-index-1"
       width={"100%"}
-      columns={{ lg: "2", xl: "2", md: "2", sm: "2", initial: "2" }}
+      columns={{ lg: "3", xl: "3", md: "3", sm: "3", initial: "2" }}
+      rows={{ lg: "0", xl: "0", md: "0", sm: "0", initial: "1" }}
       height={"9"}
     >
       <Link href={"/"} as={"/"} className="no-underline">
@@ -63,7 +65,9 @@ export default async function Navbar() {
           </Text>
         </Flex>
       </Link>
-
+      <Flex align={"center"} justify={"center"} direction={"row"} mt={{ xl: "0", lg: "0", md: "0", sm: "0", xs: "6", initial:"6"}}>
+      <NavSearchBar />
+      </Flex>
       <Flex align={"center"} justify={"center"} direction={"row"}>
         {data?.user && !error ? (
           <>
@@ -77,8 +81,8 @@ export default async function Navbar() {
         ):(
         <>
         <Link href={"/login"} className="no-underline">
-        <Button>
-          Crear catálogo 
+        <Button size={{ xl: "2", lg: "2", md: "2", sm: "2", xs: "1", initial:"1"}}>
+          Vender juego 
         </Button>  
         </Link>
         </>
