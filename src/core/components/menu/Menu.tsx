@@ -36,7 +36,11 @@ function Menu({ profileId, catalogId }: MenuProps) {
               Catálogo
             </button>
           </DropdownMenu.Item>
-
+          <DropdownMenu.Item className="DropdownMenuItem">
+            <button onClick={() => router.push(`/sell`)} disabled={!catalogId}>
+              Agregar juego
+            </button>
+          </DropdownMenu.Item>
           <DropdownMenu.Separator className="DropdownMenuSeparator" />
           <DropdownMenu.Item className="DropdownMenuItem">
             <button onClick={() => logout()}>
