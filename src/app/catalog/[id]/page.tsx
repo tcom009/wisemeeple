@@ -1,12 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import {
   Container,
-  Card,
-  Grid,
-  Text,
   Flex,
-  Box,
-  Avatar,
+  Text,
   Button,
 } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";

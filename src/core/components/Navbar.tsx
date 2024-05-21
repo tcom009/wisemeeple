@@ -1,4 +1,4 @@
-import { Flex, Grid, Text } from "@radix-ui/themes";
+import { Flex, Grid, Text, Button } from "@radix-ui/themes";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../public/logo.svg";
@@ -65,7 +65,7 @@ export default async function Navbar() {
       </Link>
 
       <Flex align={"center"} justify={"center"} direction={"row"}>
-        {data?.user && !error && (
+        {data?.user && !error ? (
           <>
             <Text size={{ xl: "5", lg: "5", md: "1", sm: "1", xs: "1", initial:"1"}}>
               {profile ? `Hola, ${profile.first_name}` : "¡Hola!"}
@@ -74,7 +74,15 @@ export default async function Navbar() {
               <Menu profileId={data.user.id} catalogId={catalogId} />
             </Flex>
           </>
-        )}
+        ):(
+        <>
+        <Link href={"/login"} className="no-underline">
+        <Button>
+          Crear catálogo 
+        </Button>  
+        </Link>
+        </>
+      )}
       </Flex>
     </Grid>
   );

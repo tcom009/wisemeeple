@@ -1,5 +1,5 @@
 "use client";
-
+import { config } from "config";
 import { createClient } from "@/utils/supabase/client";
 import {
   Card,
@@ -17,12 +17,12 @@ import {
   conditionMap,
   languageDependencyMap,
 } from "@/core/data/gameDetails";
-import { TrashIcon } from "@radix-ui/react-icons";
+import { TrashIcon, ExternalLinkIcon} from "@radix-ui/react-icons";
 import { trimText } from "@/core/lib/textUtils";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import SmallSpinner from "@/core/components/SmallSpinner";
-
+import Link from "next/link";
 interface CatalogListProps {
   games: UserGame[];
   userMatchsCatalog: boolean;
@@ -57,7 +57,7 @@ export default function CatalogList({
           initial: "1",
         }}
         gap={"6"}
-        px={{xl:"9", md:"9", sm:"4",lg:"9", xs:"4"}}
+        px={{ xl: "9", md: "9", sm: "4", lg: "9", xs: "4" }}
         py="3"
       >
         {games?.map((game: UserGame) => {
@@ -75,27 +75,24 @@ export default function CatalogList({
                 <Flex justify={"start"} align={"center"} grow={"1"}>
                   <Text weight={"bold"} size={"5"}>
                     {trimText(game.game_name, MAX_TITLE_LENGTH)}
+                  <Link
+                    href={`${config.BGG_GAME_URL}${game.bgg_id}`}
+                    target="_blank"
+                    className="no-underline"
+                  >
+                  <ExternalLinkIcon />
+                  </Link>
                   </Text>
                 </Flex>
 
                 <Flex direction={"column"} justify={"center"}>
                   <Grid columns={"2"}>
-                  <Flex
-                      width={"100%"}
-                      align={"center"}
-                      grow={"0"}
-                    >
-
-                    <Text weight={"bold"} size={"2"}>
-                      🔤 {languageMap.get(game.language)?.toLocaleUpperCase()}
-                    </Text>
+                    <Flex width={"100%"} align={"center"} grow={"0"}>
+                      <Text weight={"bold"} size={"2"}>
+                        🔤 {languageMap.get(game.language)?.toLocaleUpperCase()}
+                      </Text>
                     </Flex>
-                    <Flex
-                      width={"100%"}
-                      justify={"end"}
-                     
-                      grow={"0"}
-                    >
+                    <Flex width={"100%"} justify={"end"} grow={"0"}>
                       <Text weight={"bold"} size={"6"}>
                         ${formatNumber(game.price)}
                       </Text>
