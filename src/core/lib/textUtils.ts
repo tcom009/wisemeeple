@@ -5,6 +5,8 @@ export const trimText = (text: string, length: number) => {
   return text;
 };
 
+export const formatNumber = (number: number) =>
+  (Math.round(number * 100) / 100).toFixed(2);
 export const cleanText = (text: string) => {
   const escapeCodes = [
     { exp: /&#10;/g, val: "\n" },
