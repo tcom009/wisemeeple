@@ -184,7 +184,7 @@ export default function GameDetailsForm({
               <Text weight={"bold"}>{`+${minage}` ?? ""}</Text>
             </Flex>
             <Flex gap={"2"}>
-              <Link href={`${config.BGG_GAME_URL}${id}`} target="_blank">
+              <Link href={`${config.BGG_GAME_URL}/${id}`} target="_blank">
                 <Text weight={"bold"}>Link BBG</Text>
                 <ExternalLinkIcon />
               </Link>

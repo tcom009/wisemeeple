@@ -76,7 +76,7 @@ export default function CatalogList({
                   <Text weight={"bold"} size={"5"}>
                     {trimText(game.game_name, MAX_TITLE_LENGTH)}
                   <Link
-                    href={`${config.BGG_GAME_URL}${game.bgg_id}`}
+                    href={`${config.BGG_GAME_URL}/${game.bgg_id}`}
                     target="_blank"
                     className="no-underline"
                   >
