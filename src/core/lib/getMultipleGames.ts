@@ -11,3 +11,5 @@ export const getMultipleGames = async (games: CleanCollectionItem[]|[]) => {
     const items = data?.items?.item ?? [];
     return Array.isArray(items) ? items : [items]
   }
+
+  
