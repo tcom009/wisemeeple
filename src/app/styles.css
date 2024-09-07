@@ -75,3 +75,7 @@ z-index: 9999;
   background-color: var(--violet-10);
 }
 
+.full-height {
+  height: 20vh;
+  width: 100vw;
+}
