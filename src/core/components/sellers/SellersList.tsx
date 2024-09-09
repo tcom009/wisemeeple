@@ -62,8 +62,8 @@ const GamesForSale = async () => {
                               >{`${seller.total_games} juegos`}</Text>
                             </Flex>
                           </Table.Cell>
-                          <Table.Cell>
-                            <Link href={`/catalog/${seller.catalog_id}`}>
+                          <Table.Cell justify={"start"}>
+                            <Link href={`/catalog/${seller.catalog_id}`} target="_blank">
                               <PaperPlaneIcon />
                             </Link>
                           </Table.Cell>
@@ -71,7 +71,6 @@ const GamesForSale = async () => {
                         </Table.Row>
                       );
                     }
-                    return <></>;
                   })}
                 </Table.Body>
               </Table.Root>
