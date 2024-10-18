@@ -5,7 +5,7 @@ import countryFlagEmoji from "country-flag-emoji";
 import { capitalize } from "@/core/lib/textUtils";
 import { formatPhone } from "@/core/lib/formatPhone";
 import { config } from "@/config";
-import WhatsappLogo from "./WhatsappLogo";
+import WhatsappLogo from "@/core/components/WhatsappLogo";
 import Link from "next/link";
 interface Props {
   phone: string;

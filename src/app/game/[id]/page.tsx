@@ -7,10 +7,12 @@ import {
   conditionMap,
 } from "@/core/data/gameDetails";
 import GameCarousel from "./GameCarrousel";
+import { formatMoney } from "@/core/lib/formatMoney";
+import { formatPhone } from "@/core/lib/formatPhone"; 
+import WhatsappLogo from "@/core/components/WhatsappLogo";
+import { config } from "@/config";
 async function GamePage({ params }: { params: { id: string } }) {
   const supabase = createClient();
-  const formatNumber = (number: number) =>
-    (Math.round(number * 100) / 100).toFixed(2);
   const getGame = async () => {
     const { data, error } = await supabase
       .from("user_games")
@@ -67,7 +69,7 @@ async function GamePage({ params }: { params: { id: string } }) {
             />
             <Flex direction={"column"}>
               <Text weight={"bold"}>{game?.game_name}</Text>
-              <Text weight={"bold"}>{`$${formatNumber(game?.price)}`}</Text>
+              <Text weight={"bold"}>{`$${formatMoney(game?.price)}`}</Text>
               <div>
                 <Text weight={"bold"} size={"2"}>
                   {" "}
@@ -89,6 +91,14 @@ async function GamePage({ params }: { params: { id: string } }) {
                   {userProfile?.first_name} {userProfile?.last_name}
                 </Link>
               </Text>
+              <Flex align={"center"} gap={"2"}>
+              <Text size={"2"}>
+                  Contactar
+              </Text>
+                <Link href={`${config.WHATS_APP_LINK}${formatPhone(userProfile?.phone)}`}>
+                <WhatsappLogo size={"1em"}/>
+                </Link>
+              </Flex>
             </Flex>
           </Flex>
           <Grid columns={"2"}>
