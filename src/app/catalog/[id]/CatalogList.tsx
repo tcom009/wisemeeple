@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import SmallSpinner from "@/core/components/SmallSpinner";
 import Link from "next/link";
+import { formatMoney } from "@/core/lib/formatMoney";
 interface CatalogListProps {
   games: UserGame[];
   userMatchsCatalog: boolean;
@@ -45,8 +46,7 @@ export default function CatalogList({
     router.refresh();
     setInterval(() => setIsLoading(false), 3000);
   };
-  const formatNumber = (number: number) =>
-    (Math.round(number * 100) / 100).toFixed(2);
+  
   return (
     <Card>
       <Grid
@@ -94,7 +94,7 @@ export default function CatalogList({
                     </Flex>
                     <Flex width={"100%"} justify={"end"} grow={"0"}>
                       <Text weight={"bold"} size={"6"}>
-                        ${formatNumber(game.price)}
+                        ${formatMoney(game.price)}
                       </Text>
                     </Flex>
                   </Grid>
