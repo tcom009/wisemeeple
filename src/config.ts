@@ -6,6 +6,7 @@ const BGG_GET_USER = `${BGG_API_ROOT}/user?name=`;
 const BGG_GET_GAME= `${BGG_API_ROOT}/thing?id=`;
 const PROJECT_NAME = "bg_companion";
 const MAX_SEARCH_RESULTS= 20
+const WHATS_APP_LINK= 'https://wa.me/'
 
 export const config = {
   BGG_API_ROOT,
@@ -15,5 +16,6 @@ export const config = {
   PROJECT_NAME,
   BGG_GAME_URL,
   BGG_GET_GAME,
-  MAX_SEARCH_RESULTS
+  MAX_SEARCH_RESULTS,
+  WHATS_APP_LINK,
 };
