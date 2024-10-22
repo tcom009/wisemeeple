@@ -58,7 +58,6 @@ export default function AuthForm({ isSignup }: AuthFormI) {
         password,
       });
       if (data?.error) {
-        console.log(data.error);
         setState((prevState) => ({
           ...prevState,
           error: data.error.message,

@@ -1,67 +1,45 @@
-"use client";
-import {
-  Flex,
-  Text,
-  Container,
-  Card,
-  Grid,
-  Button,
-} from "@radix-ui/themes";
-import { createClient } from "@/utils/supabase/client";
-import { PageStatus, UserGame } from "@/core/models/models";
+"use server";
+import { Flex, Text, Container, Card, Grid, Button } from "@radix-ui/themes";
+import { UserGame } from "@/core/models/models";
 import GameCard from "./GameCards";
-import { useState } from "react";
-
+import Link from "next/link";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 interface Props {
   games?: UserGame[] | [];
-  count: number | null;
+  count: number;
+  page: number;
 }
-interface stateI {
-  games: UserGame[] | [];
-  pageStatus: PageStatus;
-  currentPage: number;
-  count: number | null;
-}
-const GamesForSale = ({ games: initialGames, count: initialCount }: Props) => {
-  const supabase = createClient();
-  const [state, setState] = useState<stateI>({
-    games: initialGames ?? [],
-    pageStatus: PageStatus.IDLE,
-    currentPage: 1,
-    count: initialCount ?? 0,
-  });
-  const { games, pageStatus, currentPage, count } = state;
-  const getGames = async (start: number, end: number) =>
-    await supabase
-      .from("user_games")
-      .select("*", { count: "exact" })
-      .order("created_at", { ascending: false })
-      .range(start, end);
 
-  const setNewGames = async () => {
-    const start = currentPage * 10  ;
-    const end = (currentPage + 1) * 10 - 1;
-    const { data, error, count } = await getGames(start, end);
-    if (error) {
-      return null;
+const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
+  const totalPages = Math.ceil(count / 10);
+  const SHOWING_PAGES = 5;
+  const paginationNumbers = () => {
+    const paginationNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      paginationNumbers.push(i);
     }
-    setState((prevState) => ({
-      ...prevState,
-      games: [...games, ...data],
-      currentPage: currentPage + 1,
-      count,
-    }));
+    if (currentPage === 1) {
+      return paginationNumbers.slice(currentPage, currentPage + SHOWING_PAGES);
+    }
+    if (totalPages - currentPage < SHOWING_PAGES) {
+      return paginationNumbers.slice(currentPage - SHOWING_PAGES, currentPage);
+    }
+    return paginationNumbers.slice(
+      currentPage - 1,
+      currentPage + SHOWING_PAGES
+    );
   };
+
   return (
     <>
       <Container>
-        <Flex width={"100%"} justify={"center"} align={"center"} my="5">
-          <Text weight={"bold"} size={"5"}>
-            {" "}
-            Juegos Recientes
-          </Text>
-        </Flex>
         <Card>
+          <Flex width={"100%"} justify={"center"} align={"center"} my="5">
+            <Text weight={"bold"} size={"5"}>
+              {" "}
+              Juegos Recientes
+            </Text>
+          </Flex>
           <Grid
             columns={{
               lg: "3",
@@ -75,12 +53,48 @@ const GamesForSale = ({ games: initialGames, count: initialCount }: Props) => {
           >
             <GameCard games={games} />
           </Grid>
-          <Flex width={"100%"} justify={"center"} my="5">
-            <Button
-              onClick={() => setNewGames()}
-            >
-              Cargar más
-            </Button>
+          {/* Pagination controls */}
+          <Flex gap={"2"} align={"center"} justify={"center"}>
+            {currentPage > 1 && (
+              <Link href={`/games?page=${currentPage - 1}`}>
+                <ChevronLeftIcon />
+              </Link>
+            )}
+            <Link href={`/games?page=1`}>
+              <Button
+                disabled={currentPage === 1}
+                variant={currentPage === 1 ? "soft" : "classic"}
+              >
+                {1}
+              </Button>
+            </Link>
+            ...
+            {paginationNumbers().map((number) => (
+              <Link href={`/games?page=${number}`} key={number}>
+                <Button
+                  disabled={currentPage === number}
+                  variant={currentPage === number ? "soft" : "classic"}
+                >
+                  {number}
+                </Button>
+              </Link>
+            ))}
+            {currentPage !== totalPages && (
+              <>
+                ...
+                <Link href={`/games?page=${totalPages}`}>
+                  <Button
+                    disabled={currentPage === totalPages}
+                    variant={currentPage === totalPages ? "soft" : "classic"}
+                  >
+                    {totalPages}
+                  </Button>
+                </Link>
+                <Link href={`/games?page=${currentPage + 1}`}>
+                  <ChevronRightIcon />
+                </Link>
+              </>
+            )}
           </Flex>
         </Card>
       </Container>
