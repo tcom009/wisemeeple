@@ -12,7 +12,6 @@ import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { capitalize } from "@/core/lib/textUtils";
 const GamesForSale = async () => {
-  const scrollHeight = { height: "60vh" };
   const supabase = createClient();
   const { data, error } = await supabase.rpc("get_user_games_counts_func");
   if (error) {
