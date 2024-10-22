@@ -1,8 +1,8 @@
 import { Container, Flex, Heading, Text, Button, Grid } from "@radix-ui/themes";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
-import Footer from "@/core/components/Footer";
 import GamesForSale from "@/core/components/sellers/SellersList";
+import RecentGames from "@/core/components/recentGames/RecentGames";
 export default async function Home() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
@@ -37,6 +37,7 @@ export default async function Home() {
           </Flex>
         </Flex>
       </Container>
+      <RecentGames  />
       <GamesForSale />
       <Flex height={"9"} width={"100%"} mt={"5"}>
       <Text
