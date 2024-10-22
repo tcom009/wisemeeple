@@ -33,7 +33,6 @@ const NavSearchBar = () => {
   };
   const handleKeyDown = (event: any) => {
     if (event.key === 'Enter') {
-      console.log("search game here")
     }
   }
 

@@ -13,7 +13,6 @@ const RecentGames = async () => {
   if (error) {
     return null;
   }
-  console.log(data);
 
   return (
     <Container my="4" mx="9">
@@ -33,7 +32,7 @@ const RecentGames = async () => {
           <GameCards games={data} showInfo={false} />
         </Grid>
         <Flex width={"100%"} justify={"center"} align={"center"} my="3">
-          <Link href={"/games"}>
+          <Link href={"/games?page=1"}>
             <Button size={"3"}>Ver más juegos</Button>
           </Link>
         </Flex>

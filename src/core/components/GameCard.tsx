@@ -16,7 +16,6 @@ const GameCard = ({ game, isLast, handleSelectGame }: GameCardI) => {
   const [open, setOpen] = useState(false);
   const { id, name, yearpublished, image } = game;
   const onOpenChange = (status: boolean) => {
-    console.log(status);
     setOpen(status);
   };
   return (
