@@ -47,7 +47,6 @@ export default function SearchForm({ setGames }: SearchFormI) {
       const cleanData = searchCleaner(data, query);
       const games = await getMultipleGames(cleanData);
       const cleanGames = games.map(fullGameParser);
-      console.log(cleanGames);
       setGames(cleanGames);
     } else {
       setState({ ...state, error: true });
@@ -58,7 +57,6 @@ export default function SearchForm({ setGames }: SearchFormI) {
     setState({ ...state, isOpen: false });
     const game = await getSingleGame(id);
     const parsedGame = await fullGameParser(game);
-    console.log([parsedGame]);
     setGames([parsedGame]);
   };
 
