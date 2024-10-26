@@ -1,13 +1,8 @@
 "use client";
-import { ParsedThing } from "@/core/models/models";
-import { config } from "config";
-import { useWizard } from "react-use-wizard";
 import {
   Card,
-  Avatar,
   Flex,
   Text,
-  Heading,
   Button,
   TextField,
   Box,
@@ -17,13 +12,7 @@ import {
   Select,
   Callout,
 } from "@radix-ui/themes";
-import Link from "next/link";
 import {
-  ExternalLinkIcon,
-  PersonIcon,
-  CalendarIcon,
-  Pencil1Icon,
-  StopwatchIcon,
   ArrowLeftIcon,
   PlusIcon,
   InfoCircledIcon,
@@ -33,6 +22,7 @@ import {
   languages,
   languageDependency,
 } from "@/core/data/gameDetails";
+import { ParsedThing } from "@/core/models/models";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
@@ -40,12 +30,8 @@ import { PageStatus } from "@/core/models/models";
 import SmallSpinner from "@/core/components/SmallSpinner";
 import { useRouter } from "next/navigation";
 
-interface GameDetailsFormProps {
-  selectedGame: ParsedThing;
-  isEditing?: boolean;
-}
-
 interface IFormInput {
+  accepts_changes: boolean;
   is_sold: boolean;
   price: number;
   condition: string;
@@ -53,29 +39,39 @@ interface IFormInput {
   language: string;
   observations: string;
 }
+interface GameDetailsFormProps {
+  isEditing?: boolean;
+  formDefaultValues?: IFormInput;
+  gameId?: string;
+  gameDefaultValues?: ParsedThing;
+  onClickBack?: () => void;
+}
 
 type StateT = {
   pageState: PageStatus;
 };
 export default function GameDetailsForm({
-  selectedGame,
   isEditing = false,
+  formDefaultValues,
+  gameDefaultValues,
+  gameId,
+  onClickBack,
 }: GameDetailsFormProps) {
   const supabase = createClient();
-  const router = useRouter()
+  const router = useRouter();
   const getUserData = async () => {
     const { data } = await supabase.auth.getUser();
     return data;
   };
-  const getCatalogId = async () =>{
+  const getCatalogId = async () => {
     const user = await getUserData();
-    const { data }  = await supabase
+    const { data } = await supabase
       .from("catalog")
       .select()
       .eq("user", user?.user?.id)
       .single();
     return data?.id;
-  }
+  };
   const [state, setState] = useState<StateT>({ pageState: PageStatus.IDLE });
   const { pageState } = state;
   const setPageStatus = (value: PageStatus) => {
@@ -84,32 +80,18 @@ export default function GameDetailsForm({
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      price: 0,
-      is_sold: false,
-      condition: "",
-      language_dependency: "",
-      language: "",
-      observations: "",
+      price: formDefaultValues?.price ?? 0,
+      is_sold: formDefaultValues?.is_sold ?? false,
+      condition: formDefaultValues?.condition ?? "",
+      language_dependency: formDefaultValues?.language_dependency ?? "",
+      language: formDefaultValues?.language ?? "",
+      observations: formDefaultValues?.observations ?? "",
+      accepts_changes: formDefaultValues?.accepts_changes ?? false,
     },
   });
-  const { previousStep } = useWizard();
-  const {
-    id,
-    name,
-    yearpublished,
-    image,
-    minplayers,
-    maxplayers,
-    boardgamedesigner,
-    minplaytime,
-    maxplaytime,
-    minage,
-  } = selectedGame;
-
   const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
     setPageStatus(PageStatus.LOADING);
     const userData = await getUserData();
@@ -117,13 +99,19 @@ export default function GameDetailsForm({
     const data = {
       ...formData,
       price: +formData.price,
-      bgg_id: id,
+      bgg_id: gameDefaultValues?.id,
       owner_id: userData?.user?.id,
-      game_name: name,
-      image,
-      catalog_id: catalogId ,
+      game_name: gameDefaultValues?.name,
+      image: gameDefaultValues?.image,
+      catalog_id: catalogId,
     };
-    const result = await supabase.from("user_games").insert(data);
+    const editGameData = {
+      ...formData,
+      price: +formData.price,
+    };
+    const result = isEditing
+          ? await supabase.from("user_games").update(editGameData).eq("id", gameId)
+          : await supabase.from("user_games").insert(data);
     if (result.error) {
       setPageStatus(PageStatus.ERROR);
     } else {
@@ -131,68 +119,8 @@ export default function GameDetailsForm({
       router.refresh();
     }
   };
-  const onChangeSwitch = (value: boolean) => {
-    setValue("is_sold", value);
-  };
   return (
     <>
-      <Grid columns={"1"} justify={"center"} align={"center"} gap={"2"} mt="5">
-        {/* Title */}
-        <Flex justify="start" align={"center"} gap={"2"}>
-          <Button variant={"outline"} onClick={() => previousStep()}>
-            <ArrowLeftIcon />
-          </Button>
-          <Text weight={"bold"}>2. Agrega el precio y otros detalles de tu juego.</Text>
-        </Flex>
-        <Flex justify="center">
-          <Text weight={"bold"} size="4">
-            {name} - {yearpublished}
-          </Text>
-        </Flex>
-        <Flex justify="center" direction={"row"} gap="2">
-          <Avatar
-            src={image}
-            fallback={name[0]}
-            size={{ lg: "9", xl: "9", md: "9", sm:"9", initial: "8" }}
-          />
-          <Flex
-            direction={"column"}
-            align={"start"}
-            justify={"center"}
-            gap={"2"}
-          >
-            <Flex gap={"2"} align={"center"}>
-              <Pencil1Icon />
-              <Text weight={"bold"}>{boardgamedesigner.join(", ")}</Text>
-            </Flex>
-            <Flex gap={"2"} align={"center"}>
-              <StopwatchIcon />
-              <Text weight={"bold"}>
-                {maxplaytime === minplaytime
-                  ? maxplaytime
-                  : `${minplaytime} - ${maxplaytime}`}
-              </Text>
-            </Flex>
-            <Flex gap={"2"} align={"center"}>
-              <PersonIcon />
-              <Text weight={"bold"}>
-                {minplayers ?? ""}-{maxplayers ?? ""}
-              </Text>
-            </Flex>
-            <Flex gap={"2"} align={"center"}>
-              <CalendarIcon />
-              <Text weight={"bold"}>{`+${minage}` ?? ""}</Text>
-            </Flex>
-            <Flex gap={"2"}>
-              <Link href={`${config.BGG_GAME_URL}/${id}`} target="_blank">
-                <Text weight={"bold"}>Link BBG</Text>
-                <ExternalLinkIcon />
-              </Link>
-            </Flex>
-          </Flex>
-        </Flex>
-      </Grid>
-      {/* Form */}
       <Card size="2" mt="4">
         <Grid
           columns={{ xl: "2", lg: "2", md: "2", sm: "2", initial: "1" }}
@@ -209,18 +137,6 @@ export default function GameDetailsForm({
             initial: "row",
           }}
         >
-          {isEditing && (
-            <Box>
-              <Flex align={"center"} height="100%" gap="2">
-                <Text weight={"bold"}>Vendido</Text>
-                <Switch
-                  color={"cyan"}
-                  onCheckedChange={onChangeSwitch}
-                  size="1"
-                />
-              </Flex>
-            </Box>
-          )}
           <Box>
             <Text weight={"bold"}>Precio*</Text>
             <Controller
@@ -235,7 +151,7 @@ export default function GameDetailsForm({
                 },
               }}
               render={({ field }) => (
-                <TextField.Root>
+                <TextField.Root placeholder="Precio">
                   <TextField.Slot>
                     <Text weight={"bold"}>$</Text>
                   </TextField.Slot>
@@ -261,7 +177,10 @@ export default function GameDetailsForm({
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
-                <Select.Root onValueChange={field.onChange}>
+                <Select.Root
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <Select.Trigger placeholder="Usado..." />
                   <Select.Content position="popper">
                     {gameCondition.map((condition) => (
@@ -288,7 +207,10 @@ export default function GameDetailsForm({
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
-                <Select.Root onValueChange={field.onChange}>
+                <Select.Root
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <Select.Trigger placeholder="Selecciona una" />
                   <Select.Content position="popper">
                     {languageDependency.map((condition) => (
@@ -314,7 +236,10 @@ export default function GameDetailsForm({
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
-                <Select.Root onValueChange={field.onChange}>
+                <Select.Root
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <Select.Trigger placeholder="Selecciona un idioma" />
                   <Select.Content position="popper">
                     {languages.map((condition) => (
@@ -347,23 +272,69 @@ export default function GameDetailsForm({
               )}
             />
           </Box>
+          <Flex direction={"column"} gap={"2"}>
+            {isEditing && (
+              <Box>
+                <Flex align={"center"} gap="2">
+                  <Text weight={"bold"}>
+                    <Controller
+                      name="is_sold"
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <Switch
+                            color={"cyan"}
+                            size="1"
+                            onCheckedChange={field.onChange}
+                            defaultChecked={field.value}
+                          />{" "}
+                          Lo he vendido
+                        </>
+                      )}
+                    />
+                  </Text>
+                </Flex>
+              </Box>
+            )}
+            <Box>
+              <Flex align={"center"} gap="2">
+                <Text weight={"bold"}>
+                  <Controller
+                    name="accepts_changes"
+                    control={control}
+                    render={({ field }) => (
+                      <>
+                        <Switch
+                          color={"cyan"}
+                          size="1"
+                          onCheckedChange={field.onChange}
+                          defaultChecked={field.value}
+                        />{" "}
+                        Acepta Cambios
+                      </>
+                    )}
+                  />
+                </Text>
+              </Flex>
+            </Box>
+          </Flex>
         </Grid>
-          {pageState === PageStatus.ERROR && (
-            <Callout.Root color="red" variant="soft" size="1" mt="4">
-              <Callout.Icon>
-                <InfoCircledIcon />
-              </Callout.Icon>
-              <Callout.Text>Ha ocurrido un error</Callout.Text>
-            </Callout.Root>
-          )}
-          {pageState === PageStatus.SUCCESS && (
-            <Callout.Root color="green" variant="soft" size="1" mt="4">
-              <Callout.Icon>
-                <InfoCircledIcon />
-              </Callout.Icon>
-              <Callout.Text>¡Agregado con exito a tu catálogo!</Callout.Text>
-            </Callout.Root>
-          )}
+        {pageState === PageStatus.ERROR && (
+          <Callout.Root color="red" variant="soft" size="1" mt="4">
+            <Callout.Icon>
+              <InfoCircledIcon />
+            </Callout.Icon>
+            <Callout.Text>Ha ocurrido un error</Callout.Text>
+          </Callout.Root>
+        )}
+        {pageState === PageStatus.SUCCESS && (
+          <Callout.Root color="green" variant="soft" size="1" mt="4">
+            <Callout.Icon>
+              <InfoCircledIcon />
+            </Callout.Icon>
+            <Callout.Text>{isEditing ? "Editado con exito" : "¡Agregado con exito a tu catálogo!"}</Callout.Text>
+          </Callout.Root>
+        )}
         <Grid my="3" gap="2" columns={{ xl: "2", lg: "2", md: "2", sm: "2" }}>
           <Button
             radius={"large"}
@@ -382,17 +353,18 @@ export default function GameDetailsForm({
               </>
             )}
           </Button>
-
-          <Button
-            onClick={() => previousStep()}
-            size="2"
-            color="gray"
-            radius="large"
-            variant="classic"
-          >
-            <ArrowLeftIcon />
-            Regresar
-          </Button>
+          {!isEditing && (
+            <Button
+              onClick={() => onClickBack && onClickBack()}
+              size="2"
+              color="gray"
+              radius="large"
+              variant="classic"
+            >
+              <ArrowLeftIcon />
+              Regresar
+            </Button>
+          )}
         </Grid>
       </Card>
       <Box height={"9"}></Box>

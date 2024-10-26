@@ -17,7 +17,7 @@ import {
   conditionMap,
   languageDependencyMap,
 } from "@/core/data/gameDetails";
-import { TrashIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
+import { TrashIcon, ExternalLinkIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { trimText } from "@/core/lib/textUtils";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -123,7 +123,7 @@ export default function CatalogList({
               </Flex>
               <Flex width={"100%"} justify={"center"}>
                 {userMatchsCatalog && (
-                  <>
+                  <Flex gap={"2"}>
                     {" "}
                     <AlertDialog.Root>
                       <AlertDialog.Trigger>
@@ -160,7 +160,14 @@ export default function CatalogList({
                         </Flex>
                       </AlertDialog.Content>
                     </AlertDialog.Root>
-                  </>
+                    <Link href={`/catalog/edit/${game.id}`}>
+                    <Button size="1" color="blue">
+                          {" "}
+                          <Pencil2Icon />
+                          Editar
+                        </Button>
+                    </Link>
+                  </Flex>
                 )}
               </Flex>
             </Box>
