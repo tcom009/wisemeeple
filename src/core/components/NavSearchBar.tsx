@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { trimText } from "../lib/textUtils";
 import Link from "next/link";
+import { formatMoney } from "../lib/formatMoney";
+import { conditionMap } from "../data/gameDetails";
 interface State {
   query: string;
   results: any[];
@@ -25,16 +27,15 @@ const NavSearchBar = () => {
     if (response.error) {
       return null;
     }
-
     setState((prevState) => ({
       ...prevState,
       results: response.data.slice(0, 9),
     }));
   };
   const handleKeyDown = (event: any) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
     }
-  }
+  };
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -42,7 +43,7 @@ const NavSearchBar = () => {
       ...prevState,
       query: value,
     }));
-    if (value.length !==0){
+    if (value.length !== 0) {
       searchGame(value);
     }
   };
@@ -75,7 +76,7 @@ const NavSearchBar = () => {
       </TextField.Root>
       {results.length !== 0 && (
         <Flex width={"100%"} position={"absolute"} mt="6">
-          <Card variant={"classic"}>
+          <Card variant={"surface"}>
             {results.map((result) => (
               <div
                 key={result.id}
@@ -85,7 +86,12 @@ const NavSearchBar = () => {
                   href={`/game/${result.id}`}
                   className="no-underline white-link"
                 >
-                  <Text>{trimText(result.game_name, MAX_TEXT_LENGHT)}</Text>
+                  <Text>{`${trimText(
+                    result.game_name,
+                    MAX_TEXT_LENGHT
+                  )} `}</Text>
+                  <Text size={"1"} weight={"light"}>{`${conditionMap.get(result.condition)}`}</Text>
+                  <Text weight={"bold"}>{`  -  $${formatMoney(result.price)}`}</Text>
                 </Link>
               </div>
             ))}

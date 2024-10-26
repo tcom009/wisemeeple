@@ -17,7 +17,7 @@ import {
   conditionMap,
   languageDependencyMap,
 } from "@/core/data/gameDetails";
-import { TrashIcon, ExternalLinkIcon} from "@radix-ui/react-icons";
+import { TrashIcon, ExternalLinkIcon } from "@radix-ui/react-icons";
 import { trimText } from "@/core/lib/textUtils";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -46,7 +46,7 @@ export default function CatalogList({
     router.refresh();
     setInterval(() => setIsLoading(false), 3000);
   };
-  
+
   return (
     <Card>
       <Grid
@@ -61,6 +61,12 @@ export default function CatalogList({
         py="3"
       >
         {games?.map((game: UserGame) => {
+          const date = new Date(game.created_at);
+          const formattedDate = date.toLocaleDateString("es-ES", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          });
           return (
             <Box key={game.id}>
               <Flex width={"100%"} justify={"center"} direction={"column"}>
@@ -75,13 +81,13 @@ export default function CatalogList({
                 <Flex justify={"start"} align={"center"} grow={"1"}>
                   <Text weight={"bold"} size={"5"}>
                     {trimText(game.game_name, MAX_TITLE_LENGTH)}
-                  <Link
-                    href={`${config.BGG_GAME_URL}/${game.bgg_id}`}
-                    target="_blank"
-                    className="no-underline"
-                  >
-                  <ExternalLinkIcon />
-                  </Link>
+                    <Link
+                      href={`${config.BGG_GAME_URL}/${game.bgg_id}`}
+                      target="_blank"
+                      className="no-underline"
+                    >
+                      <ExternalLinkIcon />
+                    </Link>
                   </Text>
                 </Flex>
 
@@ -98,13 +104,18 @@ export default function CatalogList({
                       </Text>
                     </Flex>
                   </Grid>
-                  <Text>{conditionMap.get(game.condition)}</Text>
-                  <Text>
+                  <Text size={"2"}>{conditionMap.get(game.condition)}</Text>
+                  <Text size={"2"}>
                     {languageDependencyMap.get(game.language_dependency)}
                   </Text>
+                  <Text size={"2"} weight={"bold"}>
+                    {`Disponible desde:`}
+                    <Text weight={"medium"}>{` ${formattedDate}`}</Text>
+                  </Text>
+
                   {game.observations && (
                     <>
-                      <Text weight={"bold"}>Observaciones: </Text>
+                      <Text size={"2"} weight={"bold"}>Observaciones: </Text>
                       <Text size={"2"}>{game.observations}</Text>
                     </>
                   )}
