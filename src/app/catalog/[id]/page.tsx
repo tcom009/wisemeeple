@@ -47,7 +47,8 @@ export default async function CatalogPage({
   const { data } = await supabase
     .from("user_games")
     .select("*")
-    .eq("catalog_id", params.id);
+    .eq("catalog_id", params.id)
+    .order("created_at", {ascending: false});
 
   if (data?.length !== 0 && data !== undefined && data !== null) {
     return (

@@ -17,7 +17,6 @@ export async function login({ email, password }: AuthI) {
   };
   const result = await supabase.auth.signInWithPassword(data);
   if (result.error) {
-    console.debug(result.error?.message);
     return result;
   }
   revalidatePath("/", "layout");
