@@ -1,5 +1,4 @@
 "use client";
-
 import GamesTable from "@/core/components/GamesTable";
 import SearchForm from "./SearchForm";
 import { useState } from "react";
@@ -24,7 +23,7 @@ const initialState: StateI = {
   pageStatus: PageStatus.IDLE,
 };
 
-export default function SellForm({ setSelectedGame }: SellFormProps) {
+export default function FindGame({ setSelectedGame }: SellFormProps) {
   const [state, setState] = useState<StateI>(initialState);
   const { games, pageStatus } = state;
   const { nextStep } = useWizard();
