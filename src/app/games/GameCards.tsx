@@ -1,7 +1,6 @@
 import { UserGame } from "@/core/models/models";
 import { config } from "@/config";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
-import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { trimText } from "@/core/lib/textUtils";
 import { formatMoney } from "@/core/lib/formatMoney";
@@ -46,13 +45,13 @@ const GameCards = ({ games, showInfo = true }: Props) => {
                     {trimText(game.game_name, MAX_TITLE_LENGTH)}
                   </Text>
                 </Link>
-                {/* <Link
+                <Link
                     href={`${config.BGG_GAME_URL}/${game.bgg_id}`}
                     target="_blank"
                     className="no-underline"
                   >
                     <ExternalLinkIcon />
-                  </Link> */}
+                  </Link>
               </Flex>
 
               <Flex direction={"column"} justify={"center"}>
@@ -74,6 +73,9 @@ const GameCards = ({ games, showInfo = true }: Props) => {
                   <>
                     <Text>
                       {languageDependencyMap.get(game.language_dependency)}
+                    </Text>
+                    <Text size="2" weight={"bold"}>
+                      {game.accepts_changes && 'Acepta Cambios'}
                     </Text>
                     {game.created_at && (
                       <>

@@ -104,6 +104,9 @@ export default function CatalogList({
                       </Text>
                     </Flex>
                   </Grid>
+                  <Text size={"2"} weight={'bold'}>
+                    {game.accepts_changes && "Acepta Cambios"}
+                  </Text>
                   <Text size={"2"}>{conditionMap.get(game.condition)}</Text>
                   <Text size={"2"}>
                     {languageDependencyMap.get(game.language_dependency)}
