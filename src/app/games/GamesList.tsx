@@ -4,6 +4,7 @@ import { UserGame } from "@/core/models/models";
 import GameCard from "./GameCards";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import Paginator from "@/core/components/Paginator";
 interface Props {
   games?: UserGame[] | [];
   count: number;
@@ -11,29 +12,14 @@ interface Props {
 }
 
 const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
-  const totalPages = Math.ceil(count / 10);
-  const SHOWING_PAGES = 5;
-  const paginationNumbers = () => {
-    const paginationNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-      paginationNumbers.push(i);
-    }
-    if (currentPage === 1) {
-      return paginationNumbers.slice(currentPage, currentPage + SHOWING_PAGES);
-    }
-    if (totalPages - currentPage < SHOWING_PAGES) {
-      return paginationNumbers.slice(currentPage - SHOWING_PAGES, currentPage);
-    }
-    return paginationNumbers.slice(
-      currentPage - 1,
-      currentPage + SHOWING_PAGES
-    );
-  };
-
+  const itemsPerPage = 10
   return (
     <>
       <Container>
         <Card>
+        <Flex width={"100%"} justify={"end"} align={"center"}>
+            {`Página ${currentPage} de ${Math.ceil(count/itemsPerPage)}` }
+        </Flex>
           <Flex width={"100%"} justify={"center"} align={"center"} my="5">
             <Text weight={"bold"} size={"5"}>
               {" "}
@@ -55,46 +41,11 @@ const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
           </Grid>
           {/* Pagination controls */}
           <Flex gap={"2"} align={"center"} justify={"center"}>
-            {currentPage > 1 && (
-              <Link href={`/games?page=${currentPage - 1}`}>
-                <ChevronLeftIcon />
-              </Link>
-            )}
-            <Link href={`/games?page=1`}>
-              <Button
-                disabled={currentPage === 1}
-                variant={currentPage === 1 ? "soft" : "classic"}
-              >
-                {1}
-              </Button>
-            </Link>
-            ...
-            {paginationNumbers().map((number) => (
-              <Link href={`/games?page=${number}`} key={number}>
-                <Button
-                  disabled={currentPage === number}
-                  variant={currentPage === number ? "soft" : "classic"}
-                >
-                  {number}
-                </Button>
-              </Link>
-            ))}
-            {currentPage !== totalPages && (
-              <>
-                ...
-                <Link href={`/games?page=${totalPages}`}>
-                  <Button
-                    disabled={currentPage === totalPages}
-                    variant={currentPage === totalPages ? "soft" : "classic"}
-                  >
-                    {totalPages}
-                  </Button>
-                </Link>
-                <Link href={`/games?page=${currentPage + 1}`}>
-                  <ChevronRightIcon />
-                </Link>
-              </>
-            )}
+            <Paginator
+              currentPage={currentPage}
+              itemsCount={count}
+              pageUrl="/games?page"
+            />
           </Flex>
         </Card>
       </Container>
