@@ -16,6 +16,7 @@ import {
   ArrowLeftIcon,
   PlusIcon,
   InfoCircledIcon,
+  Pencil2Icon,
 } from "@radix-ui/react-icons";
 import {
   gameCondition,
@@ -348,8 +349,8 @@ export default function GameDetailsForm({
               <SmallSpinner />
             ) : (
               <>
-                <PlusIcon />
-                Agregar
+                {isEditing ? (<Pencil2Icon/>):(<PlusIcon />)}
+                {isEditing ? "Editar": "Agregar"}
               </>
             )}
           </Button>
