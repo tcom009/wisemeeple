@@ -133,6 +133,7 @@ export interface UserGame{
   image: string
   language: string
   language_dependency: string
+  accepts_changes: boolean
 
 }
 
