@@ -1,7 +1,7 @@
 "use client";
 import { Wizard } from "react-use-wizard";
-import SellForm from "./SellForm";
-import GameDetailsForm from "./GameDetailsForm";
+import FindGame from "./FindGame";
+import GameDetails from "./GameDetails";
 import { useState } from "react";
 import { ParsedThing } from "@/core/models/models";
 interface StateI {
@@ -35,8 +35,8 @@ export default function SellFormWizard() {
 
   return (
     <Wizard>
-      <SellForm setSelectedGame={setSelectedGame} />
-      <GameDetailsForm selectedGame={selectedGame} />
+      <FindGame setSelectedGame={setSelectedGame} />
+      <GameDetails selectedGame={selectedGame} />
     </Wizard>
   );
 }
