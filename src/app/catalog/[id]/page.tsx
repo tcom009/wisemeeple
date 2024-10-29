@@ -1,15 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
-import {
-  Container,
-  Flex,
-  Text,
-  Button,
-} from "@radix-ui/themes";
+import { Container, Flex, Text, Button } from "@radix-ui/themes";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import CatalogList from "./CatalogList";
 import ActionButton from "./ActionButton";
 import ContactSection from "./ContactSection";
+import Head from "next/head";
 export default async function CatalogPage({
   params,
 }: {
@@ -48,37 +44,61 @@ export default async function CatalogPage({
     .from("user_games")
     .select("*")
     .eq("catalog_id", params.id)
-    .order("created_at", {ascending: false});
+    .order("created_at", { ascending: false });
 
   if (data?.length !== 0 && data !== undefined && data !== null) {
     return (
-      <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
-        <Flex width={"100%"} justify={"between"} my="4">
-          <Text size={"6"} weight={"bold"}>
+      <>
+        <Head>
+          <title>
+            Wise Meeple -{" "}
             {matchUserCatalog
-              ? "Mi Catalogo"
-              : `Catalogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`}
-          </Text>
-          {!matchUserCatalog && (
-            <ContactSection
-              phone={catalogOwner?.phone}
-              city={catalogOwner?.city}
-              country={catalogOwner?.country}
-            />
-          )}
-          {matchUserCatalog && (
-            <Flex gap="2">
-              <Link className="no-underline" href={"/sell"}>
-                <Button size={"1"}>
-                  <PlusIcon /> Agregar
-                </Button>
-              </Link>
-            </Flex>
-          )}
-        </Flex>
-        
-        <CatalogList games={data} userMatchsCatalog={matchUserCatalog} />
-      </Container>
+              ? "Mi Catálogo"
+              : `Catálogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`}{" "}
+          </title>
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://wisemeeple.com" />
+          <meta
+            property="og:title"
+            content={`Wise Meeple - Catálogo de ${catalogOwner}`}
+          />
+          <meta
+            property="og:description"
+            content="¡Vende tus juegos de mesa más facil!"
+          />
+          <meta
+            property="og:image"
+            content={data[0].image}
+          />
+        </Head>
+        <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
+          <Flex width={"100%"} justify={"between"} my="4">
+            <Text size={"6"} weight={"bold"}>
+              {matchUserCatalog
+                ? "Mi Catalogo"
+                : `Catalogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`}
+            </Text>
+            {!matchUserCatalog && (
+              <ContactSection
+                phone={catalogOwner?.phone}
+                city={catalogOwner?.city}
+                country={catalogOwner?.country}
+              />
+            )}
+            {matchUserCatalog && (
+              <Flex gap="2">
+                <Link className="no-underline" href={"/sell"}>
+                  <Button size={"1"}>
+                    <PlusIcon /> Agregar
+                  </Button>
+                </Link>
+              </Flex>
+            )}
+          </Flex>
+
+          <CatalogList games={data} userMatchsCatalog={matchUserCatalog} />
+        </Container>
+      </>
     );
   }
   // No games found
