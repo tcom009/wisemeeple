@@ -11,6 +11,12 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Wise Meeple",
   description: "¡Vende tus juegos de mesa más facil!",
+  openGraph: {
+    type: 'website',
+    url: 'https://wisemeeple.com',
+    title: 'Wise Meeple',
+    description: '¡Vende tus juegos de mesa más facil!',
+  }
 };
 
 export default function RootLayout({
