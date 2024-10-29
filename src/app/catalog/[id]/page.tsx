@@ -6,6 +6,58 @@ import CatalogList from "./CatalogList";
 import ActionButton from "./ActionButton";
 import ContactSection from "./ContactSection";
 import Head from "next/head";
+import { Metadata, ResolvingMetadata } from "next";
+import { create } from "lodash";
+
+
+// export const metadata: Metadata = {
+//   title: "Wise Meeple",
+//   description: "¡Vende tus juegos de mesa más facil!",
+//   openGraph: {
+//     type: 'website',
+//     url: 'https://wisemeeple.com',
+//     title: 'Wise Meeple',
+//     description: '¡Vende tus juegos de mesa más facil!',
+//   }
+// };
+
+type Props = {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = (await params).id
+ const supabase = createClient()
+  const getCatalogOwner = async () => {
+    const getCatalogUser = await supabase
+      .from("catalog")
+      .select("user")
+      .eq("id", id)
+      .single();
+    const catalogUser = getCatalogUser.data?.user;
+    const { data } = await supabase
+      .from("profiles")
+      .select("first_name, last_name, phone, city, country")
+      .eq("profile_id", catalogUser)
+      .single();
+    return data;
+  }; 
+  const catalogOwner = await getCatalogOwner();
+  const title = `Catalogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`
+  return {
+    title,
+    openGraph: {
+      title,
+    },
+  }
+}
+
+
+
 export default async function CatalogPage({
   params,
 }: {
