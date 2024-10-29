@@ -7,53 +7,43 @@ import ActionButton from "./ActionButton";
 import ContactSection from "./ContactSection";
 import Head from "next/head";
 import { Metadata, ResolvingMetadata } from "next";
-import { create } from "lodash";
-
-
-// export const metadata: Metadata = {
-//   title: "Wise Meeple",
-//   description: "¡Vende tus juegos de mesa más facil!",
-//   openGraph: {
-//     type: 'website',
-//     url: 'https://wisemeeple.com',
-//     title: 'Wise Meeple',
-//     description: '¡Vende tus juegos de mesa más facil!',
-//   }
-// };
 
 type Props = {
-  params: Promise<{ id: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+const getCatalogOwner =  async (id: string | number) =>{
+    const supabase = createClient(); 
+    const result = await supabase
+      .from("catalog")
+      .select(
+        `
+     user,
+     profile:profiles(*)
+   `
+      )
+      .eq("id", id)
+      .single();
+    return result;
+  
 }
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // read route params
-  const id = (await params).id
- const supabase = createClient()
-  const getCatalogOwner = async () => {
-    const getCatalogUser = await supabase
-      .from("catalog")
-      .select("user")
-      .eq("id", id)
-      .single();
-    const catalogUser = getCatalogUser.data?.user;
-    const { data } = await supabase
-      .from("profiles")
-      .select("first_name, last_name, phone, city, country")
-      .eq("profile_id", catalogUser)
-      .single();
-    return data;
-  }; 
-  const catalogOwner = await getCatalogOwner();
-  const title = `Catalogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`
+  const id = (await params).id;
+  const  { data , error} = await getCatalogOwner(id)
+  const title = data 
+    ? `Catalogo de ${data?.profile.first_name} ${data?.profile.last_name}`
+    : 'Wise Meeple - Catálogo'; 
   return {
     title,
     openGraph: {
       title,
+      images:`logo.svg`
     },
-  }
+  };
 }
 
 export default async function CatalogPage({
@@ -63,21 +53,7 @@ export default async function CatalogPage({
 }) {
   const supabase = createClient();
   const user = await supabase.auth.getUser();
-  const getCatalogOwner = async () => {
-    const getCatalogUser = await supabase
-      .from("catalog")
-      .select("user")
-      .eq("id", params.id)
-      .single();
-    const catalogUser = getCatalogUser.data?.user;
-    const { data } = await supabase
-      .from("profiles")
-      .select("first_name, last_name, phone, city, country")
-      .eq("profile_id", catalogUser)
-      .single();
-    return data;
-  };
-  const catalogOwner = await getCatalogOwner();
+  const catalogOwner = (await getCatalogOwner(params.id)).data?.profile;
   const getMatchUserCatalog = async () => {
     const { data } = await supabase
       .from("catalog")
@@ -99,28 +75,7 @@ export default async function CatalogPage({
   if (data?.length !== 0 && data !== undefined && data !== null) {
     return (
       <>
-        <Head>
-          <title>
-            Wise Meeple -{" "}
-            {matchUserCatalog
-              ? "Mi Catálogo"
-              : `Catálogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`}{" "}
-          </title>
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://wisemeeple.com" />
-          <meta
-            property="og:title"
-            content={`Wise Meeple - Catálogo de ${catalogOwner}`}
-          />
-          <meta
-            property="og:description"
-            content="¡Vende tus juegos de mesa más facil!"
-          />
-          <meta
-            property="og:image"
-            content={data[0].image}
-          />
-        </Head>
+
         <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
           <Flex width={"100%"} justify={"between"} my="4">
             <Text size={"6"} weight={"bold"}>
