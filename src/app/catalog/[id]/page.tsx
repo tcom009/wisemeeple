@@ -56,7 +56,7 @@ export async function generateMetadata(
     title,
     openGraph: {
       title,
-      images:`logo.svg`
+      images:[`https://static-00.iconduck.com/assets.00/meeple-icon-2048x2048-47ywhn2b.png`]
     },
   };
 }
