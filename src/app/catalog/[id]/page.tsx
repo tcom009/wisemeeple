@@ -56,8 +56,6 @@ export async function generateMetadata(
   }
 }
 
-
-
 export default async function CatalogPage({
   params,
 }: {

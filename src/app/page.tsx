@@ -3,6 +3,18 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import GamesForSale from "@/core/components/sellers/SellersList";
 import RecentGames from "@/core/components/recentGames/RecentGames";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Wise Meeple",
+  description: "¡Vende tus juegos de mesa más facil!",
+  openGraph: {
+    type: 'website',
+    url: 'https://wisemeeple.com',
+    title: 'Wise Meeple',
+    description: '¡Vende tus juegos de mesa más facil!',
+  }
+};
 export default async function Home() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
