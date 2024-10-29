@@ -5,7 +5,6 @@ import Link from "next/link";
 import CatalogList from "./CatalogList";
 import ActionButton from "./ActionButton";
 import ContactSection from "./ContactSection";
-import Head from "next/head";
 import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
@@ -13,29 +12,45 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-const getCatalogOwner =  async (id: string | number) =>{
+interface catalogOwnerI
+{
+  data:
+  {
+    user: string,
+    profile:{
+      first_name:string
+      last_name: string
+      phone: string
+      city: string
+      country: string
+    }
+  } | null,
+  error: any
+}
+const getCatalogOwner: (id: any) => Promise<catalogOwnerI> =  async (id:any) =>{
     const supabase = createClient(); 
     const result = await supabase
       .from("catalog")
       .select(
         `
      user,
-     profile:profiles(*)
+     profile:profiles (*)
    `
       )
       .eq("id", id)
-      .single();
-    return result;
+      .single()
+      return result as catalogOwnerI;
+    
   
-}
+};
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const id = (await params).id;
-  const  { data , error} = await getCatalogOwner(id)
-  const title = data 
-    ? `Catalogo de ${data?.profile.first_name} ${data?.profile.last_name}`
+  const  { data, error} = await getCatalogOwner(id)
+  const title = data?.profile
+    ? `Catalogo de ${data.profile.first_name} ${data.profile.last_name}`
     : 'Wise Meeple - Catálogo'; 
   return {
     title,
@@ -85,9 +100,9 @@ export default async function CatalogPage({
             </Text>
             {!matchUserCatalog && (
               <ContactSection
-                phone={catalogOwner?.phone}
-                city={catalogOwner?.city}
-                country={catalogOwner?.country}
+                phone={catalogOwner?.phone ?? "0"}
+                city={catalogOwner?.city ?? ""}
+                country={catalogOwner?.country ?? ""}
               />
             )}
             {matchUserCatalog && (
