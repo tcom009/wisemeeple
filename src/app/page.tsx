@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import GamesForSale from "@/core/components/sellers/SellersList";
 import RecentGames from "@/core/components/recentGames/RecentGames";
 import { Metadata } from "next";
-
+import { config } from "@config";
 export const metadata: Metadata = {
   title: "Wise Meeple",
   description: "¡Vende tus juegos de mesa más facil!",
@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     url: 'https://wisemeeple.com',
     title: 'Wise Meeple',
     description: '¡Vende tus juegos de mesa más facil!',
+    images: [config.OPEN_GRAPH_IMAGE]
   }
 };
 export default async function Home() {

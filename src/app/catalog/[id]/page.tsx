@@ -6,6 +6,7 @@ import CatalogList from "./CatalogList";
 import ActionButton from "./ActionButton";
 import ContactSection from "./ContactSection";
 import { Metadata, ResolvingMetadata } from "next";
+import { config } from "@/config";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -56,7 +57,7 @@ export async function generateMetadata(
     title,
     openGraph: {
       title,
-      images:[`https://static-00.iconduck.com/assets.00/meeple-icon-2048x2048-47ywhn2b.png`]
+      images:[config.OPEN_GRAPH_IMAGE]
     },
   };
 }

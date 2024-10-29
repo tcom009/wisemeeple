@@ -7,7 +7,7 @@ const BGG_GET_GAME= `${BGG_API_ROOT}/thing?id=`;
 const PROJECT_NAME = "bg_companion";
 const MAX_SEARCH_RESULTS= 20
 const WHATS_APP_LINK= 'https://wa.me/'
-
+const OPEN_GRAPH_IMAGE = "https://static-00.iconduck.com/assets.00/meeple-icon-2048x2048-47ywhn2b.png"
 export const config = {
   BGG_API_ROOT,
   BGG_SEARCH_BOARDGAMES,
@@ -18,4 +18,5 @@ export const config = {
   BGG_GET_GAME,
   MAX_SEARCH_RESULTS,
   WHATS_APP_LINK,
+  OPEN_GRAPH_IMAGE,
 };
