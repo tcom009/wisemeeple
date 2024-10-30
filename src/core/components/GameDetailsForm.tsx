@@ -30,6 +30,7 @@ import { useState } from "react";
 import { PageStatus } from "@/core/models/models";
 import SmallSpinner from "@/core/components/SmallSpinner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface IFormInput {
   accepts_changes: boolean;
@@ -111,8 +112,8 @@ export default function GameDetailsForm({
       price: +formData.price,
     };
     const result = isEditing
-          ? await supabase.from("user_games").update(editGameData).eq("id", gameId)
-          : await supabase.from("user_games").insert(data);
+      ? await supabase.from("user_games").update(editGameData).eq("id", gameId)
+      : await supabase.from("user_games").insert(data);
     if (result.error) {
       setPageStatus(PageStatus.ERROR);
     } else {
@@ -333,7 +334,11 @@ export default function GameDetailsForm({
             <Callout.Icon>
               <InfoCircledIcon />
             </Callout.Icon>
-            <Callout.Text>{isEditing ? "Editado con exito" : "¡Agregado con exito a tu catálogo!"}</Callout.Text>
+            <Callout.Text>
+              {isEditing
+                ? "Editado con exito"
+                : "¡Agregado con exito a tu catálogo!"}
+            </Callout.Text>
           </Callout.Root>
         )}
         <Grid my="3" gap="2" columns={{ xl: "2", lg: "2", md: "2", sm: "2" }}>
@@ -349,23 +354,26 @@ export default function GameDetailsForm({
               <SmallSpinner />
             ) : (
               <>
-                {isEditing ? (<Pencil2Icon/>):(<PlusIcon />)}
-                {isEditing ? "Editar": "Agregar"}
+                {isEditing ? <Pencil2Icon /> : <PlusIcon />}
+                {isEditing ? "Editar" : "Agregar"}
               </>
             )}
           </Button>
-          {!isEditing && (
-            <Button
-              onClick={() => onClickBack && onClickBack()}
-              size="2"
-              color="gray"
-              radius="large"
-              variant="classic"
-            >
-              <ArrowLeftIcon />
-              Regresar
-            </Button>
-          )}
+
+          <Button
+            onClick={
+              isEditing
+                ? () => router.back()
+                : () => onClickBack && onClickBack()
+            }
+            size="2"
+            color="gray"
+            radius="large"
+            variant="classic"
+          >
+            {!isEditing && <ArrowLeftIcon />}
+            {isEditing ? "Cancelar" : "Regresar"}
+          </Button>
         </Grid>
       </Card>
       <Box height={"9"}></Box>

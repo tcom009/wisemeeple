@@ -7,42 +7,11 @@ import ActionButton from "./ActionButton";
 import ContactSection from "./ContactSection";
 import { Metadata, ResolvingMetadata } from "next";
 import { config } from "@/config";
-
+import { getCatalogOwner, getMatchUserCatalog, getGames } from "./supabase";
+import { routes } from "@/routes";
 type Props = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
-
-interface catalogOwnerI
-{
-  data:
-  {
-    user: string,
-    profile:{
-      first_name:string
-      last_name: string
-      phone: string
-      city: string
-      country: string
-    }
-  } | null,
-  error: any
-}
-const getCatalogOwner: (id: any) => Promise<catalogOwnerI> =  async (id:any) =>{
-    const supabase = createClient(); 
-    const result = await supabase
-      .from("catalog")
-      .select(
-        `
-     user,
-     profile:profiles (*)
-   `
-      )
-      .eq("id", id)
-      .single()
-      return result as catalogOwnerI;
-    
-  
 };
 export async function generateMetadata(
   { params, searchParams }: Props,
@@ -62,36 +31,21 @@ export async function generateMetadata(
   };
 }
 
-export default async function CatalogPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function CatalogPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const supabase = createClient();
+  const catalogId = params.id
   const user = await supabase.auth.getUser();
-  const catalogOwner = (await getCatalogOwner(params.id)).data?.profile;
-  const getMatchUserCatalog = async () => {
-    const { data } = await supabase
-      .from("catalog")
-      .select()
-      .eq("user", user.data.user?.id)
-      .single();
-    if (data?.id.toString() === params.id) {
-      return true;
-    }
-    return false;
-  };
-  const matchUserCatalog = await getMatchUserCatalog();
-  const { data } = await supabase
-    .from("user_games")
-    .select("*")
-    .eq("catalog_id", params.id)
-    .order("created_at", { ascending: false });
-
-  if (data?.length !== 0 && data !== undefined && data !== null) {
+  const catalogOwner = (await getCatalogOwner(catalogId)).data?.profile;
+  const matchUserCatalog = await getMatchUserCatalog(user.data.user?.id, catalogId);
+  const {data, error}  = await getGames(catalogId);
+  if (data?.length !== 0 && data !== null) {
     return (
       <>
-
         <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
           <Flex width={"100%"} justify={"between"} my="4">
             <Text size={"6"} weight={"bold"}>
@@ -108,7 +62,7 @@ export default async function CatalogPage({
             )}
             {matchUserCatalog && (
               <Flex gap="2">
-                <Link className="no-underline" href={"/sell"}>
+                <Link className="no-underline" href={routes.SELL_GAME}>
                   <Button size={"1"}>
                     <PlusIcon /> Agregar
                   </Button>
@@ -116,13 +70,27 @@ export default async function CatalogPage({
               </Flex>
             )}
           </Flex>
-
           <CatalogList games={data} userMatchsCatalog={matchUserCatalog} />
         </Container>
       </>
     );
   }
-  // No games found
+  if(error){
+    <Container>
+      <Flex
+        width={"100%"}
+        justify={"center"}
+        mt={"9"}
+        direction={"column"}
+        gap={"3"}
+      >
+        Ha ocurrido un error
+        <Flex align={"center"} justify={"center"} width={"100%"}>
+          <ActionButton matchsCatalog={matchUserCatalog} user={user} />
+        </Flex>
+      </Flex>
+    </Container>
+  }
   return (
     <Container>
       <Flex

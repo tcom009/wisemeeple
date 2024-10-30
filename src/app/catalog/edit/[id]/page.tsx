@@ -3,21 +3,24 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Container, Flex, Text } from "@radix-ui/themes";
 import Image from "next/image";
-const EditGamePage = async ({ params }: { params: { id: string } }) => {
+const EditGamePage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params;
   const supabase = createClient();
   const { data: userData } = await supabase.auth.getUser();
+  const { data: game, error } = await supabase
+    .from("user_games")
+    .select()
+    .eq("id", params.id)
+    .single()
   if (!userData?.user) {
     redirect("/login");
   }
-
-  const { data, error } = await supabase
-    .from("user_games")
-    .select()
-    .eq("id", params.id);
+  if (game.owner_id !== userData?.user.id){
+    redirect('/');
+  }
   if (error) {
     return null;
   }
-  const game = data[0];
   return (
     <Container size={{ lg: "3", md: "3", sm: "3", xs: "1" }}>
       <Flex direction={"column"} gap={"3"}>
@@ -30,11 +33,11 @@ const EditGamePage = async ({ params }: { params: { id: string } }) => {
         width={100}   
         height={100}
         style={{ borderRadius: "1em" }}
+        objectFit="contain"
         />
         </Flex>
-      <GameDetailsForm formDefaultValues={data[0]} gameId={params.id} isEditing />
+      <GameDetailsForm formDefaultValues={game} gameId={params.id} isEditing />
     </Container>
   );
 };
-
 export default EditGamePage;

@@ -9,7 +9,7 @@ import { useWizard } from "react-use-wizard";
 import { PageStatus } from "@/core/models/models";
 
 
-interface SellFormProps {
+interface FindGamesProps {
   setSelectedGame: (game: ParsedThing) => void;
 }
 type StateI = {
@@ -23,7 +23,7 @@ const initialState: StateI = {
   pageStatus: PageStatus.IDLE,
 };
 
-export default function FindGame({ setSelectedGame }: SellFormProps) {
+export default function FindGame({ setSelectedGame }: FindGamesProps) {
   const [state, setState] = useState<StateI>(initialState);
   const { games, pageStatus } = state;
   const { nextStep } = useWizard();

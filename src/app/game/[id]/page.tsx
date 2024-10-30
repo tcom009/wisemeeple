@@ -11,7 +11,8 @@ import { formatMoney } from "@/core/lib/formatMoney";
 import { formatPhone } from "@/core/lib/formatPhone"; 
 import WhatsappLogo from "@/core/components/WhatsappLogo";
 import { config } from "@/config";
-async function GamePage({ params }: { params: { id: string } }) {
+async function GamePage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const supabase = createClient();
   const getGame = async () => {
     const { data, error } = await supabase
