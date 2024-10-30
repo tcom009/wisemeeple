@@ -1,4 +1,4 @@
-import { Grid, Text, Flex, Box, Avatar, Button } from "@radix-ui/themes";
+import { Grid, Text, Flex, Box, Avatar } from "@radix-ui/themes";
 import { UserGame } from "@/core/models/models";
 import { trimText } from "@/core/lib/textUtils";
 import { formatMoney } from "@/core/lib/formatMoney";
@@ -10,11 +10,9 @@ import {
   languageDependencyMap,
 } from "@/core/data/gameDetails";
 import {
-  TrashIcon,
   ExternalLinkIcon,
-  Pencil2Icon,
+  ChevronDownIcon,
 } from "@radix-ui/react-icons";
-import DeleteGameDialog from "./DeleteGameDialog";
 import GameOptionsMenu from "./GameOptionsMenu";
 interface Props {
   game: UserGame;
@@ -90,7 +88,7 @@ const GridItem = ({ game, userMatchsCatalog }: Props) => {
           </Flex>
         </Box>
           {userMatchsCatalog && (
-              <GameOptionsMenu game={game} />
+              <GameOptionsMenu game={game} menuButton={<ChevronDownIcon />}/>
           )}
       </ Flex>
     </>

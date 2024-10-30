@@ -22,8 +22,8 @@ const DeleteGameDialog = ({ isOpen, game, setIsOpen }: Props) => {
       setIsOpen(false);
     }
     setIsOpen(false);
-    setInterval(() => setIsLoading(false), 3000);
     router.refresh();
+    setInterval(() => setIsLoading(false), 3000);
   };
 
   return (

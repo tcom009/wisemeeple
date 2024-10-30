@@ -11,6 +11,7 @@ interface State {
 }
 interface Props {
   game: UserGame;
+  menuButton?: React.ReactNode;
 
 }
 
@@ -18,7 +19,7 @@ const initialState = {
   openModal: false,
   openMenu: false,
 };
-const GameOptionsMenu = ({ game }: Props) => {
+const GameOptionsMenu = ({ game, menuButton }: Props) => {
   const router = useRouter();
   const [state, setState] = useState<State>(initialState);
   const setModalMenu = () =>
@@ -39,7 +40,7 @@ const GameOptionsMenu = ({ game }: Props) => {
       <DropdownMenu.Root open={openMenu} onOpenChange={setOpenMenu}>
         <DropdownMenu.Trigger>
           <Button variant="outline">
-            <DotsVerticalIcon />
+            {menuButton ? menuButton : <DotsVerticalIcon />}
           </Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>

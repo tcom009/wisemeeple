@@ -1,21 +1,5 @@
-import { Grid, Text, Flex, Box, Avatar, Button } from "@radix-ui/themes";
+import { Grid } from "@radix-ui/themes";
 import { UserGame } from "@/core/models/models";
-import { trimText } from "@/core/lib/textUtils";
-import { formatMoney } from "@/core/lib/formatMoney";
-import Link from "next/link";
-import { config } from "@/config";
-import { routes } from "@/routes";
-import {
-  languageMap,
-  conditionMap,
-  languageDependencyMap,
-} from "@/core/data/gameDetails";
-import {
-  TrashIcon,
-  ExternalLinkIcon,
-  Pencil2Icon,
-} from "@radix-ui/react-icons";
-import DeleteGameDialog from "./DeleteGameDialog";
 import GridItem from "./GridItem";
 
 interface Props {

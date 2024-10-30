@@ -1,10 +1,14 @@
 "use server";
 import { Flex, Text, Container, Card, Grid, Button } from "@radix-ui/themes";
 import { UserGame } from "@/core/models/models";
-import GameCard from "./GameCards";
+import GameCards from "./GameCards";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import Paginator from "@/core/components/Paginator";
+import ViewControls from "../catalog/[id]/ViewControls";
+import ListItem from "../catalog/[id]/ListItem";
+import GridView from "../catalog/[id]/GridView";
+//import { useViewControls } from "../catalog/[id]/useViewControls";
 interface Props {
   games?: UserGame[] | [];
   count: number;
@@ -13,10 +17,14 @@ interface Props {
 
 const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
   const itemsPerPage = 10
-  return (
-    <>
+  //const {view, setView} = useViewControls();
+  if (games){
+    return (
+      <>
       <Container>
         <Card>
+          
+          {/* <ViewControls view={view} setView={setView} /> */}
         <Flex width={"100%"} justify={"end"} align={"center"}>
             {`Página ${currentPage} de ${Math.ceil(count/itemsPerPage)}` }
         </Flex>
@@ -37,7 +45,11 @@ const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
             px={{ xl: "9", md: "9", sm: "4", lg: "9", xs: "4" }}
             py="3"
           >
-            <GameCard games={games} />
+            {games.map((game: UserGame)=>(
+                <div>
+                  {game.game_name}
+                </div>
+            ))}
           </Grid>
           {/* Pagination controls */}
           <Flex gap={"2"} align={"center"} justify={"center"}>
@@ -51,5 +63,6 @@ const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
       </Container>
     </>
   );
+}
 };
 export default GamesForSale;

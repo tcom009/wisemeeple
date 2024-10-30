@@ -9,7 +9,7 @@ import {
   languageMap,
   conditionMap,
 } from "@/core/data/gameDetails";
-
+import { routes } from "@/routes";
 import { Box, Flex, Text, Grid, Avatar } from "@radix-ui/themes";
 
 interface Props {
@@ -39,8 +39,8 @@ const GameCards = ({ games, showInfo = true }: Props) => {
                 />
               </Flex>
 
-              <Flex justify={"start"} align={"center"} grow={"1"}>
-                <Link href={`/game/${game.id}`}>
+              <Flex justify={"start"} align={"baseline"} grow={"1"} gap={"1"}>
+                <Link href={`${routes.GAME}${game.id}`} className="no-underline">
                   <Text weight={"bold"} size={"5"}>
                     {trimText(game.game_name, MAX_TITLE_LENGTH)}
                   </Text>
