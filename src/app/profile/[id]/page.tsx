@@ -1,11 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 import ProfileForm from "./ProfileForm";
 
-export default async function ProfilePage({
-  params,
-}: {
-  params: { id: string};
-}) {
+export default async function ProfilePage(
+  props: {
+    params: Promise<{ id: string}>;
+  }
+) {
+  const params = await props.params;
   const supabase = createClient();
   const user = await supabase.auth.getUser();
   const getUserProfile = async (id: string) => {

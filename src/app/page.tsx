@@ -1,4 +1,4 @@
-import { Container, Flex, Heading, Text, Button, Grid } from "@radix-ui/themes";
+import { Container, Flex, Heading, Text, Button} from "@radix-ui/themes";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import GamesForSale from "@/core/components/sellers/SellersList";
@@ -63,7 +63,6 @@ export default async function Home() {
           {" "}
           © 2024 WiseMeeple. Todos los derechos reservados.
         </Text>
-        {/* <Footer /> */}
       </Flex>
     </>
   );
