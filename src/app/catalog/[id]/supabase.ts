@@ -59,4 +59,5 @@ export const getGames = async (id: string) =>{
     .eq("catalog_id", id)
     .order("created_at", { ascending: false });
     return gamesResult;
-}
+};
+
