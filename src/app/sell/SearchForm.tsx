@@ -1,11 +1,7 @@
 "use client";
-import { Text, Flex, Box } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
-import { useSearch } from "@/core/hooks/useSearch";
-import SearchList from "@/core/components/SearchList";
+import { Text } from "@radix-ui/themes";
+import { useState } from "react";
 import SearchBox from "@/core/components/SearchBox";
-import { predicate, gamesList } from "@/core/lib/predicate";
-import getSingleGame from "@/core/lib/getGame";
 import { searchGames } from "@/core/lib/searchGames";
 import { searchCleaner } from "@/core/lib/searchCleaner";
 import { fullGameParser } from "@/core/lib/fullGameParser";
