@@ -39,7 +39,7 @@ const GameOptionsMenu = ({ game, menuButton }: Props) => {
     <>
       <DropdownMenu.Root open={openMenu} onOpenChange={setOpenMenu}>
         <DropdownMenu.Trigger>
-          <Button variant="outline">
+          <Button variant="outline" title="Opciones">
             {menuButton ? menuButton : <DotsVerticalIcon />}
           </Button>
         </DropdownMenu.Trigger>

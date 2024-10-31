@@ -11,14 +11,18 @@ import {
 } from "@/core/data/gameDetails";
 import {
   ExternalLinkIcon,
-  ChevronDownIcon,
 } from "@radix-ui/react-icons";
-import GameOptionsMenu from "./GameOptionsMenu";
+
+
+export type Config = Record<'showObservations'| 'showPrice' | 'showCreationDate', boolean>
 interface Props {
   game: UserGame;
-  userMatchsCatalog: boolean;
+  configuration?: Partial<Config>
 }
-const GridItem = ({ game, userMatchsCatalog }: Props) => {
+
+
+
+const GridItem = ({ game , configuration = {} }: Props) => {
   const date = new Date(game.created_at);
   const formattedDate = date.toLocaleDateString("es-ES", {
     day: "numeric",
@@ -26,7 +30,7 @@ const GridItem = ({ game, userMatchsCatalog }: Props) => {
     year: "numeric",
   });
   return (
-    <>
+    
       <Flex width={"100%"} justify={"center"} direction="row">
         <Box key={game.id}>
           <Flex width={"100%"} justify={"center"} direction={"column"}>
@@ -76,7 +80,7 @@ const GridItem = ({ game, userMatchsCatalog }: Props) => {
                 <Text weight={"medium"}>{` ${formattedDate}`}</Text>
               </Text>
 
-              {game.observations && (
+              {configuration.showObservations !== false && (
                 <>
                   <Text size={"2"} weight={"bold"}>
                     Observaciones:{" "}
@@ -87,11 +91,7 @@ const GridItem = ({ game, userMatchsCatalog }: Props) => {
             </Flex>
           </Flex>
         </Box>
-          {userMatchsCatalog && (
-              <GameOptionsMenu game={game} menuButton={<ChevronDownIcon />}/>
-          )}
       </ Flex>
-    </>
   );
 };
 

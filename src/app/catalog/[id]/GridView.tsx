@@ -1,13 +1,22 @@
-import { Grid } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 import { UserGame } from "@/core/models/models";
 import GridItem from "./GridItem";
-
+import GameOptionsMenu from "./GameOptionsMenu";
+import { useRouter } from "next/navigation";
+import { routes } from "@/routes";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 interface Props {
   games: UserGame[];
-  userMatchsCatalog: boolean;
+  userMatchsCatalog?: boolean;
+  isGameList?: boolean;
 }
 
-const GridView = ({ games, userMatchsCatalog }: Props) => {
+const GridView = ({
+  games,
+  userMatchsCatalog = false,
+  isGameList = false,
+}: Props) => {
+  const router = useRouter();
   return (
     <Grid
       columns={{
@@ -21,11 +30,23 @@ const GridView = ({ games, userMatchsCatalog }: Props) => {
       py="3"
     >
       {games?.map((game: UserGame) => (
-        <GridItem
-          key={game.id}
-          game={game}
-          userMatchsCatalog={userMatchsCatalog}
-        />
+        <Flex key={game.id} align={"center"} justify={"center"}>
+          {isGameList ? (
+            <div
+              onClick={() => router.push(`${routes.GAME}${game.id}`)}
+              className="clickable"
+            >
+              <GridItem game={game} configuration={{"showObservations":false}}/>
+            </div>
+          ) : (
+            <GridItem game={game} />
+          )}
+          {userMatchsCatalog && (
+            <Flex justify={"end"} width={"100%"} align={"center"}>
+              <GameOptionsMenu game={game} menuButton={<ChevronDownIcon />} />
+            </Flex>
+          )}
+        </Flex>
       ))}
     </Grid>
   );

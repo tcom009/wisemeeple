@@ -1,4 +1,4 @@
-import { Flex, IconButton } from "@radix-ui/themes";
+import { Flex, Button } from "@radix-ui/themes";
 import { Component2Icon, RowsIcon } from "@radix-ui/react-icons";
 
 export enum View {
@@ -12,20 +12,22 @@ export enum View {
   }
 const ViewControls = ({view, setView}:Props) =>(
     <Flex width={"100%"} justify={"end"} align={"center"} gap={"2"}>
-    <IconButton
+    <Button
       title="Vista de listado"
-      variant={view === View.LIST ? "outline" : "soft"}
+      disabled={view === View.LIST && true}
+      variant = "soft"
       onClick={() =>setView(View.LIST)}
     >
       <RowsIcon />
-    </IconButton>
-    <IconButton
+    </Button>
+    <Button
       title="Vista de grilla"
-      variant={view === View.GRID ? "outline" : "soft"}
+      variant = "soft"
+      disabled={view === View.GRID && true }
       onClick={() =>setView(View.GRID)}
     >
       <Component2Icon />
-    </IconButton>
+    </Button>
   </Flex>
 );
 
