@@ -35,7 +35,7 @@ import Link from "next/link";
 interface IFormInput {
   accepts_changes: boolean;
   is_sold: boolean;
-  price: number;
+  price: number | undefined;
   condition: string;
   language_dependency: string;
   language: string;
@@ -83,7 +83,7 @@ export default function GameDetailsForm({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm( { 
     defaultValues: {
       price: formDefaultValues?.price ,
       is_sold: formDefaultValues?.is_sold ?? false,
@@ -100,7 +100,7 @@ export default function GameDetailsForm({
     const catalogId = await getCatalogId();
     const data = {
       ...formData,
-      price: +formData.price,
+      price: formData.price ? +formData.price : 0,
       bgg_id: gameDefaultValues?.id,
       owner_id: userData?.user?.id,
       game_name: gameDefaultValues?.name,
@@ -109,7 +109,7 @@ export default function GameDetailsForm({
     };
     const editGameData = {
       ...formData,
-      price: +formData.price,
+      price: formData.price ? +formData.price : 0,
     };
     const result = isEditing
       ? await supabase.from("user_games").update(editGameData).eq("id", gameId)
