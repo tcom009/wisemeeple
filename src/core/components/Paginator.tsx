@@ -45,7 +45,6 @@ const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
       <Link href={`/games?page=1`}>
         <Button
           disabled={currentPage === 1}
-          variant={"soft"}
         >
           {1}
         </Button>
@@ -55,7 +54,6 @@ const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
         <Link href={`${pageUrl}=${number}`} key={number}>
           <Button
             disabled={currentPage === number}
-            variant={"soft"}
           >
             {number}
           </Button>
@@ -67,7 +65,7 @@ const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
           <Link href={`${pageUrl}=${totalPages}`}>
             <Button
               disabled={currentPage === totalPages}
-              variant={"soft"}
+
             >
               {totalPages}
             </Button>
