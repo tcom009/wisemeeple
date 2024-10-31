@@ -1,21 +1,18 @@
 "use client"
-import { Flex, Text, Container, Card, Grid, Button } from "@radix-ui/themes";
+import { Flex, Text, Container, Card } from "@radix-ui/themes";
 import { UserGame } from "@/core/models/models";
-import GameCards from "./GameCards";
-import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import Paginator from "@/core/components/Paginator";
-import ViewControls, { View } from "../catalog/[id]/ViewControls";
-import ListView from "../catalog/[id]/ListView";
-import GridView from "../catalog/[id]/GridView";
-import { useViewControls } from "../catalog/[id]/useViewControls";
+import ViewControls, { View } from "@/core/components/gamesList/ViewControls";
+import ListView from "@/core/components/gamesList/ListView";
+import GridView from "@/core/components/gamesList/GridView";
+import { useViewControls } from "@/core/components/gamesList/useViewControls";
 interface Props {
   games?: UserGame[] | [];
   count: number;
   page: number;
 }
 
-const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
+const GamesList = ({ games, count = 0, page: currentPage }: Props) => {
   const itemsPerPage = 10
   const {view, setView} = useViewControls();
   if (games){
@@ -48,4 +45,4 @@ const GamesForSale = ({ games, count = 0, page: currentPage }: Props) => {
   );
 }
 };
-export default GamesForSale;
+export default GamesList;

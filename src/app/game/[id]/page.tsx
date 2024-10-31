@@ -1,3 +1,4 @@
+"use server";
 import { createClient } from "@/utils/supabase/server";
 import { Avatar, Text, Container, Flex, Grid } from "@radix-ui/themes";
 import Link from "next/link";

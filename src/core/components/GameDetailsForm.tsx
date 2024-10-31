@@ -85,7 +85,7 @@ export default function GameDetailsForm({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      price: formDefaultValues?.price ?? 0,
+      price: formDefaultValues?.price ,
       is_sold: formDefaultValues?.is_sold ?? false,
       condition: formDefaultValues?.condition ?? "",
       language_dependency: formDefaultValues?.language_dependency ?? "",
@@ -153,17 +153,10 @@ export default function GameDetailsForm({
                 },
               }}
               render={({ field }) => (
-                <TextField.Root placeholder="Precio">
+                <TextField.Root placeholder="Precio" type="number"{...field} required>
                   <TextField.Slot>
                     <Text weight={"bold"}>$</Text>
                   </TextField.Slot>
-                  <TextField.Input
-                    type="number"
-                    height={"16"}
-                    placeholder="Precio"
-                    {...field}
-                    required
-                  />
                 </TextField.Root>
               )}
             />
