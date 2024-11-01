@@ -44,7 +44,7 @@ export default async function Navbar() {
       width={"100%"}
       columns={{ lg: "3", xl: "3", md: "3", sm: "3", initial: "2" }}
       rows={{ lg: "0", xl: "0", md: "0", sm: "0", initial: "1" }}
-      height={"9"}
+      height={"4em"}
     >
       <Link href={"/"} as={"/"} className="no-underline">
         <Flex

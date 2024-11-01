@@ -36,10 +36,13 @@ const GridView = ({
               onClick={() => router.push(`${routes.GAME}${game.id}`)}
               className="clickable"
             >
-              <GridItem game={game} configuration={{"showObservations":false}}/>
+              <GridItem
+                game={game}
+                configuration={{ showObservations: false }}
+              />
             </div>
           ) : (
-            <GridItem game={game} />
+            <GridItem game={game} configuration={{ hasGameLink: false }} />
           )}
           {userMatchsCatalog && (
             <Flex justify={"end"} width={"100%"} align={"center"}>

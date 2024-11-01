@@ -18,7 +18,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { PageStatus } from "@/core/models/models";
 import SmallSpinner from "@/core/components/SmallSpinner";
-import { useRouter } from "next/navigation";
+import { formatPhone } from "@/core/lib/formatPhone";
 import { ProfileI } from "@/core/models/models";
 import { createProfileAndCatalog } from "./actions";
 import { countries } from "core/data/countries";
@@ -44,7 +44,6 @@ export default function ProfileForm({
   profile,
 }: ProfileFormProps) {
   const supabase = createClient();
-  const router = useRouter();
   const getUserData = async () => {
     const { data } = await supabase.auth.getUser();
     return data;
@@ -71,15 +70,7 @@ export default function ProfileForm({
       country: profile?.country ?? "",
     },
   });
-  const getCatalogId = async () => {
-    const userData = await getUserData();
-    const { data } = await supabase
-      .from("catalog")
-      .select("id")
-      .eq("user", userData?.user?.id)
-      .single();
-    return data?.id;
-  };
+
   const onSubmit: SubmitHandler<IFormInput> = async (formData) => {
     setPageStatus(PageStatus.LOADING);
     const userData = await getUserData();
@@ -88,6 +79,7 @@ export default function ProfileForm({
       ...formData,
       country: formData.country.toLocaleUpperCase(),
       city: formData.city.toLocaleUpperCase(),
+      phone: formatPhone(formData.phone),
     };
 
     if (isEditing) {
@@ -98,7 +90,6 @@ export default function ProfileForm({
       if (result.error) {
         setPageStatus(PageStatus.ERROR);
       } else {
-
         setPageStatus(PageStatus.SUCCESS);
       }
     }
@@ -143,15 +134,12 @@ export default function ProfileForm({
                   required: { value: true, message: "Este campo es requerido" },
                 }}
                 render={({ field }) => (
-                  <TextField.Root>
-                    <TextField.Input
-                      type="text"
-                      height={"16"}
-                      placeholder="Nombre"
-                      {...field}
-                      required
-                    />
-                  </TextField.Root>
+                  <TextField.Root
+                    type="text"
+                    placeholder="Nombre"
+                    {...field}
+                    required
+                  ></TextField.Root>
                 )}
               />
               <Text color="crimson" size={"1"} mt="1">
@@ -168,15 +156,12 @@ export default function ProfileForm({
                   required: { value: true, message: "Este campo es requerido" },
                 }}
                 render={({ field }) => (
-                  <TextField.Root>
-                    <TextField.Input
-                      type="text"
-                      height={"16"}
-                      placeholder="Apellido"
-                      {...field}
-                      required
-                    />
-                  </TextField.Root>
+                  <TextField.Root
+                    type="text"
+                    placeholder="Apellido"
+                    {...field}
+                    required
+                  ></TextField.Root>
                 )}
               />
               <Text color="crimson" size={"1"} mt="1">
@@ -193,15 +178,12 @@ export default function ProfileForm({
                   required: { value: true, message: "Este campo es requerido" },
                 }}
                 render={({ field }) => (
-                  <TextField.Root>
-                    <TextField.Input
-                      type="text"
-                      height={"16"}
-                      placeholder="Nombre"
-                      {...field}
-                      required
-                    />
-                  </TextField.Root>
+                  <TextField.Root
+                    type="text"
+                    placeholder="Nombre"
+                    {...field}
+                    required
+                  ></TextField.Root>
                 )}
               />
               <Text color="crimson" size={"1"} mt="1">
@@ -218,15 +200,12 @@ export default function ProfileForm({
                   required: { value: true, message: "Este campo es requerido" },
                 }}
                 render={({ field }) => (
-                  <TextField.Root>
-                    <TextField.Input
-                      type="text"
-                      height={"16"}
-                      placeholder="Ciudad"
-                      {...field}
-                      required
-                    />
-                  </TextField.Root>
+                  <TextField.Root
+                    type="text"
+                    placeholder="Ciudad"
+                    {...field}
+                    required
+                  ></TextField.Root>
                 )}
               />
               <Text color="crimson" size={"1"} mt="1">
@@ -235,8 +214,8 @@ export default function ProfileForm({
             </Box>
             <Box>
               <Text weight={"bold"}>Pais* </Text>
-              <Text size={'2'}>
-              {profile?.country && `Actual: ${getCountry(profile?.country)}`}
+              <Text size={"2"}>
+                {profile?.country && `Actual: ${getCountry(profile?.country)}`}
               </Text>
               <Flex direction={"column"} width={"100%"}>
                 <Controller
@@ -245,7 +224,9 @@ export default function ProfileForm({
                   rules={{ required: true }}
                   render={({ field }) => (
                     <Select.Root
-                      defaultValue={profile?.country && getCountry(profile?.country)}
+                      defaultValue={
+                        profile?.country && getCountry(profile?.country)
+                      }
                       onValueChange={field.onChange}
                     >
                       <Select.Trigger />

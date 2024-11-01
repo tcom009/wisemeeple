@@ -26,7 +26,7 @@ export default function RootLayout({
           hasBackground={false}
         >
           <Navbar />
-          <Grid height={"9"} position={"relative"} />
+          <Grid height={"4em"} position={"relative"} />
           {children}
         
         <Analytics />

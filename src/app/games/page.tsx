@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import GamesForSale from "./GamesList";
+import GamesList from "./GamesList";
 const GamesForSalePage = async ({
   searchParams,
 }: {
@@ -19,7 +19,7 @@ const GamesForSalePage = async ({
   } else if (data && count) {
     return (
       <div>
-        <GamesForSale games={data} count={count} page={currentPage} />
+        <GamesList games={data} count={count} page={currentPage} />
       </div>
     );
   }
