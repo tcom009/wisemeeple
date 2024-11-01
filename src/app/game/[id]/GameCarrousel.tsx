@@ -16,7 +16,8 @@ import {
 } from "@/core/data/gameDetails";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-
+import GridItem from "@/core/components/gamesList/GridItem";
+import { UserGame } from "@/core/models/models";
 interface Props {
   userId: string;
   currentGame: string;
@@ -25,9 +26,10 @@ async function GameCarousel({ userId, currentGame }: Props) {
   const supabase = createClient();
   const getUserGames = async () => {
     const { data, error } = await supabase
-      .from("user_games")
+      .from("random_user_games")
       .select()
-      .eq("owner_id", userId);
+      .eq("owner_id", userId)
+      .limit(5);
     if (error) {
       return null;
     }
@@ -45,57 +47,24 @@ async function GameCarousel({ userId, currentGame }: Props) {
         size={"2"}
         type={userGames.length > 4 ? "always" : "hover"}
         scrollbars="horizontal"
-        style={{ height: 250 }}
+        style={{ height: "17em" }}
       >
-        <Flex direction={"row"} gap={"4"}>
-          {userGames.map((game) => {
-            return (
-              <Box key={game.id}>
-                <Flex width={"100%"} justify={"center"} direction={"column"}>
-                  <Flex justify={"center"} align={"center"}>
-                  <Link
-                        className="no-underline white-link"
-                        href={`/game/${game.id}`}
-                      >
-                    <Avatar
-                      src={game.image}
-                      fallback={game.game_name[0]}
-                      size={"9"}
-                    />
-                    </Link>
-                  </Flex>
-
-                  <Flex justify={"start"} align={"center"} grow={"1"}>
-                    <Text weight={"bold"} size={"5"}>
-                      <Link
-                        className="no-underline white-link"
-                        href={`/game/${game.id}`}
-                      >
-                        {trimText(game.game_name, 25)}
-                      </Link>
-                    </Text>
-                  </Flex>
-
-                  <Flex direction={"column"} justify={"center"}>
-                    <Grid columns={"2"}>
-                      <Flex width={"100%"} align={"center"} grow={"0"}>
-                        <Text weight={"bold"} size={"2"}>
-                          🔤{" "}
-                          {languageMap.get(game.language)?.toLocaleUpperCase()}
-                        </Text>
-                      </Flex>
-                      <Flex width={"100%"} justify={"end"} grow={"0"}>
-                        <Text weight={"bold"} size={"6"}>
-                          ${formatNumber(game.price)}
-                        </Text>
-                      </Flex>
-                    </Grid>
-                    
-                  </Flex>
-                </Flex>
-              </Box>
-            );
-          })}
+        <Flex direction={"row"} gap={"6"}>
+          {userGames.map((game: UserGame) => (
+            <Flex key={game.id} width={"12em"}>
+              <GridItem
+                game={game}
+                configuration={{
+                  showObservations: false,
+                  showAcceptsChanges: false,
+                  showCreationDate: false,
+                  showBGGInfo: false,
+                  showCondition: false,
+                  showLanguageDependency: false,
+                }}
+              />
+            </Flex>
+          ))}
         </Flex>
       </ScrollArea>
     </Card>

@@ -1,10 +1,10 @@
 "use client";
 import { Card } from "@radix-ui/themes";
 import { UserGame } from "@/core/models/models";
-import ListView from "./ListView";
 import { useState } from "react";
-import GridView from "./GridView";
-import ViewControls,{ View } from "./ViewControls";
+import ListView from "@/core/components/gamesList/ListView";
+import GridView from "@/core/components/gamesList/GridView";
+import ViewControls,{ View } from "@/core/components/gamesList/ViewControls";
 interface CatalogListProps {
   games: UserGame[];
   userMatchsCatalog: boolean;

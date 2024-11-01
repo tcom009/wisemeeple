@@ -42,14 +42,15 @@ interface AuthFormI {
 
 export default function AuthForm({ isSignup }: AuthFormI) {
   const [state, setState] = useState<StateI>(initialState);
-  const { email, password, error, isVisible, isLoading, repeatPassword } = state;
+  const { email, password, error, isVisible, isLoading, repeatPassword } =
+    state;
   const setIsLoading = (state: boolean) =>
     setState((prevState) => ({
       ...prevState,
       isLoading: state,
     }));
-  
-  const hasSamePassword = () => password === repeatPassword && true
+
+  const hasSamePassword = () => password === repeatPassword && true;
   const handleSignUp = async () => {
     setIsLoading(true);
     if (email && password && hasSamePassword()) {
@@ -126,34 +127,34 @@ export default function AuthForm({ isSignup }: AuthFormI) {
     <Container size={{ lg: "1", md: "1", sm: "1", xs: "1" }} mt={"9"}>
       <Card>
         <Flex gap={"3"} direction={"column"}>
-          <Text align={"center"}>{isSignup ? "Regístrate" : "Iniciar Sesión"}</Text>
-          <TextField.Root>
+          <Text align={"center"}>
+            {isSignup ? "Regístrate" : "Iniciar Sesión"}
+          </Text>
+          <TextField.Root
+            size={"3"}
+            name="email"
+            value={email}
+            id="email"
+            type="email"
+            onChange={handleOnChange("email")}
+            placeholder="Email"
+          >
             <TextField.Slot>
               <EnvelopeClosedIcon />
             </TextField.Slot>
-            <TextField.Input
-              size={"3"}
-              name="email"
-              value={email}
-              id="email"
-              type="email"
-              onChange={handleOnChange("email")}
-              placeholder="Email"
-            />
           </TextField.Root>
-          <TextField.Root>
+          <TextField.Root
+            size={"3"}
+            name="password"
+            id="password"
+            type={isVisible ? "text" : "password"}
+            value={password}
+            onChange={handleOnChange("password")}
+            placeholder="Contraseña"
+          >
             <TextField.Slot>
               <LockClosedIcon />
             </TextField.Slot>
-            <TextField.Input
-              size={"3"}
-              name="password"
-              id="password"
-              type={isVisible ? "text" : "password"}
-              value={password}
-              onChange={handleOnChange("password")}
-              placeholder="Contraseña"
-            />
             <TextField.Slot>
               <IconButton variant={"ghost"} onClick={passwordToggle}>
                 {isVisible ? <EyeOpenIcon /> : <EyeClosedIcon />}
@@ -161,19 +162,18 @@ export default function AuthForm({ isSignup }: AuthFormI) {
             </TextField.Slot>
           </TextField.Root>
           {isSignup && (
-            <TextField.Root>
+            <TextField.Root
+              size={"3"}
+              name="repeatPassword"
+              id="repeatPassword"
+              type={isVisible ? "text" : "password"}
+              value={state.repeatPassword}
+              onChange={handleOnChange("repeatPassword")}
+              placeholder="Repite la contraseña"
+            >
               <TextField.Slot>
                 <LockClosedIcon />
               </TextField.Slot>
-              <TextField.Input
-                size={"3"}
-                name="repeatPassword"
-                id="repeatPassword"
-                type={isVisible ? "text" : "password"}
-                value={state.repeatPassword}
-                onChange={handleOnChange("repeatPassword")}
-                placeholder="Repite la contraseña"
-              />
             </TextField.Root>
           )}
           {error && (

@@ -1,5 +1,5 @@
 "use client";
-import { TextField, Card, Box, Text, Flex } from "@radix-ui/themes";
+import { TextField, Card, Text, Flex } from "@radix-ui/themes";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -58,18 +58,18 @@ const NavSearchBar = () => {
 
   return (
     <Flex direction={"column"} gap={"2"}>
-      <TextField.Root size={{ xl: "2", lg: "2", md: "1", sm: "1", xs: "1" }}>
-        <TextField.Input
-          placeholder="Busca un juego "
-          onChange={handleOnChange}
-          type={"text"}
-          name="game_search"
-          value={query}
-          autoComplete="off"
-          autoFocus
-          required
-          onKeyDown={handleKeyDown}
-        />
+      <TextField.Root
+        placeholder="Busca un juego "
+        onChange={handleOnChange}
+        type={"text"}
+        name="game_search"
+        value={query}
+        autoComplete="off"
+        autoFocus
+        required
+        onKeyDown={handleKeyDown}
+        size={{ xl: "2", lg: "2", md: "1", sm: "1", xs: "1" }}
+      >
         <TextField.Slot>
           <MagnifyingGlassIcon width={"20"} height={"20"} />
         </TextField.Slot>
@@ -90,8 +90,12 @@ const NavSearchBar = () => {
                     result.game_name,
                     MAX_TEXT_LENGHT
                   )} `}</Text>
-                  <Text size={"1"} weight={"light"}>{`${conditionMap.get(result.condition)}`}</Text>
-                  <Text weight={"bold"}>{`  -  $${formatMoney(result.price)}`}</Text>
+                  <Text size={"1"} weight={"light"}>{`${conditionMap.get(
+                    result.condition
+                  )}`}</Text>
+                  <Text weight={"bold"}>{`  -  $${formatMoney(
+                    result.price
+                  )}`}</Text>
                 </Link>
               </div>
             ))}
