@@ -32,15 +32,7 @@ const GridView = ({
       {games?.map((game: UserGame) => (
         <Flex key={game.id} align={"center"} justify={"center"}>
           {isGameList ? (
-            <div
-              onClick={() => router.push(`${routes.GAME}${game.id}`)}
-              className="clickable"
-            >
-              <GridItem
-                game={game}
-                configuration={{ showObservations: false }}
-              />
-            </div>
+            <GridItem game={game} configuration={{ showObservations: false }} />
           ) : (
             <GridItem game={game} configuration={{ hasGameLink: false }} />
           )}
