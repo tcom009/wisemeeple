@@ -69,6 +69,7 @@ const NavSearchBar = () => {
         required
         onKeyDown={handleKeyDown}
         size={{ xl: "2", lg: "2", md: "1", sm: "1", xs: "1" }}
+        mr={{initial:"2", xs:"2"}}
       >
         <TextField.Slot>
           <MagnifyingGlassIcon width={"20"} height={"20"} />
