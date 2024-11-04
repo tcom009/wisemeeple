@@ -19,9 +19,9 @@ function Menu({ profileId, catalogId }: MenuProps) {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         {/* <HamburgerMenuIcon /> */}
-        <button>
-          <Avatar fallback={<PersonIcon />} radius="full" />
-        </button>
+        <Button size={{ xs: "1", initial: "1" }} my="1" radius="full">
+          <PersonIcon />
+        </Button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
@@ -32,7 +32,10 @@ function Menu({ profileId, catalogId }: MenuProps) {
             </button>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="DropdownMenuItem">
-            <button onClick={() => router.push(`/catalog/${catalogId}`)} disabled={!catalogId}>
+            <button
+              onClick={() => router.push(`/catalog/${catalogId}`)}
+              disabled={!catalogId}
+            >
               Catálogo
             </button>
           </DropdownMenu.Item>
@@ -44,9 +47,7 @@ function Menu({ profileId, catalogId }: MenuProps) {
           <DropdownMenu.Separator className="DropdownMenuSeparator" />
           <DropdownMenu.Item className="DropdownMenuItem">
             <button onClick={() => logout()}>
-              <Text align={"center"}>
-              Cerrar sesión 
-                </Text>
+              <Text align={"center"}>Cerrar sesión</Text>
             </button>
           </DropdownMenu.Item>
 
