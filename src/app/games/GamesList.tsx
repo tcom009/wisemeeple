@@ -21,15 +21,15 @@ const GamesList = ({ games, count = 0, page: currentPage }: Props) => {
       <Container>
         <Card>
           <ViewControls view={view} setView={setView} /> 
-        <Flex width={"100%"} justify={"end"} align={"center"}>
-            {`Página ${currentPage} de ${Math.ceil(count/itemsPerPage)}` }
-        </Flex>
           <Flex width={"100%"} justify={"center"} align={"center"} >
             <Text weight={"bold"} size={"5"}>
               {" "}
               Juegos Recientes
             </Text>
           </Flex>
+        <Flex width={"100%"} justify={"end"} align={"center"}>
+            {`Página ${currentPage} de ${Math.ceil(count/itemsPerPage)}` }
+        </Flex>
            {view === View.LIST && <ListView games={games} isGameList/>}
            {view === View.GRID && <GridView games={games}isGameList/>}   
           <Flex gap={"2"} align={"center"} justify={"center"}>
