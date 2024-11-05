@@ -42,7 +42,7 @@ export default async function Navbar() {
       position={"fixed"}
       top={"0"}
       left={"0"}
-      className="mauve-background z-index-1"
+      className="black-background z-index-1"
       width={"100%"}
       columns={{ lg: "4", xl: "4", md: "4", sm: "2", initial: "2" }}
       rows={{ lg: "0", xl: "0", md: "0", sm: "2", initial: "2" }}

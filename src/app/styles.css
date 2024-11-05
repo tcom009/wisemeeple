@@ -31,6 +31,10 @@ background-position: center center
   background-color:#121113 !important;
 }
 
+.black-background {
+  background-color:#000000 !important;
+}
+
 .content {
   margin-top: 7em;
 }
