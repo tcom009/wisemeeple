@@ -10,7 +10,8 @@ interface Props {
 
 const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
   const totalPages = Math.ceil(itemsCount / 10);
-  const SHOWING_PAGES = 5;
+  const SHOWING_PAGES = 2;
+
   const paginationNumbers = () => {
     const paginationNumbers = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -19,11 +20,11 @@ const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
     if (currentPage === 2) {
       return paginationNumbers.slice(
         currentPage - 1,
-        currentPage + SHOWING_PAGES
+        currentPage + SHOWING_PAGES + 1
       );
     }
     if (currentPage === 1) {
-      return paginationNumbers.slice(currentPage, currentPage + SHOWING_PAGES);
+      return paginationNumbers.slice(currentPage, currentPage + SHOWING_PAGES + 2);
     }
     if (totalPages - currentPage < SHOWING_PAGES) {
       return paginationNumbers.slice(currentPage - SHOWING_PAGES, currentPage);
@@ -37,13 +38,14 @@ const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
     <>
       {currentPage > 1 && (
         <Link href={`${pageUrl}=${currentPage - 1}`}>
-          <Button>
+          <Button size={{ xs: "1", sm: "1", initial: "1" }}>
             <ChevronLeftIcon />
           </Button>
         </Link>
       )}
       <Link href={`/games?page=1`}>
         <Button
+          size={{ xs: "1", sm: "1", initial: "1" }}
           disabled={currentPage === 1}
         >
           {1}
@@ -53,6 +55,7 @@ const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
       {paginationNumbers().map((number) => (
         <Link href={`${pageUrl}=${number}`} key={number}>
           <Button
+            size={{ xs: "1", sm: "1", initial: "1" }}
             disabled={currentPage === number}
           >
             {number}
@@ -64,14 +67,14 @@ const Paginator = ({ currentPage, itemsCount = 0, pageUrl }: Props) => {
           ...
           <Link href={`${pageUrl}=${totalPages}`}>
             <Button
+              size={{ xs: "1", sm: "1", initial: "1" }}
               disabled={currentPage === totalPages}
-
             >
               {totalPages}
             </Button>
           </Link>
           <Link href={`${pageUrl}=${currentPage + 1}`}>
-            <Button>
+            <Button size={{ xs: "1", sm: "1", initial: "1" }}>
               <ChevronRightIcon />
             </Button>
           </Link>
