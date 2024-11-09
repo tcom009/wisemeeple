@@ -1,10 +1,14 @@
 "use client";
-import { Flex, Avatar, Callout, Spinner, Button  } from "@radix-ui/themes";
-import { ExclamationTriangleIcon, TrashIcon } from "@radix-ui/react-icons";
+import { Flex, Avatar, Callout, Spinner, Badge } from "@radix-ui/themes";
+import {
+  ExclamationTriangleIcon,
+  PlusCircledIcon,
+} from "@radix-ui/react-icons";
 import { createClient } from "@/utils/supabase/client";
 import { useState, useCallback, useEffect, useRef } from "react";
 import CameraIcon from "./CameraIcon";
 import { PageStatus } from "@/core/models/models";
+import AvatarMenu from "./AvatarMenu";
 
 interface Props {
   avatarPath?: string;
@@ -66,6 +70,7 @@ const AvatarUpload = ({ avatarPath, userName }: Props) => {
 
   const handleFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target?.files?.[0];
+    console.log(event);
     if (!file) {
       return;
     }
@@ -106,15 +111,15 @@ const AvatarUpload = ({ avatarPath, userName }: Props) => {
       setState((prevState) => ({
         ...prevState,
         pageStatus: PageStatus.LOADING,
-      }))
+      }));
       const { data, error } = await supabase.storage
         .from("avatars")
         .remove([`${user.id}/avatar.jpeg`]);
-        setState((prevState) => ({
-          ...prevState,
-          imageUrl: "",
-          pageStatus: PageStatus.IDLE,
-        }))
+      setState((prevState) => ({
+        ...prevState,
+        imageUrl: "",
+        pageStatus: PageStatus.IDLE,
+      }));
       return { deleteData: data, deleteError: error };
     }
     return { deleteData: null, deleteError: null };
@@ -150,47 +155,42 @@ const AvatarUpload = ({ avatarPath, userName }: Props) => {
     <Flex direction="column" gap="2">
       {!imageUrl ? (
         <div className="image-upload clickable">
-          <CameraIcon height="1.5em" width="1.5em" fill={"#BAA7FF"} />
+          <CameraIcon height="2em" width="2em" fill={"#BAA7FF"} />
+          <Badge
+          title="Agregar avatar"
+          size="3"
+          radius="full"
+          className="file-input-button"
+          variant="solid"
+        >
+          <PlusCircledIcon style={{width: "2em", height: "2em"}} />
+        </Badge>
           <input
             type="file"
             ref={inputRef}
-            onChange={(e) => {
-              handleFile(e);
-            }}
-            className="file-input"
-            accept=".jpeg, .jpg, .png, .pdf"
-          />
-        </div>
-      ) : (
-        <Flex gap="2" align="center">
-        <div className="image-upload clickable">
-          <Avatar
-            src={imageUrl}
-            fallback={userName[0]}
-            size={"6"}
-            radius="full"
-            />
-          <input
-            type="file"
-            ref={inputRef}
-            onChange={(e) => {
-              handleFile(e);
+            onChange={(event) => {
+              handleFile(event);
             }}
             className="file-input"
             accept=".jpeg, .jpg, .png"
           />
         </div>
-          <Button
-            title="Eliminar imagen"
-            color="red"
-            size={{ xs: "1", initial: "1" }}
-            my="1"
-            onClick={deleteAvatar}
-         
-            >
-            <TrashIcon />
-          </Button>
-            </Flex>
+      ) : (
+        <Flex gap="2" align="center">
+          <div className="image-upload clickable">
+            <Avatar
+              src={imageUrl}
+              fallback={userName[0]}
+              radius="full"
+              className="image-upload clickable"
+            />
+            <AvatarMenu
+              handleFile={handleFile}
+              deleteAvatar={deleteAvatar}
+              inputRef={inputRef}
+            />
+          </div>
+        </Flex>
       )}
       {pageStatus === PageStatus.ERROR && (
         <Callout.Root color="red" role="alert">

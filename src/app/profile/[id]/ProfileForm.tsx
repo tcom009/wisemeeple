@@ -10,7 +10,6 @@ import {
   Container,
   Select,
   Flex,
-  Avatar,
 } from "@radix-ui/themes";
 
 import { InfoCircledIcon, PersonIcon } from "@radix-ui/react-icons";
@@ -106,16 +105,13 @@ export default function ProfileForm({
   return (
     <>
       <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
-        {/* Form */}
-        {/* <Flex direction={"row"} width={"100%"} justify={"center"} align={"center"} gap={"2"}> */}
-
         <Flex direction={"column"} gap="3">
-          <Text size={"6"} weight={"bold"}>
+          <Text size={"6"} weight={"bold"} mt="3">
             Mis Datos
           </Text>
-          <Flex direction="column" gap="3" width={"25%"}>
+          <Flex align={"center"} justify={"center"} width={"100%"}>
             <AvatarUpload
-              userName={profile?.first_name ?? ""}
+              userName={profile?.first_name ?? "user"}
               avatarPath={profile?.avatar}
             />
           </Flex>
