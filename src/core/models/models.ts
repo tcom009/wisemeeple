@@ -144,6 +144,7 @@ export interface ProfileI {
   phone: string;
   city: string;
   country: string;
+  avatar?: string;
 }
 
 export enum PageStatus {
