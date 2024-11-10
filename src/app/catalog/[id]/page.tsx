@@ -7,7 +7,7 @@ import ActionButton from "./ActionButton";
 import ContactSection from "./ContactSection";
 import { Metadata, ResolvingMetadata } from "next";
 import { config } from "@/config";
-import { getCatalogOwner, getMatchUserCatalog, getGames } from "./supabase";
+import {getCatalogOwnerAvatar, getCatalogOwner, getMatchUserCatalog, getGames } from "./supabase";
 import { routes } from "@/routes";
 type Props = {
   params: Promise<{ id: string }>;
@@ -42,22 +42,28 @@ export default async function CatalogPage(
   const user = await supabase.auth.getUser();
   const catalogOwner = (await getCatalogOwner(catalogId)).data?.profile;
   const matchUserCatalog = await getMatchUserCatalog(user.data.user?.id, catalogId);
+  const  catalogOwnerAvatar = catalogOwner?.avatar 
+    ? await getCatalogOwnerAvatar(catalogOwner?.avatar)
+    : null;
   const {data, error}  = await getGames(catalogId);
   if (data?.length !== 0 && data !== null) {
     return (
       <>
         <Container size={{ lg: "3", md: "3", sm: "2", initial: "1" }}>
-          <Flex width={"100%"} justify={"between"} my="4">
-            <Text size={"6"} weight={"bold"}>
+          <Flex width={"100%"} justify={"between"} my="4" 
+            direction={{md:"row", sm:"row", xs:"column", initial:"column"}}>
+            <Text size={{xl:"6",lg:"6", md:"4", sm:"6", xs:"5", initial:"5"}} weight={"bold"}>
               {matchUserCatalog
                 ? "Mi Catalogo"
                 : `Catalogo de ${catalogOwner?.first_name} ${catalogOwner?.last_name}`}
             </Text>
             {!matchUserCatalog && (
               <ContactSection
+                firstname={catalogOwner?.first_name ?? ""}
                 phone={catalogOwner?.phone ?? "0"}
                 city={catalogOwner?.city ?? ""}
                 country={catalogOwner?.country ?? ""}
+                avatar={catalogOwnerAvatar}
               />
             )}
             {matchUserCatalog && (

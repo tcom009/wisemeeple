@@ -1,5 +1,5 @@
 "use client";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu } from "@radix-ui/themes";
 import { PersonIcon, ExitIcon } from "@radix-ui/react-icons";
 //import { useState } from 'react';
 import { Button, Text, Avatar, Box } from "@radix-ui/themes";
@@ -17,43 +17,34 @@ function Menu({ profileId, catalogId }: MenuProps) {
 
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
+      <DropdownMenu.Trigger>
         {/* <HamburgerMenuIcon /> */}
         <Button size={{ xs: "1", initial: "1" }} my="1" radius="full">
           <PersonIcon />
         </Button>
       </DropdownMenu.Trigger>
-
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
-          <DropdownMenu.Item className="DropdownMenuItem">
-            <button onClick={() => router.push(`/profile/${profileId}`)}>
-              Perfil
-            </button>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item className="DropdownMenuItem">
-            <button
-              onClick={() => router.push(`/catalog/${catalogId}`)}
-              disabled={!catalogId}
-            >
-              Catálogo
-            </button>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item className="DropdownMenuItem">
-            <button onClick={() => router.push(`/sell`)} disabled={!catalogId}>
-              Agregar juego
-            </button>
-          </DropdownMenu.Item>
-          <DropdownMenu.Separator className="DropdownMenuSeparator" />
-          <DropdownMenu.Item className="DropdownMenuItem">
-            <button onClick={() => logout()}>
-              <Text align={"center"}>Cerrar sesión</Text>
-            </button>
-          </DropdownMenu.Item>
-
-          <DropdownMenu.Arrow className="DropdownMenuArrow" />
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item onClick={() => router.push(`/profile/${profileId}`)}>
+          Perfil
+        </DropdownMenu.Item>
+        <DropdownMenu.Item
+          onClick={() => router.push(`/catalog/${catalogId}`)}
+          disabled={!catalogId}
+        >
+          Catálogo
+        </DropdownMenu.Item>
+        <DropdownMenu.Item
+          onClick={() => router.push(`/sell`)}
+          disabled={!catalogId}
+        >
+          Agregar juego
+        </DropdownMenu.Item>
+        <DropdownMenu.Separator className="DropdownMenuSeparator" />
+        <DropdownMenu.Item color="red" onClick={() => logout()}>
+          <Text align={"center"}>Cerrar sesión</Text>
+          <ExitIcon />
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
 }

@@ -114,7 +114,7 @@ export default async function Navbar() {
             </Flex>
           </>
         ) : (
-          <>
+          <Flex width={"100%"} align={"center"} justify={"center"}>
             <Link href={"/login"} className="no-underline">
               <Button
                 size={{
@@ -129,7 +129,7 @@ export default async function Navbar() {
                 Vender juego
               </Button>
             </Link>
-          </>
+          </Flex>
         )}
       </Flex>
 
